@@ -1,32 +1,23 @@
 import React from "react";
 
-import { Create, useForm, useSelect } from "@refinedev/antd";
+import { Create, useForm } from "@refinedev/antd";
 
-import { Form, Input, message, Select } from "antd";
+import { Form, Input } from "antd";
 
-import MDEditor from "@uiw/react-md-editor";
+import { CreateAdminRequestData } from "../../../types/admins/admins";
 
 export const AdminCreate = () => {
   const {
     formProps,
     saveButtonProps,
     mutation: mutationResult,
-  } = useForm<any>({
+  } = useForm<CreateAdminRequestData>({
     successNotification: (data, values, resourses) => ({
       message: "إنشاء مستخدم جديد",
       description: "تم إنشاء مستخدم جديد بنجاح",
       type: "success",
     }),
   });
-
-  console.log("mutation result", mutationResult);
-
-  const postData = mutationResult?.data?.data;
-
-  // const { selectProps: categorySelectProps } = useSelect<ICategory>({
-  //   resource: "categories",
-  //   defaultValue: postData?.category.id,
-  // });
 
   const errorsList = mutationResult?.error?.errors?.data as [] | undefined;
 

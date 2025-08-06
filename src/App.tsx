@@ -1,4 +1,4 @@
-import { Authenticated, GitHubBanner, Refine } from "@refinedev/core";
+import { Authenticated, Refine } from "@refinedev/core";
 import { DevtoolsPanel, DevtoolsProvider } from "@refinedev/devtools";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 
@@ -14,45 +14,29 @@ import "@refinedev/antd/dist/reset.css";
 import routerBindings, {
   CatchAllNavigate,
   DocumentTitleHandler,
-  NavigateToResource,
   UnsavedChangesNotifier,
 } from "@refinedev/react-router";
-import dataProvider from "@refinedev/simple-rest";
 import { App as AntdApp, ConfigProvider } from "antd";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router";
 import { authProvider } from "./authProvider";
 import { Header } from "./components/header";
 import { ColorModeContextProvider } from "./contexts/color-mode";
-import {
-  BlogPostCreate,
-  BlogPostEdit,
-  BlogPostList,
-  BlogPostShow,
-} from "./pages/blog-posts";
-import {
-  CategoryCreate,
-  CategoryEdit,
-  CategoryList,
-  CategoryShow,
-} from "./pages/categories";
-import { ForgotPassword } from "./pages/forgotPassword";
-import { Register } from "./pages/register";
-import {
-  ADMIN_ADMIN_URI,
-  ADMIN_SHOW_URI,
-  ADMIN_URI,
-  BASE_URI,
-  RESOURSES,
-} from "./constants";
+
+import { ADMIN_ADMIN_URI, ADMIN_STUDENT_URI, BASE_URI } from "./constants";
 import Login from "./pages/auth/login/Login";
-import { apiClient } from "./libs/axios/config";
 import {
   AdminCreate,
   AdminEdit,
   AdminList,
-  AdminsEdit,
   AdminShow,
 } from "./pages/admins/admins";
+import {
+  StudentsList,
+  StudentsCreate,
+  StudentsShow,
+  StudentsEdit,
+} from "./pages/admins/students";
+import { dataProvider } from "./data-provider";
 
 function App() {
   return (
@@ -63,11 +47,21 @@ function App() {
             <AntdApp>
               <DevtoolsProvider>
                 <Refine
-                  dataProvider={dataProvider(BASE_URI, apiClient)}
+                  dataProvider={dataProvider(BASE_URI)}
                   notificationProvider={useNotificationProvider}
                   routerProvider={routerBindings}
                   authProvider={authProvider}
                   resources={[
+                    // {
+                    //   name: "categories",
+                    //   list: "/categories",
+                    //   create: "/categories/create",
+                    //   edit: "/categories/edit/:id",
+                    //   show: "/categories/show/:id",
+                    //   meta: {
+                    //     canDelete: true,
+                    //   },
+                    // },
                     {
                       name: ADMIN_ADMIN_URI,
                       list: "/admins",
@@ -80,12 +74,13 @@ function App() {
                       },
                     },
                     {
-                      name: "categories",
-                      list: "/categories",
-                      create: "/categories/create",
-                      edit: "/categories/edit/:id",
-                      show: "/categories/show/:id",
+                      name: ADMIN_STUDENT_URI,
+                      list: "/students",
+                      create: "/students/create",
+                      edit: "/students/edit/:id",
+                      show: "/students/show/:id",
                       meta: {
+                        label: "التلاميذ",
                         canDelete: true,
                       },
                     },
@@ -112,6 +107,17 @@ function App() {
                         <Route path="create" element={<AdminCreate />} />
                         <Route path="show/:id" element={<AdminShow />} />
                         <Route path="edit/:id" element={<AdminEdit />} />
+
+                        {/* <Route path="create" element={<BlogPostCreate />} />
+                        <Route path="edit/:id" element={<BlogPostEdit />} />
+                        <Route path="show/:id" element={<BlogPostShow />} /> */}
+                      </Route>
+
+                      <Route path="/students">
+                        <Route index element={<StudentsList />} />
+                        <Route path="create" element={<StudentsCreate />} />
+                        <Route path="show/:id" element={<StudentsShow />} />
+                        <Route path="edit/:id" element={<StudentsEdit />} />
 
                         {/* <Route path="create" element={<BlogPostCreate />} />
                         <Route path="edit/:id" element={<BlogPostEdit />} />

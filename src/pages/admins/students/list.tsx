@@ -7,12 +7,18 @@ import {
 } from "@refinedev/antd";
 import { type BaseRecord, useDelete } from "@refinedev/core";
 import { Space, Table } from "antd";
-import { GetAdminsResponseData } from "../../../types/admins/admins";
+import { GetStudentsResponseData } from "../../../types/admins/students";
+import { PER_PAGE } from "../../../constants";
 
-export const AdminList = () => {
-  const { tableProps } = useTable<GetAdminsResponseData>({
+export const StudentsList = () => {
+  const { tableProps } = useTable<GetStudentsResponseData>({
     syncWithLocation: true,
+    pagination: {
+      pageSize: PER_PAGE,
+    },
   });
+
+  console.log(tableProps);
 
   const { mutate: remove } = useDelete();
 
@@ -38,7 +44,11 @@ export const AdminList = () => {
     >
       <Table {...tableProps} rowKey="id">
         <Table.Column dataIndex="id" title="المعرف" />
-        <Table.Column dataIndex="name" title="اسم الستخدم" />
+        <Table.Column dataIndex="national_id" title="رقم الهوية" />
+        <Table.Column dataIndex="name" title="الاسم" />
+        <Table.Column dataIndex="birthdate" title="تاريخ الميلاد" />
+        <Table.Column dataIndex="enrollment_date" title="تاريخ التسجيل" />
+        <Table.Column dataIndex="phone_number" title="رقم الهاتف" />
         <Table.Column
           title={"Actions"}
           dataIndex="actions"

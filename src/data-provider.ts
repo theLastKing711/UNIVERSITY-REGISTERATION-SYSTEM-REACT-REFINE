@@ -1,8 +1,63 @@
 import { CrudFilter, CrudSort, DataProvider, HttpError, Pagination, ValidationErrors } from "@refinedev/core";
 import { apiClient } from "./libs/axios/config";
 import { AxiosError } from "axios";
+import { PER_PAGE } from "./constants";
 
 export const dataProvider = (url: string): DataProvider => ({
+    getList: async ({resource, filters, pagination, sorters}) => {
+
+    console.log("sorters", sorters);
+    
+    // console.log("pagination", pagination);
+
+    console.log("filters" ,filters);
+
+    const filtersQuery = getFiltersQuery(filters);
+    
+    const paginationQuery = getPaginationQuery(pagination); 
+    
+    const sortersQuery = getSortersQuery(sorters);  
+
+    console.log("sorters after", getSortersQuery(sorters))
+    
+    const queryQuestionMarkOrEmpty = 
+      getQueryQuestionMarkOrEmpty(filtersQuery, paginationQuery, sortersQuery);
+  
+    // console.log("filtersQuery", filtersQuery);
+    // console.log("filtersPagination", paginationQuery);
+    // console.log("filtersQuestion", queryQuestionMarkOrEmpty);
+
+    const uri = `${url}/${resource}${queryQuestionMarkOrEmpty}${paginationQuery}${filtersQuery}${sortersQuery}`;
+
+    console.log(uri)
+    
+    const response = await apiClient.get(uri);
+    
+    if (response.status < 200  || response.status > 299) {
+      const error: HttpError = {
+          message: "حدث خطأ",
+          statusCode: 404,
+      };
+      return Promise.reject(error);
+    }
+
+    // console.log("response", response);
+    
+    const data = response.data.data ?? response.data; 
+    // in case of pagination response
+    //  response.data.data is the array
+    // response.data data is the array  
+
+    const total = response.data.total ?? data.length;
+     // in case of pagination response
+    //  response.data.total is the total in server not in sent to client.
+    // data.length in case of response an array of items  
+
+    return {
+        data,
+        total
+    }
+  },
   getOne: async ({resource, id}) => {
     const showUrl = `${url}/${resource}/${id}`;
 
@@ -118,59 +173,6 @@ export const dataProvider = (url: string): DataProvider => ({
       return Promise.reject(httpError);
     }
   },
-  getList: async ({resource, filters, pagination, sorters}) => {
-
-    console.log("sorters", sorters);
-    
-    // console.log("pagination", pagination);
-
-    console.log("filters" ,filters);
-
-    const filtersQuery = getFiltersQuery(filters);
-    
-    const paginationQuery = getPaginationQuery(pagination); 
-    
-    const sortersQuery = getSortersQuery(sorters);  
-
-    console.log("sorters after", getSortersQuery(sorters))
-    
-    const queryQuestionMarkOrEmpty = getQueryQuestionMarkOrEmpty(filtersQuery, paginationQuery, sortersQuery);
-  
-    // console.log("filtersQuery", filtersQuery);
-    // console.log("filtersPagination", paginationQuery);
-    // console.log("filtersQuestion", queryQuestionMarkOrEmpty);
-
-    const uri = `${url}/${resource}${queryQuestionMarkOrEmpty}${paginationQuery}${filtersQuery}${sortersQuery}`;
-
-    console.log(uri)
-    
-    const response = await apiClient.get(uri);
-    
-    if (response.status < 200  || response.status > 299) {
-      const error: HttpError = {
-          message: "حدث خطأ",
-          statusCode: 404,
-      };
-      return Promise.reject(error);
-    }
-
-    // console.log("response", response);
-    
-    const data = response.data.data ?? response.data; 
-    // in case of pagination response
-    //  response.data.data is the array
-    // response.data data is the array  
-
-    const total = response.data.total ?? data.length;
-     // in case of pagination response
-    //  response.data.total is the total in server not in sent to client.
-    // data.length in case of response an array of items  
-
-    return {
-        data,
-        total
-    }
-  },
   custom : async ({url, method, headers, payload, query }) => {
     console.log("url", url);
     if(method === 'get' || method == 'delete')
@@ -224,7 +226,7 @@ const getFiltersQuery = (filters: CrudFilter[] | undefined) => {
 const getPaginationQuery = (pagination: Pagination | undefined) => {
   
   let query = '';
-  if(pagination && pagination.current! > 1)
+  if(pagination)
   {
     const pageNumber = pagination?.current;
     const pageSize = pagination.pageSize;
