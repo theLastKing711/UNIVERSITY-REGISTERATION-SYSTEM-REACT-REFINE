@@ -37,6 +37,15 @@ import {
   StudentsEdit,
 } from "./pages/admins/students";
 import { dataProvider } from "./data-provider";
+import { ThemeConfig } from "antd/lib";
+
+const theme: ThemeConfig = {
+  components: {
+    Form: {
+      marginLG: 44, // Customizes the default large margin for form items
+    },
+  },
+};
 
 function App() {
   return (

@@ -28,8 +28,8 @@ export const StudentsList = () => {
       resource: "admin",
       id: record.id,
       successNotification: (data, values, resourses) => ({
-        message: "حذف مستخدم",
-        description: "تم حذف السمتخدم بنجاح",
+        message: "حذف تلميذ",
+        description: "تم حذف التلميذ بنجاح",
         type: "success",
       }),
     });

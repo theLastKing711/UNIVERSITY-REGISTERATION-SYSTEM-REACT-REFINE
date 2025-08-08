@@ -1,4 +1,6 @@
+import dayjs from "dayjs";
 import { useDelete } from "@refinedev/core";
+import { CustomUploadFile } from "./types/shared";
 
 
 export const useRemoveItem = <T extends {id: number}>(item: T, message: string, description: string) => {
@@ -24,3 +26,29 @@ export const useRemoveItem = <T extends {id: number}>(item: T, message: string, 
     
 }
 
+
+
+export const getDayJsValue = (value:any ) => {
+
+    return {value: dayjs(value)};
+}
+
+export const getBase64 = (file: any): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+  });
+
+export const getIdsFromCustomUploadFiles = (customUploadFiles: CustomUploadFile[]) => {
+  return customUploadFiles.map(getIdFromCustomUploadFile);
+};
+
+export const getIdFromCustomUploadFile = (customUploadFile?: CustomUploadFile) => {
+
+  if(!customUploadFile)
+    return null;
+  
+  return customUploadFile.response?.id;
+};

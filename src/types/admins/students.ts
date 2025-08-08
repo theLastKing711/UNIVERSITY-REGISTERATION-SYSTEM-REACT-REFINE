@@ -1,4 +1,4 @@
-import { MediaData } from "../shared";
+import { AntDesginImageResponseData, CustomUploadFile, MediaData } from "../shared";
 
 
 export type GetStudentsResponseData = {
@@ -23,7 +23,20 @@ export type GetStudentResponseData = {
     graduation_date: string | null;
     phone_number: string | null;
     name: string;
-    profile_picture: MediaData | null;
+    profilePicture: CustomUploadFile | null;
+    schoolFiles: CustomUploadFile[];
+};
+
+export type GetStudentTransformedResponseData = {
+    department_id: number | null;
+    national_id: string | null;
+    birthdate: string | null;
+    enrollment_date: string | null;
+    graduation_date: string | null;
+    phone_number: string | null;
+    name: string;
+    profilePicture: CustomUploadFile[];
+    schoolFiles: CustomUploadFile[];
 };
 
 export type UpdateStudentRequestData = {

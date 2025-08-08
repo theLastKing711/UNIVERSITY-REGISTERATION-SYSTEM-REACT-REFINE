@@ -1,48 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { Create, useForm, useSelect, getValueFromEvent } from "@refinedev/antd";
 
-import {
-  DatePicker,
-  Form,
-  Image,
-  Input,
-  Select,
-  Upload,
-  UploadFile,
-} from "antd";
+import { DatePicker, Form, Image, Input, Select, Space, Upload } from "antd";
 
 import { GetDepartmentsResponseData } from "../../../types/admins/departments";
-import {
-  ADMIN_DEPARTMENT_URI,
-  ADMIN_UPLOAD_IMAGE_URI,
-} from "../../../constants";
-import { apiClient } from "../../../libs/axios/config";
-import { CustomUploadFile } from "../../../types/shared";
+import { ADMIN_DEPARTMENT_URI } from "../../../constants";
 import { RegisterStudentRequestData } from "../../../types/admins/students";
-
-const getBase64 = (file: any): Promise<string> =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = (error) => reject(error);
-  });
-
-const getIdsFromCustomUploadFiles = (customUploadFiles: CustomUploadFile[]) => {
-  return customUploadFiles.map(getIdFromCustomUploadFile);
-};
-
-const getIdFromCustomUploadFile = (customUploadFile: CustomUploadFile) => {
-  return customUploadFile.id;
-};
+import { useImageUpload } from "../../../hooks/useUploadImage";
+import { useImagePreview } from "../../../hooks/useImagePreview";
+import {
+  getIdFromCustomUploadFile,
+  getIdsFromCustomUploadFiles,
+} from "../../../helpers";
 
 export const StudentsCreate = () => {
   const {
     formProps,
     saveButtonProps,
     mutation: mutationResult,
-    form,
     onFinish,
   } = useForm<RegisterStudentRequestData>({
     successNotification: (data, values, resourses) => ({
@@ -50,18 +26,7 @@ export const StudentsCreate = () => {
       description: "تم إنشاء مستخدم جديد بنجاح",
       type: "success",
     }),
-
-    // autoSave: {
-    //   enabled: false,
-    //   onFinish: (values) => {
-    //     console.log("hello world");
-
-    //     return { ...values };
-    //   },
-    // },
   });
-
-  console.log("form props", form.getFieldValue("name"));
 
   const { selectProps: departmentSelectProps } =
     useSelect<GetDepartmentsResponseData>({
@@ -72,52 +37,36 @@ export const StudentsCreate = () => {
 
   const errorsList = mutationResult?.error?.errors?.data as [] | undefined;
 
-  const [isUploadingImage, setIsUploadingImage] = useState<boolean>(false);
+  const {
+    isPreviewImageOpen,
+    onImagePreview,
+    previewImage,
+    setPreviewImage,
+    setIsPreviewImageOpen,
+  } = useImagePreview();
 
-  const [filesToUploadIds, setFilesToUploadIds] = useState<number[]>([]);
+  const {
+    uploadFiles: profilePictureUploadFiles,
+    uploadFile: profilePictureUploadFile,
+    onFileRemove: onProfilePictureFileRemove,
+    upload: uploadProfilePictureFile,
+  } = useImageUpload("profile_picture", "single");
 
-  const [schoolUploadFiles, setSchoolUploadFiles] = useState<
-    CustomUploadFile[]
-  >([]);
-
-  const [previewImage, setPreviewImage] = useState("");
-
-  const [isPreviewImageOpen, setIsPreviewImageOpen] = useState(false);
-
-  const onFileUploadDelete = (file: UploadFile) => {
-    const files = schoolUploadFiles.filter((item) => item.uid != file.uid);
-
-    setSchoolUploadFiles(files);
-  };
-
-  const openPreviewImage = () => {
-    setIsPreviewImageOpen(true);
-  };
-
-  const closePreviewImage = () => {
-    setIsPreviewImageOpen(false);
-  };
-
-  const onImagePreview = async (file: UploadFile) => {
-    console.log("file", file);
-
-    // if (!file.url && !file.preview) {
-    //   file.preview = await getBase64(file.originFileObj);
-    // }
-
-    setPreviewImage(file.url!);
-
-    openPreviewImage();
-  };
-
-  console.log("upload files", schoolUploadFiles);
+  const {
+    uploadFiles: schoolUploadFiles,
+    onFileRemove: onSchoolFilesRemove,
+    upload: uploadSchoolFiles,
+  } = useImageUpload("school_files");
 
   const handleOnFinish = (values) => {
-    const { images, ...newValues } = values;
+    const { schoolFiles, profilePicture, ...newValues } = values;
 
     onFinish({
       ...newValues,
       school_files_ids_to_add: getIdsFromCustomUploadFiles(schoolUploadFiles),
+      temporary_profile_picture_id: getIdFromCustomUploadFile(
+        profilePictureUploadFile
+      ),
     });
   };
 
@@ -138,17 +87,34 @@ export const StudentsCreate = () => {
         >
           <Select
             placeholder="اختر القسم"
-            style={{ width: 300, marginBottom: "1.5rem" }}
+            style={{ width: 300 }}
             {...departmentSelectProps}
           />
         </Form.Item>
 
         <Form.Item
-          name="images"
-          label="صور"
+          name="profilePicture"
+          label="الصورة الشخصية"
           valuePropName="file"
           getValueFromEvent={getValueFromEvent}
-          noStyle
+        >
+          <Upload.Dragger
+            fileList={profilePictureUploadFiles}
+            name="file"
+            listType="picture"
+            onPreview={onImagePreview}
+            onRemove={onProfilePictureFileRemove}
+            customRequest={uploadProfilePictureFile}
+          >
+            <p className="ant-upload-text">اسحب الصور لهذة المنطقة.</p>
+          </Upload.Dragger>
+        </Form.Item>
+
+        <Form.Item
+          name="schoolFiles"
+          label="صور المدرسة"
+          valuePropName="file"
+          getValueFromEvent={getValueFromEvent}
         >
           <Upload.Dragger
             fileList={schoolUploadFiles}
@@ -157,80 +123,15 @@ export const StudentsCreate = () => {
             maxCount={2}
             multiple
             onPreview={onImagePreview}
-            onRemove={onFileUploadDelete}
+            onRemove={onSchoolFilesRemove}
             // onChange={({ fileList }) => setSchoolUploadFiles(fileList)}
             //it runs once per uploaded file
-            customRequest={async (options) => {
-              try {
-                console.log("options", options.file);
-
-                const x = options.file;
-
-                const beforeUplaod: CustomUploadFile = {
-                  ...x,
-                  id: 25,
-                  status: "uploading",
-                };
-
-                setSchoolUploadFiles((oldfiles) => [
-                  ...oldfiles,
-                  { ...beforeUplaod, name: x.name! },
-                ]);
-
-                // setIsUploadingImage(true);
-                const result = await apiClient.postForm(
-                  ADMIN_UPLOAD_IMAGE_URI + "?fileUploadDirectory=school_files",
-                  {
-                    file: options.file,
-                  },
-                  {
-                    onUploadProgress: (progressEvent) => {},
-                  }
-                );
-
-                const file: CustomUploadFile = {
-                  id: result.data.id,
-                  uid: beforeUplaod.uid,
-                  name: x.name!,
-                  thumbUrl: result.data.thumbnail_url,
-                  url: result.data.file_url,
-                };
-
-                setSchoolUploadFiles((oldFiles) =>
-                  oldFiles.map((item) =>
-                    item.uid === beforeUplaod.uid ? { ...file } : { ...item }
-                  )
-                );
-
-                console.log("result", result.data);
-                options.onSuccess?.(result.data);
-              } catch (error) {
-                console.log("error", error);
-
-                setSchoolUploadFiles((oldFiles) =>
-                  oldFiles.map((item) =>
-                    item.uid === options.file.uid!
-                      ? { ...item, status: "error" }
-                      : { ...item }
-                  )
-                );
-
-                // open?.({
-                //   type: "error",
-                //   message: "حذث حطأ أثناء تحميل الصورة",
-                // });
-                options.onError?.({
-                  name: "تحميل الصورة",
-                  message: "حدث خطأ أثناء تحميل الصورة",
-                });
-              } finally {
-                setIsUploadingImage(false);
-              }
-            }}
+            customRequest={uploadSchoolFiles}
           >
-            <p className="ant-upload-text">Drag & drop a file in this area</p>
+            <p className="ant-upload-text">اسحب الصور لهذة المنطقة.</p>
           </Upload.Dragger>
         </Form.Item>
+
         {previewImage && (
           <Image
             wrapperStyle={{ display: "none" }}
