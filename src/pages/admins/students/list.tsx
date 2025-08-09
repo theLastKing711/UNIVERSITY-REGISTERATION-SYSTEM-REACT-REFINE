@@ -6,9 +6,15 @@ import {
   ShowButton,
   useTable,
 } from "@refinedev/antd";
-import { type BaseRecord, useDelete, useSelect } from "@refinedev/core";
+import {
+  type BaseRecord,
+  HttpError,
+  useDelete,
+  useSelect,
+} from "@refinedev/core";
 import {
   Button,
+  Card,
   Col,
   DatePicker,
   Form,
@@ -18,7 +24,10 @@ import {
   Space,
   Table,
 } from "antd";
-import { GetStudentsResponseData } from "../../../types/admins/students";
+import {
+  GetStudentsFilterData,
+  GetStudentsResponseData,
+} from "../../../types/admins/students";
 import { PER_PAGE } from "../../../constants";
 import TableSearch from "../../../components/ui/TableSearch";
 import { SearchOutlined } from "@ant-design/icons";
@@ -28,13 +37,19 @@ import { getDayJsdateFormat, getDayJsValue } from "../../../helpers";
 import dayjs from "dayjs";
 
 export const StudentsList = () => {
-  const { tableProps, searchFormProps } = useTable<GetStudentsResponseData>({
+  const { tableProps, searchFormProps } = useTable<
+    GetStudentsResponseData,
+    HttpError,
+    GetStudentsFilterData
+  >({
     syncWithLocation: true,
     pagination: {
       pageSize: PER_PAGE,
     },
     onSearch: (values) => {
-      const enrollment_year = values.enrollment_date.$y;
+      console.log("values", values);
+
+      const enrollment_year = values.enrollment_date?.$y;
 
       return [
         {
@@ -80,7 +95,6 @@ export const StudentsList = () => {
         subTitle: "Subtitle",
       }}
     >
-      z
       <Row gutter={[16, 16]}>
         <Col lg={6} xs={24}>
           {/* <Form layout="vertical" {...searchFormProps}>
@@ -96,28 +110,30 @@ export const StudentsList = () => {
               </Button>
             </Form.Item>
           </Form> */}
-          <Form {...searchFormProps}>
-            <Space>
-              <Form.Item name="query">
-                <Input placeholder="اسم أو رقم أو رقم وطني لتلميذ" />
-              </Form.Item>
-            </Space>
-            <Space>
-              <Form.Item label="القسم" name="department_id">
-                <Select placeholder="اختر القسم" {...departmentSelectProps} />
-              </Form.Item>
-            </Space>
-            <Space>
-              <Form.Item label="سنة التسجيل" name="enrollment_date">
-                <DatePicker picker="year" />
-              </Form.Item>
-            </Space>
-            <Space>
-              <Form.Item>
-                <Button htmlType="submit">ابحث</Button>
-              </Form.Item>
-            </Space>
-          </Form>
+          <Card title="الفلاتر">
+            <Form {...searchFormProps}>
+              <Space>
+                <Form.Item name="query">
+                  <Input placeholder="اسم أو رقم أو رقم وطني لتلميذ" />
+                </Form.Item>
+              </Space>
+              <Space>
+                <Form.Item label="القسم" name="department_id">
+                  <Select placeholder="اختر القسم" {...departmentSelectProps} />
+                </Form.Item>
+              </Space>
+              <Space>
+                <Form.Item label="سنة التسجيل" name="enrollment_date">
+                  <DatePicker picker="year" />
+                </Form.Item>
+              </Space>
+              <Space>
+                <Form.Item>
+                  <Button htmlType="submit">ابحث</Button>
+                </Form.Item>
+              </Space>
+            </Form>
+          </Card>
         </Col>
         <Col lg={18} xs={24}>
           <List>

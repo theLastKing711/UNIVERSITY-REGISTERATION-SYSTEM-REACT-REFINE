@@ -1,3 +1,4 @@
+import { dayjs } from 'dayjs';
 import { AntDesginImageResponseData, CustomUploadFile, MediaData } from "../shared";
 
 
@@ -25,6 +26,12 @@ export type GetStudentResponseData = {
     name: string;
     profilePicture: CustomUploadFile | null;
     schoolFiles: CustomUploadFile[];
+};
+
+export type GetStudentsFilterData = {
+   query: string,
+   department_id: number,
+   enrollment_date?: dayjs
 };
 
 export type GetStudentTransformedResponseData = {
