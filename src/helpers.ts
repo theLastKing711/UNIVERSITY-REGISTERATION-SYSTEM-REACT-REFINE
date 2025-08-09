@@ -52,3 +52,10 @@ export const getIdFromCustomUploadFile = (customUploadFile?: CustomUploadFile) =
   
   return customUploadFile.response?.id;
 };
+
+
+
+export const getDayJsdateFormat = (date: string) => {
+
+  return dayjs(date).format("YYYY-MM-DD");
+};

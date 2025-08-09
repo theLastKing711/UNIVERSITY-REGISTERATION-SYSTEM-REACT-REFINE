@@ -2,7 +2,7 @@ import { AntDesginImageResponseData, CustomUploadFile, MediaData } from "../shar
 
 
 export type GetStudentsResponseData = {
-    department_id: number | null;
+    department_name: string | null;
     national_id: string | null;
     birthdate: string | null;
     enrollment_date: string | null;

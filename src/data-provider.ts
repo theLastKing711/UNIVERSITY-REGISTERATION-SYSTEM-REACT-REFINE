@@ -243,15 +243,17 @@ const getSortersQuery = (sorters: CrudSort[] | undefined) => {
   {
     return "";
   }
+
+  console.log("sorters", sorters);
   
   const query = sorters?.reduce(((prev,curr, index) => {
     if(curr.order === "asc")
     {
-      return prev + "&sort=" + curr.field + " asc";
+      return prev + "&sort=" + curr.field + "&dir=asc";
     }
     if(curr.order)
     {
-      return prev + "&sort=" + curr.field + " desc";
+      return prev + "&sort=" + curr.field + "&dir=desc";
     }
   }), "")
 
