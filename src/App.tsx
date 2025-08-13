@@ -22,7 +22,31 @@ import { authProvider } from "./authProvider";
 import { Header } from "./components/header";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 
-import { ADMIN_ADMIN_URI, ADMIN_STUDENT_URI, BASE_URI } from "./constants";
+import {
+  ADMIN_ACADEMIC_YEAR_SEMESTER_CREATE,
+  ADMIN_ACADEMIC_YEAR_SEMESTER_EDIT,
+  ADMIN_ACADEMIC_YEAR_SEMESTER_LIST,
+  ADMIN_ACADEMIC_YEAR_SEMESTER_SHOW,
+  ADMIN_ACADEMIC_YEAR_SEMESTER_URI,
+  ADMIN_ADMIN_URI,
+  ADMIN_STUDENT_URI,
+  BASE_URI,
+  CLASSROOM_CREATE,
+  CLASSROOM_EDIT,
+  CLASSROOM_LIST,
+  CLASSROOM_SHOW,
+  CLASSROOM_URI,
+  COURSE_CREATE,
+  COURSE_EDIT,
+  COURSE_LIST,
+  COURSE_SHOW,
+  COURSE_URI,
+  OPEN_COURSE_REGISTERATION_CREATE,
+  OPEN_COURSE_REGISTERATION_EDIT,
+  OPEN_COURSE_REGISTERATION_LIST,
+  OPEN_COURSE_REGISTERATION_SHOW,
+  OPEN_COURSE_REGISTERATION_URI,
+} from "./constants";
 import Login from "./pages/auth/login/Login";
 import {
   AdminCreate,
@@ -38,6 +62,30 @@ import {
 } from "./pages/admins/students";
 import { dataProvider } from "./data-provider";
 import { ThemeConfig } from "antd/lib";
+import {
+  AcademicYearSemesterList,
+  AcademicYearSemesterCreate,
+  AcademicYearSemesterShow,
+  AcademicYearSemesterEdit,
+} from "./pages/admins/academic-year-semesters";
+import {
+  CourseCreate,
+  CourseEdit,
+  CourseList,
+  CourseShow,
+} from "./pages/admins/courses";
+import {
+  OpenCourseRegisterationsCreate,
+  OpenCourseRegisterationsEdit,
+  OpenCourseRegisterationsList,
+  OpenCourseRegisterationsShow,
+} from "./pages/admins/open-course-registerations";
+import { ClassroomList } from "./pages/classrooms/list";
+import {
+  ClassroomCreate,
+  ClassroomEdit,
+  ClassroomShow,
+} from "./pages/classrooms";
 
 const theme: ThemeConfig = {
   components: {
@@ -93,6 +141,57 @@ function App() {
                         canDelete: true,
                       },
                     },
+                    {
+                      name: ADMIN_ACADEMIC_YEAR_SEMESTER_URI,
+                      list: ADMIN_ACADEMIC_YEAR_SEMESTER_LIST,
+                      create: ADMIN_ACADEMIC_YEAR_SEMESTER_CREATE,
+                      edit: ADMIN_ACADEMIC_YEAR_SEMESTER_EDIT,
+                      show: ADMIN_ACADEMIC_YEAR_SEMESTER_SHOW,
+                      meta: {
+                        label: "الفصول الدراسية",
+                        canDelete: true,
+                      },
+                    },
+                    {
+                      name: COURSE_URI,
+                      list: COURSE_LIST,
+                      create: COURSE_CREATE,
+                      edit: COURSE_EDIT,
+                      show: COURSE_SHOW,
+                      meta: {
+                        label: "المواد الدراسية",
+                        canDelete: true,
+                      },
+                    },
+                    {
+                      name: OPEN_COURSE_REGISTERATION_URI,
+                      list: OPEN_COURSE_REGISTERATION_LIST,
+                      create: OPEN_COURSE_REGISTERATION_CREATE,
+                      edit: OPEN_COURSE_REGISTERATION_EDIT,
+                      show: OPEN_COURSE_REGISTERATION_SHOW,
+                      meta: {
+                        label: "فتح مواد دراسية",
+                        canDelete: true,
+                      },
+                    },
+                    {
+                      name: "academic-year-semester",
+                      list: "/academic-year-semester",
+                      create: "/academic-year-semester/create",
+                      edit: "/academic-year-semester/edit/:id",
+                      show: "/academic-year-semester/show/:id",
+                    },
+                    {
+                      name: CLASSROOM_URI,
+                      list: CLASSROOM_LIST,
+                      create: CLASSROOM_CREATE,
+                      edit: CLASSROOM_EDIT,
+                      show: CLASSROOM_SHOW,
+                      meta: {
+                        label: "الصفوف",
+                        canDelete: true,
+                      },
+                    },
                   ]}
                   options={{
                     syncWithLocation: true,
@@ -131,6 +230,55 @@ function App() {
                         {/* <Route path="create" element={<BlogPostCreate />} />
                         <Route path="edit/:id" element={<BlogPostEdit />} />
                         <Route path="show/:id" element={<BlogPostShow />} /> */}
+                      </Route>
+
+                      <Route path={ADMIN_ACADEMIC_YEAR_SEMESTER_URI}>
+                        <Route index element={<AcademicYearSemesterList />} />
+                        <Route
+                          path="create"
+                          element={<AcademicYearSemesterCreate />}
+                        />
+                        <Route
+                          path="show/:id"
+                          element={<AcademicYearSemesterShow />}
+                        />
+                        <Route
+                          path="edit/:id"
+                          element={<AcademicYearSemesterEdit />}
+                        />
+                      </Route>
+
+                      <Route path={COURSE_URI}>
+                        <Route index element={<CourseList />} />
+                        <Route path="create" element={<CourseCreate />} />
+                        <Route path="show/:id" element={<CourseShow />} />
+                        <Route path="edit/:id" element={<CourseEdit />} />
+                      </Route>
+
+                      <Route path={OPEN_COURSE_REGISTERATION_URI}>
+                        <Route
+                          index
+                          element={<OpenCourseRegisterationsList />}
+                        />
+                        <Route
+                          path="create"
+                          element={<OpenCourseRegisterationsCreate />}
+                        />
+                        <Route
+                          path="show/:id"
+                          element={<OpenCourseRegisterationsShow />}
+                        />
+                        <Route
+                          path="edit/:id"
+                          element={<OpenCourseRegisterationsEdit />}
+                        />
+                      </Route>
+
+                      <Route path={CLASSROOM_URI}>
+                        <Route index element={<ClassroomList />} />
+                        <Route path="create" element={<ClassroomCreate />} />
+                        <Route path="show/:id" element={<ClassroomShow />} />
+                        <Route path="edit/:id" element={<ClassroomEdit />} />
                       </Route>
                     </Route>
 

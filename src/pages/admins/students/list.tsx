@@ -97,19 +97,6 @@ export const StudentsList = () => {
     >
       <Row gutter={[16, 16]}>
         <Col lg={6} xs={24}>
-          {/* <Form layout="vertical" {...searchFormProps}>
-            <Form.Item label="ابحث" name="query">
-              <Input
-                placeholder="ID, Title, Content, etc."
-                prefix={<SearchOutlined />}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Button htmlType="submit" type="primary">
-                فلتر
-              </Button>
-            </Form.Item>
-          </Form> */}
           <Card title="الفلاتر">
             <Form {...searchFormProps}>
               <Space>

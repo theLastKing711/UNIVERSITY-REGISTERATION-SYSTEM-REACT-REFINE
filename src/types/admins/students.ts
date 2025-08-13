@@ -1,5 +1,4 @@
-import { dayjs } from 'dayjs';
-import { AntDesginImageResponseData, CustomUploadFile, MediaData } from "../shared";
+import {  CustomUploadFile } from "../shared";
 
 
 export type GetStudentsResponseData = {
@@ -31,7 +30,7 @@ export type GetStudentResponseData = {
 export type GetStudentsFilterData = {
    query: string,
    department_id: number,
-   enrollment_date?: dayjs
+   enrollment_date?: any
 };
 
 export type GetStudentTransformedResponseData = {

@@ -18,7 +18,7 @@ export const dataProvider = (url: string): DataProvider => ({
     
     const sortersQuery = getSortersQuery(sorters);  
 
-    console.log("sorters after", getSortersQuery(sorters))
+    console.log("sorters after", getSortersQuery(sorters));
     
     const queryQuestionMarkOrEmpty = 
       getQueryQuestionMarkOrEmpty(filtersQuery, paginationQuery, sortersQuery);
@@ -136,6 +136,8 @@ export const dataProvider = (url: string): DataProvider => ({
     catch(err) {
       
       const errorsList = parseAxiosErrorsToList(err);
+
+      console.log("message", err)
         
       const httpError: HttpError = {
         errors: {

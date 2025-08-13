@@ -37,3 +37,8 @@ export type AntDesginImageResponseData = {
     percent: number | null;
     status: string | null;
 };
+
+export type GetDepartmetData = {
+    id: string;
+    name: string;
+}
