@@ -3,12 +3,14 @@ import { apiClient } from "./libs/axios/config";
 import { AxiosError } from "axios";
 import { PER_PAGE } from "./constants";
 
-export const dataProvider = (url: string): DataProvider => ({
-    getList: async ({resource, filters, pagination, sorters}) => {
+export const dataProvider = (url: string, deartemnt_query_filter?: string | null): DataProvider => ({
+    getList: async ({resource, filters, pagination, sorters, meta}) => {
 
+    console.log("deartemnt_query_filter", deartemnt_query_filter)
+      
     console.log("sorters", sorters);
     
-    // console.log("pagination", pagination);
+    console.log("meta ", meta);
 
     console.log("filters" ,filters);
 
@@ -23,11 +25,23 @@ export const dataProvider = (url: string): DataProvider => ({
     const queryQuestionMarkOrEmpty = 
       getQueryQuestionMarkOrEmpty(filtersQuery, paginationQuery, sortersQuery);
   
+
+    const department_id_query_parameter_value = 
+      (meta.department_id || localStorage.getItem('department_id_query_parameter'));
+
+      
+    const department_id_query_parameter_query = 
+    department_id_query_parameter_value
+      ?
+      `&department_id=${parseInt(department_id_query_parameter_value)}`
+      :
+      '';
+
     // console.log("filtersQuery", filtersQuery);
     // console.log("filtersPagination", paginationQuery);
     // console.log("filtersQuestion", queryQuestionMarkOrEmpty);
 
-    const uri = `${url}/${resource}${queryQuestionMarkOrEmpty}${paginationQuery}${filtersQuery}${sortersQuery}`;
+    const uri = `${url}/${resource}${queryQuestionMarkOrEmpty}${paginationQuery}${filtersQuery}${sortersQuery}${department_id_query_parameter_query}`;
 
     console.log(uri)
     
@@ -58,7 +72,7 @@ export const dataProvider = (url: string): DataProvider => ({
         total
     }
   },
-  getOne: async ({resource, id}) => {
+  getOne: async ({resource, id, meta}) => {
     const showUrl = `${url}/${resource}/${id}`;
 
     try {

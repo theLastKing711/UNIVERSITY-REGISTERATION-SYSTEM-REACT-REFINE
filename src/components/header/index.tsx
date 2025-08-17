@@ -1,15 +1,32 @@
-import type { RefineThemedLayoutV2HeaderProps } from "@refinedev/antd";
-import { useGetIdentity } from "@refinedev/core";
+import {
+  useSelect,
+  type RefineThemedLayoutV2HeaderProps,
+} from "@refinedev/antd";
 import {
   Layout as AntdLayout,
   Avatar,
+  Form,
+  Select,
   Space,
   Switch,
   theme,
   Typography,
 } from "antd";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { ColorModeContext } from "../../contexts/color-mode";
+import { useGetDepratments } from "../../hooks/API/select/useGetDepartments";
+import { GetDepartmentsResponseData } from "../../types/admins/departments";
+import { ADMIN_DEPARTMENT_URI } from "../../constants";
+import {
+  useGetIdentity,
+  useGo,
+  useInvalidate,
+  useParse,
+  useParsed,
+  useResource,
+} from "@refinedev/core";
+import { useGetAcademicYearSemesters } from "../../hooks/API/select/useGetAcademicYearSemesters";
+import { useGetGlobalQueryFilters } from "../../hooks/useGetGlobalQueryFilters";
 
 const { Text } = Typography;
 const { useToken } = theme;
@@ -42,10 +59,40 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
     headerStyles.zIndex = 1;
   }
 
+  const { departmentSelectProps } = useGetDepratments();
+
+  const { academicYearSemestersSelectProps } = useGetAcademicYearSemesters();
+
+  const { selectProps: departmentSelectPropss } =
+    useSelect<GetDepartmentsResponseData>({
+      resource: ADMIN_DEPARTMENT_URI,
+      optionValue: "id",
+      optionLabel: "name",
+    });
+
+  const { resource } = useResource();
+
+  const go = useGo();
+
+  const { department_id_query_parameter } = useGetGlobalQueryFilters();
+
+  console.log("department value", department_id_query_parameter);
+
+  // console.log("filters 4", filters);
+
+  // const [department_id, setDepartment_id] = useState(null);
+
+  // const { params } = useParsed();
+
+  // const department_id =
+  //   parseInt(
+  //     params?.filters?.find((item) => item.field! === "department_id")?.value
+  //   ) || null;
+
   return (
     <AntdLayout.Header style={headerStyles}>
       <Space>
-        <Switch
+        {/* <Switch
           checkedChildren="🌛"
           unCheckedChildren="🔆"
           onChange={() => setMode(mode === "light" ? "dark" : "light")}
@@ -54,7 +101,61 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
         <Space style={{ marginLeft: "8px" }} size="middle">
           {user?.name && <Text strong>{user.name}</Text>}
           {user?.avatar && <Avatar src={user?.avatar} alt={user?.name} />}
-        </Space>
+        </Space> */}
+        <Select
+          {...departmentSelectProps}
+          style={{ width: 300 }}
+          value={department_id_query_parameter}
+          onChange={(department_id) => {
+            // console.log("department_id", department_id);
+            localStorage.setItem(
+              "department_id_query_parameter",
+              department_id as unknown as string
+            );
+            // invalidate({ resource: "students", invalidates: ["all"] });
+            go({
+              to: resource?.name,
+              query: {
+                department_id: department_id,
+                // filters: [
+                //   {
+                //     field: "department_id",
+                //     operator: "eq",
+                //     value: 2,
+                //   },
+                // ],
+              },
+              options: {
+                keepQuery: true,
+                keepHash: true,
+              },
+            });
+          }}
+        />
+        {/* <Select
+          {...academicYearSemestersSelectProps}
+          style={{ width: 300 }}
+          onChange={(academic_year_semester_id) => {
+            // invalidate({ resource: "students", invalidates: ["all"] });
+            go({
+              to: resource?.name,
+              query: {
+                // academic_year_semester_id,
+                filters: [
+                  {
+                    field: "academic_year_semester_id",
+                    operator: "eq",
+                    value: academic_year_semester_id,
+                  },
+                ],
+              },
+              options: {
+                keepQuery: true,
+                keepHash: true,
+              },
+            });
+          }}
+        /> */}
       </Space>
     </AntdLayout.Header>
   );

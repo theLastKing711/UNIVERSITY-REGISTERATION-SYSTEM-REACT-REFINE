@@ -33,7 +33,7 @@ export const authProvider: AuthProvider = {
 
     return {
         success: true,
-        redirectTo: "/admins",
+        redirectTo: "/admins/admins",
     };
 
 

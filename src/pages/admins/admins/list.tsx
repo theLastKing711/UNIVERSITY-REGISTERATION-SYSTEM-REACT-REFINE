@@ -8,10 +8,36 @@ import {
 import { type BaseRecord, useDelete } from "@refinedev/core";
 import { Space, Table } from "antd";
 import { GetAdminsResponseData } from "../../../types/admins/admins";
+import { useGetGlobalQueryFilters } from "../../../hooks/useGetGlobalQueryFilters";
 
 export const AdminList = () => {
+  // const { filters } = useGetGlobalQueryFilters();
+
+  // console.log("filters 2", filters);
+  //
   const { tableProps } = useTable<GetAdminsResponseData>({
-    syncWithLocation: true,
+    syncWithLocation: false,
+    // filters: {
+    //   initial: [
+    //     {
+    //       field: "department_id",
+    //       operator: "eq",
+    //       value: 2,
+    //     },
+    //   ],
+    //   permanent: [
+    //     {
+    //       field: "department_id",
+    //       operator: "eq",
+    //       value: 2,
+    //     },
+    //   ],
+    //   defaultBehavior: "replace",
+    //   // defaultBehavior: "replace",
+    // },
+    // filters: {
+    //   initial: filters,
+    // },
   });
 
   const { mutate: remove } = useDelete();

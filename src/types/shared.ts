@@ -1,3 +1,4 @@
+import { DayOfWeek } from './../constants';
 import { UploadFile } from "antd";
 
 export type MediaData = {
@@ -41,4 +42,15 @@ export type AntDesginImageResponseData = {
 export type GetDepartmetData = {
     id: string;
     name: string;
+}
+
+
+export type DayOfWeek = {
+    id: number,
+    tile: string;
+}
+
+export type TimeInterval = {
+    id: string;
+    title: string;
 }

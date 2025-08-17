@@ -29,12 +29,8 @@ import {
   GetStudentsResponseData,
 } from "../../../types/admins/students";
 import { PER_PAGE } from "../../../constants";
-import TableSearch from "../../../components/ui/TableSearch";
-import { SearchOutlined } from "@ant-design/icons";
-import { GetDepartmentsResponseData } from "../../../types/admins/departments";
 import { useGetDepratments } from "../../../hooks/API/select/useGetDepartments";
-import { getDayJsdateFormat, getDayJsValue } from "../../../helpers";
-import dayjs from "dayjs";
+import { getDayJsdateFormat } from "../../../helpers";
 
 export const StudentsList = () => {
   const { tableProps, searchFormProps } = useTable<

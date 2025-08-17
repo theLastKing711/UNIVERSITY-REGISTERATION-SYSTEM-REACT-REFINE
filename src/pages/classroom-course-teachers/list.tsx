@@ -7,18 +7,28 @@ import {
   DeleteButton,
 } from "@refinedev/antd";
 import { Table, Space } from "antd";
+import { getDayOfWeek } from "../../constants";
 
-export const OpenCourseRegisterationsList = () => {
-  const { tableProps } = useTable({});
+export const ClassroomCourseTeacherList = () => {
+  const { tableProps } = useTable({
+    syncWithLocation: true,
+  });
 
   return (
     <List>
       <Table {...tableProps} rowKey="id">
-        <Table.Column dataIndex="course_name" title="الاسم" />
+        <Table.Column dataIndex="id" title="المعرف" />
 
-        <Table.Column dataIndex="year" title="السنة" />
-        <Table.Column dataIndex="semester" title="الفصل" />
-        <Table.Column dataIndex="price_in_usd" title="السعر" />
+        <Table.Column dataIndex="course_name" title="المادة" />
+
+        <Table.Column dataIndex="teacher_name" title="الأستاذ" />
+        <Table.Column
+          dataIndex="day"
+          title="اليوم"
+          render={(_, record) => getDayOfWeek(record.day)}
+        />
+        <Table.Column dataIndex="from" title="من" />
+        <Table.Column dataIndex="to" title="إلى" />
         <Table.Column
           title="Actions"
           dataIndex="actions"

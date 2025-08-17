@@ -1,3 +1,4 @@
+import { DayOfWeek, TimeInterval } from "./types/shared";
 
 export const BASE_URI = 'http://localhost:8000';
 
@@ -10,6 +11,8 @@ export const RESOURSES = {
     courses: "courses",
     openCourseRegisterations: "open-course-registerations",
     classrooms: 'classrooms',
+    teachers: 'teachers',
+    classroomCourseTeachers: 'classroom-course-teachers',
     images: "images"
 }
 
@@ -19,11 +22,22 @@ export const ADMIN_URI = BASE_URI + "/" + RESOURSES.admins;
 
 export const ADMIN_ADMIN_URI = ADMIN_ROLE + "/" + RESOURSES.admins;
 
+export const ADMIN_LIST_URI = 
+    `/${ADMIN_ADMIN_URI}`;
+
+export const ADMIN_CREATE = 
+    `/${ADMIN_ADMIN_URI}/create`;
+
+export const ADMIN_EDIT = 
+    `/${ADMIN_ADMIN_URI}/edit/:id`;
+
+export const ADMIN_SHOW = 
+    `/${ADMIN_ADMIN_URI}/show/:id`;
+
+
 export const ADMIN_STUDENT_URI = ADMIN_ROLE + "/" + RESOURSES.students;
 
 export const ADMIN_DEPARTMENT_URI = ADMIN_ROLE + "/" + RESOURSES.departments;
-
-export const ADMIN_SHOW_URI = BASE_URI + "/" + RESOURSES.admins + "/:id";
 
 export const ADMIN_ACADEMIC_YEAR_SEMESTER_URI = ADMIN_ROLE + "/" + RESOURSES.academic_year_semesters;
 
@@ -84,6 +98,36 @@ export const CLASSROOM_SHOW =
     `/${CLASSROOM_URI}/show/:id`;
 
 
+export const TEACHER_URI =  ADMIN_ROLE + "/" + RESOURSES.teachers;
+
+export const TEACHER_LIST = 
+    `/${TEACHER_URI}`;
+
+export const TEACHER_CREATE = 
+    `/${TEACHER_URI}/create`;
+
+export const TEACHER_EDIT = 
+    `/${TEACHER_URI}/edit/:id`;
+
+export const TEACHER_SHOW = 
+    `/${TEACHER_URI}/show/:id`;
+
+
+export const CLASSROOM_COURSE_TEACHER_URI =  ADMIN_ROLE + "/" + RESOURSES.classroomCourseTeachers;
+
+export const CLASSROOM_COURSE_TEACHER_LIST = 
+    `/${CLASSROOM_COURSE_TEACHER_URI}`;
+
+export const CLASSROOM_COURSE_TEACHER_CREATE = 
+    `/${CLASSROOM_COURSE_TEACHER_URI}/create`;
+
+export const CLASSROOM_COURSE_TEACHER_EDIT = 
+    `/${CLASSROOM_COURSE_TEACHER_URI}/edit/:id`;
+
+export const CLASSROOM_COURSE_TEACHER_SHOW = 
+    `/${TEACHER_URI}/show/:id`;
+
+
 export const PER_PAGE = 2;
 
 
@@ -93,3 +137,71 @@ export const PER_PAGE = 2;
 export const ADMIN_UPLOAD_IMAGE_URI = 
     `${BASE_URI}/${ADMIN_ROLE}/${RESOURSES.images}`
 
+
+
+
+export const DAYS: DayOfWeek[] = [
+    {
+        id: 0,
+        tile: "السبت"
+    },
+    {
+        id: 1,
+        tile: "الأحد"
+    },
+    {
+        id: 2,
+        tile: "الاثنين"
+    },
+    {
+        id: 3,
+        tile: "الثلاثاء"
+    },
+    {
+        id: 4,
+        tile: "الأربعاء"
+    },
+    {
+        id: 5,
+        tile: "الخمسي"
+    },
+    {
+        id: 6,
+        tile: "الجمعة"
+    },
+];
+
+export const getDayOfWeek = (id: number) => {
+    return DAYS.find(item => item.id === id)?.tile;
+}
+
+export const TIME_INTERVALS: TimeInterval[] = [
+    {
+        id: "08:00:00",
+        title: "08:00:00"
+    },
+    {
+        id: "10:00:00",
+        title: "10:00:00"
+    },
+    {
+        id: "12:00:00",
+        title: "12:00:00"
+    },
+    {
+        id: "14:00:00",
+        title: "14:00:00"
+    },
+    {
+        id: "16:00:00",
+        title: "16:00:00"
+    },
+    {
+        id: "18:00:00",
+        title: "18:00:00"
+    },
+    {
+       id: "18:00:00",
+        title: "18:00:00"
+    },
+]

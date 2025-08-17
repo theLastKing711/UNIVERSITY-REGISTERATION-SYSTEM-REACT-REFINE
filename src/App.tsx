@@ -17,7 +17,13 @@ import routerBindings, {
   UnsavedChangesNotifier,
 } from "@refinedev/react-router";
 import { App as AntdApp, ConfigProvider } from "antd";
-import { BrowserRouter, Outlet, Route, Routes } from "react-router";
+import {
+  BrowserRouter,
+  Outlet,
+  Route,
+  Routes,
+  useNavigate,
+} from "react-router";
 import { authProvider } from "./authProvider";
 import { Header } from "./components/header";
 import { ColorModeContextProvider } from "./contexts/color-mode";
@@ -29,8 +35,17 @@ import {
   ADMIN_ACADEMIC_YEAR_SEMESTER_SHOW,
   ADMIN_ACADEMIC_YEAR_SEMESTER_URI,
   ADMIN_ADMIN_URI,
+  ADMIN_CREATE,
+  ADMIN_EDIT,
+  ADMIN_LIST_URI,
+  ADMIN_SHOW,
   ADMIN_STUDENT_URI,
   BASE_URI,
+  CLASSROOM_COURSE_TEACHER_CREATE,
+  CLASSROOM_COURSE_TEACHER_EDIT,
+  CLASSROOM_COURSE_TEACHER_LIST,
+  CLASSROOM_COURSE_TEACHER_SHOW,
+  CLASSROOM_COURSE_TEACHER_URI,
   CLASSROOM_CREATE,
   CLASSROOM_EDIT,
   CLASSROOM_LIST,
@@ -86,6 +101,13 @@ import {
   ClassroomEdit,
   ClassroomShow,
 } from "./pages/classrooms";
+import {
+  ClassroomCourseTeacherCreate,
+  ClassroomCourseTeacherEdit,
+  ClassroomCourseTeacherList,
+  ClassroomCourseTeacherShow,
+} from "./pages/classroom-course-teachers";
+import { useGetGlobalQueryFilters } from "./hooks/useGetGlobalQueryFilters";
 
 const theme: ThemeConfig = {
   components: {
@@ -93,6 +115,36 @@ const theme: ThemeConfig = {
       marginLG: 44, // Customizes the default large margin for form items
     },
   },
+};
+
+const CustomRouterProvider = () => {
+  const navigate = useNavigate();
+
+  return {
+    go: ({ to, query, hash, type }) => {
+      const defaultQueryParam = { defaultParam: "defaultValue" }; // Your default parameter
+
+      let newQuery = { ...defaultQueryParam, ...query };
+
+      // Stringify the query object (you might use a library like 'qs')
+      const queryString = Object.keys(newQuery)
+        .map((key) => `${key}=${newQuery[key]}`)
+        .join("&");
+
+      const url = `${to}${queryString ? `?${queryString}` : ""}${
+        hash ? `#${hash}` : ""
+      }`;
+
+      if (type === "push") {
+        navigate(url);
+      } else if (type === "replace") {
+        navigate(url, { replace: true });
+      } else if (type === "path") {
+        return url;
+      }
+    },
+    // ... other router provider methods (parse, etc.)
+  };
 };
 
 function App() {
@@ -104,7 +156,10 @@ function App() {
             <AntdApp>
               <DevtoolsProvider>
                 <Refine
-                  dataProvider={dataProvider(BASE_URI)}
+                  dataProvider={dataProvider(
+                    BASE_URI,
+                    "department_id_query_parameter"
+                  )}
                   notificationProvider={useNotificationProvider}
                   routerProvider={routerBindings}
                   authProvider={authProvider}
@@ -121,10 +176,10 @@ function App() {
                     // },
                     {
                       name: ADMIN_ADMIN_URI,
-                      list: "/admins",
-                      create: "/admins/create",
-                      edit: "/admins/edit/:id",
-                      show: "/admins/show/:id",
+                      list: ADMIN_LIST_URI,
+                      create: ADMIN_CREATE,
+                      edit: ADMIN_EDIT,
+                      show: ADMIN_SHOW,
                       meta: {
                         label: "الإداريين",
                         canDelete: true,
@@ -192,9 +247,20 @@ function App() {
                         canDelete: true,
                       },
                     },
+                    {
+                      name: CLASSROOM_COURSE_TEACHER_URI,
+                      list: CLASSROOM_COURSE_TEACHER_LIST,
+                      create: CLASSROOM_COURSE_TEACHER_CREATE,
+                      edit: CLASSROOM_COURSE_TEACHER_EDIT,
+                      show: CLASSROOM_COURSE_TEACHER_SHOW,
+                      meta: {
+                        label: "أوقات المحاضرات",
+                        canDelete: true,
+                      },
+                    },
                   ]}
                   options={{
-                    syncWithLocation: true,
+                    syncWithLocation: false,
                     warnWhenUnsavedChanges: true,
                     useNewQueryKeys: true,
                     projectId: "BsRq8M-JCn5LZ-y3rY11",
@@ -206,11 +272,12 @@ function App() {
                     <Route
                       element={
                         <ThemedLayoutV2>
+                          <Header />
                           <Outlet />
                         </ThemedLayoutV2>
                       }
                     >
-                      <Route path="/admins">
+                      <Route path={ADMIN_ADMIN_URI}>
                         <Route index element={<AdminList />} />
                         <Route path="create" element={<AdminCreate />} />
                         <Route path="show/:id" element={<AdminShow />} />
@@ -221,7 +288,7 @@ function App() {
                         <Route path="show/:id" element={<BlogPostShow />} /> */}
                       </Route>
 
-                      <Route path="/students">
+                      <Route path={ADMIN_STUDENT_URI}>
                         <Route index element={<StudentsList />} />
                         <Route path="create" element={<StudentsCreate />} />
                         <Route path="show/:id" element={<StudentsShow />} />
@@ -279,6 +346,22 @@ function App() {
                         <Route path="create" element={<ClassroomCreate />} />
                         <Route path="show/:id" element={<ClassroomShow />} />
                         <Route path="edit/:id" element={<ClassroomEdit />} />
+                      </Route>
+
+                      <Route path={CLASSROOM_COURSE_TEACHER_URI}>
+                        <Route index element={<ClassroomCourseTeacherList />} />
+                        <Route
+                          path="create"
+                          element={<ClassroomCourseTeacherCreate />}
+                        />
+                        <Route
+                          path="show/:id"
+                          element={<ClassroomCourseTeacherShow />}
+                        />
+                        <Route
+                          path="edit/:id"
+                          element={<ClassroomCourseTeacherEdit />}
+                        />
                       </Route>
                     </Route>
 

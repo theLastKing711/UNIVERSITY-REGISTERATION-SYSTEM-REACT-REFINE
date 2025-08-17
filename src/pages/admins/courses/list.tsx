@@ -6,14 +6,11 @@ import {
   ShowButton,
   DeleteButton,
   BooleanField,
-  DateField,
 } from "@refinedev/antd";
 import { Table, Space } from "antd";
 
 export const CourseList = () => {
-  const { tableProps } = useTable({
-    // syncWithLocation: true,
-  });
+  const { tableProps } = useTable();
 
   return (
     <List>
