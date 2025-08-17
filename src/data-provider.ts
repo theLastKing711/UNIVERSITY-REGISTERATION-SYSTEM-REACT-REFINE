@@ -3,7 +3,7 @@ import { apiClient } from "./libs/axios/config";
 import { AxiosError } from "axios";
 import { PER_PAGE } from "./constants";
 
-export const dataProvider = (url: string, deartemnt_query_filter?: string | null): DataProvider => ({
+export const dataProvider = (url: string, deartemnt_query_filter?: string): DataProvider => ({
     getList: async ({resource, filters, pagination, sorters, meta}) => {
 
     console.log("deartemnt_query_filter", deartemnt_query_filter)
@@ -27,13 +27,17 @@ export const dataProvider = (url: string, deartemnt_query_filter?: string | null
   
 
     const department_id_query_parameter_value = 
-      (meta.department_id || localStorage.getItem('department_id_query_parameter'));
+      (meta?.department_id || localStorage.getItem('department_id_query_parameter'));
+
+
+    // console.log("department_id_query_parameter_value", department_id_query_parameter_value)
 
       
     const department_id_query_parameter_query = 
     department_id_query_parameter_value
+      !== 'undefined' 
       ?
-      `&department_id=${parseInt(department_id_query_parameter_value)}`
+      `&department_id=${department_id_query_parameter_value}`
       :
       '';
 

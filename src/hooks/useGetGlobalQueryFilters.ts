@@ -1,5 +1,4 @@
-import { CrudFilter, useParsed } from '@refinedev/core';
-import { useMemo } from 'react';
+
 import { useLocation } from 'react-router';
 
 export const useGetGlobalQueryFilters = () => {
@@ -13,7 +12,11 @@ export const useGetGlobalQueryFilters = () => {
 
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const department_id_query_parameter = queryParams.get("department_id") || localStorage.getItem('department_id_query_parameter');
+    const department_id_query_parameter = 
+        queryParams.get("department_id") 
+        || 
+        localStorage.getItem('department_id_query_parameter');
+        
     const academic_year_semester_query_parameter = queryParams.get("academic_year_semester_id");
 
     
@@ -70,8 +73,22 @@ export const useGetGlobalQueryFilters = () => {
 
     // console.log("department_id_query_parameter,", )
 
+
+     
+    if(  isNaN(parseInt(department_id_query_parameter)))
+    {
+        console.log("hello world");
+    }
+
+    const x = 
+        isNaN(parseInt(department_id_query_parameter)) == true ? undefined : parseInt(department_id_query_parameter); 
+
+    console.log("x", x);
+
+   
+    
     return {
-         department_id_query_parameter: department_id_query_parameter ? parseInt(department_id_query_parameter) : null
+         department_id_query_parameter: x
         // department_id_query_parameter,
         // academic_year_semester_query_parameter,
         // filters 

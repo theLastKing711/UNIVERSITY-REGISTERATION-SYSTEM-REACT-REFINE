@@ -117,35 +117,35 @@ const theme: ThemeConfig = {
   },
 };
 
-const CustomRouterProvider = () => {
-  const navigate = useNavigate();
+// const CustomRouterProvider = () => {
+//   const navigate = useNavigate();
 
-  return {
-    go: ({ to, query, hash, type }) => {
-      const defaultQueryParam = { defaultParam: "defaultValue" }; // Your default parameter
+//   return {
+//     go: ({ to, query, hash, type }) => {
+//       const defaultQueryParam = { defaultParam: "defaultValue" }; // Your default parameter
 
-      let newQuery = { ...defaultQueryParam, ...query };
+//       let newQuery = { ...defaultQueryParam, ...query };
 
-      // Stringify the query object (you might use a library like 'qs')
-      const queryString = Object.keys(newQuery)
-        .map((key) => `${key}=${newQuery[key]}`)
-        .join("&");
+//       // Stringify the query object (you might use a library like 'qs')
+//       const queryString = Object.keys(newQuery)
+//         .map((key) => `${key}=${newQuery[key]}`)
+//         .join("&");
 
-      const url = `${to}${queryString ? `?${queryString}` : ""}${
-        hash ? `#${hash}` : ""
-      }`;
+//       const url = `${to}${queryString ? `?${queryString}` : ""}${
+//         hash ? `#${hash}` : ""
+//       }`;
 
-      if (type === "push") {
-        navigate(url);
-      } else if (type === "replace") {
-        navigate(url, { replace: true });
-      } else if (type === "path") {
-        return url;
-      }
-    },
-    // ... other router provider methods (parse, etc.)
-  };
-};
+//       if (type === "push") {
+//         navigate(url);
+//       } else if (type === "replace") {
+//         navigate(url, { replace: true });
+//       } else if (type === "path") {
+//         return url;
+//       }
+//     },
+//     // ... other router provider methods (parse, etc.)
+//   };
+// };
 
 function App() {
   return (
@@ -156,10 +156,7 @@ function App() {
             <AntdApp>
               <DevtoolsProvider>
                 <Refine
-                  dataProvider={dataProvider(
-                    BASE_URI,
-                    "department_id_query_parameter"
-                  )}
+                  dataProvider={dataProvider(BASE_URI)}
                   notificationProvider={useNotificationProvider}
                   routerProvider={routerBindings}
                   authProvider={authProvider}

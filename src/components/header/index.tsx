@@ -27,6 +27,7 @@ import {
 } from "@refinedev/core";
 import { useGetAcademicYearSemesters } from "../../hooks/API/select/useGetAcademicYearSemesters";
 import { useGetGlobalQueryFilters } from "../../hooks/useGetGlobalQueryFilters";
+import { useLocation } from "react-router";
 
 const { Text } = Typography;
 const { useToken } = theme;
@@ -89,6 +90,9 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
   //     params?.filters?.find((item) => item.field! === "department_id")?.value
   //   ) || null;
 
+  const location = useLocation();
+  const currentPath = location.pathname;
+
   return (
     <AntdLayout.Header style={headerStyles}>
       <Space>
@@ -104,6 +108,28 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
         </Space> */}
         <Select
           {...departmentSelectProps}
+          allowClear
+          onClear={() => {
+            console.log("resourse", resource);
+            alert("hello world");
+
+            go({
+              to: currentPath,
+              query: {
+                // filters: [
+                //   {
+                //     field: "department_id",
+                //     operator: "eq",
+                //     value: 2,
+                //   },
+                // ],
+              },
+              // options: {
+              //   keepQuery: true,
+              //   keepHash: true,
+              // },
+            });
+          }}
           style={{ width: 300 }}
           value={department_id_query_parameter}
           onChange={(department_id) => {
@@ -114,7 +140,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
             );
             // invalidate({ resource: "students", invalidates: ["all"] });
             go({
-              to: resource?.name,
+              to: currentPath,
               query: {
                 department_id: department_id,
                 // filters: [
