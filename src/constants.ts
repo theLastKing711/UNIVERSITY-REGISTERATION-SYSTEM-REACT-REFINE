@@ -1,4 +1,6 @@
+import { DefaultOptionType } from "antd/es/select";
 import { DayOfWeek, TimeInterval } from "./types/shared";
+import { SelectProps } from "antd/lib";
 
 export const BASE_URI = 'http://localhost:8000';
 
@@ -140,39 +142,39 @@ export const ADMIN_UPLOAD_IMAGE_URI =
 
 
 
-export const DAYS: DayOfWeek[] = [
+export const DAYS: SelectProps["options"] = [
     {
-        id: 0,
-        tile: "السبت"
+        value: 0,
+        label: "السبت"
     },
     {
-        id: 1,
-        tile: "الأحد"
+        value: 1,
+        label: "الأحد"
     },
     {
-        id: 2,
-        tile: "الاثنين"
+        value: 2,
+        label: "الاثنين"
     },
     {
-        id: 3,
-        tile: "الثلاثاء"
+        value: 3,
+        label: "الثلاثاء"
     },
     {
-        id: 4,
-        tile: "الأربعاء"
+        value: 4,
+        label: "الأربعاء"
     },
     {
-        id: 5,
-        tile: "الخمسي"
+        value: 5,
+        label: "الخمسي"
     },
     {
-        id: 6,
-        tile: "الجمعة"
+        value: 6,
+        label: "الجمعة"
     },
 ];
 
 export const getDayOfWeek = (id: number) => {
-    return DAYS.find(item => item.id === id)?.tile;
+    return DAYS.find(item => item.value === id)?.label;
 }
 
 export const TIME_INTERVALS: TimeInterval[] = [

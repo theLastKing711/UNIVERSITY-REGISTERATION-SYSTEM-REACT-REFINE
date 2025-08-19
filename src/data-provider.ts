@@ -6,13 +6,13 @@ import { PER_PAGE } from "./constants";
 export const dataProvider = (url: string, deartemnt_query_filter?: string): DataProvider => ({
     getList: async ({resource, filters, pagination, sorters, meta}) => {
 
-    console.log("deartemnt_query_filter", deartemnt_query_filter)
+    // console.log("deartemnt_query_filter", deartemnt_query_filter)
       
-    console.log("sorters", sorters);
+    // console.log("sorters", sorters);
     
-    console.log("meta ", meta);
+    // console.log("meta ", meta);
 
-    console.log("filters" ,filters);
+    // console.log("filters" ,filters);
 
     const filtersQuery = getFiltersQuery(filters);
     
@@ -20,7 +20,7 @@ export const dataProvider = (url: string, deartemnt_query_filter?: string): Data
     
     const sortersQuery = getSortersQuery(sorters);  
 
-    console.log("sorters after", getSortersQuery(sorters));
+    // console.log("sorters after", getSortersQuery(sorters));
     
     const queryQuestionMarkOrEmpty = 
       getQueryQuestionMarkOrEmpty(filtersQuery, paginationQuery, sortersQuery);
@@ -29,10 +29,6 @@ export const dataProvider = (url: string, deartemnt_query_filter?: string): Data
     const department_id_query_parameter_value = 
       (meta?.department_id || localStorage.getItem('department_id_query_parameter'));
 
-
-    // console.log("department_id_query_parameter_value", department_id_query_parameter_value)
-
-      
     const department_id_query_parameter_query = 
     department_id_query_parameter_value
       !== 'undefined' 
@@ -41,13 +37,18 @@ export const dataProvider = (url: string, deartemnt_query_filter?: string): Data
       :
       '';
 
-    // console.log("filtersQuery", filtersQuery);
-    // console.log("filtersPagination", paginationQuery);
-    // console.log("filtersQuestion", queryQuestionMarkOrEmpty);
+       const academic_year_semester_id_query_parameter_value = 
+      (meta?.academic_year_semester_id || localStorage.getItem('academic_year_semester_id_query_parameter'));
 
-    const uri = `${url}/${resource}${queryQuestionMarkOrEmpty}${paginationQuery}${filtersQuery}${sortersQuery}${department_id_query_parameter_query}`;
+    const academic_year_semester_id_query_parameter_query = 
+    academic_year_semester_id_query_parameter_value
+      !== 'undefined' 
+      ?
+      `&academic_year_semester_id=${academic_year_semester_id_query_parameter_value}`
+      :
+      '';
 
-    console.log(uri)
+    const uri = `${url}/${resource}${queryQuestionMarkOrEmpty}${paginationQuery}${filtersQuery}${sortersQuery}${department_id_query_parameter_query}${academic_year_semester_id_query_parameter_query}`;
     
     const response = await apiClient.get(uri);
     
@@ -99,8 +100,6 @@ export const dataProvider = (url: string, deartemnt_query_filter?: string): Data
         statusCode: 422,
       };
       
-      console.log("httpError", httpError);
-
       return Promise.reject(httpError);
     }
   
@@ -122,18 +121,8 @@ export const dataProvider = (url: string, deartemnt_query_filter?: string): Data
       
     }
     catch(err) {
-      
-      const errorsList = parseAxiosErrorsToList(err);
         
-      const httpError: HttpError = {
-        errors: {
-          data: errorsList
-        },
-        message: "حدث خطأ",
-        statusCode: 422,
-      };
-      
-      console.log("httpError", httpError);
+      const httpError = getMutationResponseHttpError(err);
 
       return Promise.reject(httpError);
     }
@@ -153,19 +142,7 @@ export const dataProvider = (url: string, deartemnt_query_filter?: string): Data
     }
     catch(err) {
       
-      const errorsList = parseAxiosErrorsToList(err);
-
-      console.log("message", err)
-        
-      const httpError: HttpError = {
-        errors: {
-          data: errorsList
-        },
-        message: "حدث خطأ",
-        statusCode: 422,
-      };
-      
-      console.log("httpError", httpError);
+      const httpError = getMutationResponseHttpError(err);
 
       return Promise.reject(httpError);
     }
@@ -264,7 +241,7 @@ const getSortersQuery = (sorters: CrudSort[] | undefined) => {
     return "";
   }
 
-  console.log("sorters", sorters);
+  // console.log("sorters", sorters);
   
   const query = sorters?.reduce(((prev,curr, index) => {
     if(curr.order === "asc")
@@ -293,7 +270,7 @@ const getQueryQuestionMarkOrEmpty = (...values: string[]) =>
 const  parseAxiosErrorsToList = (err: unknown) => {
   const axiosError = err as AxiosError;
 
-  console.log("error", (axiosError.response?.data as any).errors);
+  // console.log("error", (axiosError.response?.data as any).errors);
 
   const x:ValidationErrors = {}
 
@@ -303,4 +280,21 @@ const  parseAxiosErrorsToList = (err: unknown) => {
 
   return errorsList;
     
+}
+
+
+const getMutationResponseHttpError = (err: unknown) => {
+
+   const httpError: HttpError = {
+        errors: {
+          // data: errorsList
+         ...err.response.data.errors,
+          // from: err.response.data.message,
+
+        },
+        message: err.response.data.message,
+        statusCode: 422,
+      };
+    return httpError;
+  
 }

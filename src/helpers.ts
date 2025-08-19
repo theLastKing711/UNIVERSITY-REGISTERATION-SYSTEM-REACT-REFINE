@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { useDelete } from "@refinedev/core";
 import { CustomUploadFile } from "./types/shared";
 
@@ -33,6 +33,12 @@ export const getDayJsValue = (value:any ) => {
     return {value: dayjs(value)};
 }
 
+
+export const getDayJsValueFromTime = (value:any ) => {
+
+    return {value: dayjs(value, 'hh:mm::ss')};
+}
+
 export const getBase64 = (file: any): Promise<string> =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -59,3 +65,19 @@ export const getDayJsdateFormat = (date: string) => {
 
   return dayjs(date).format("YYYY-MM-DD");
 };
+
+
+export const getTimeStringFromDayJs = (time: Dayjs) => {
+
+  const minute = time.get('m').toString();
+
+  const minute_string = minute.padStart(2, '0');
+
+  const hour = time.get('h').toString();
+
+  const hour_string = hour.padStart(2, '0');
+
+
+  return `${hour_string}:${minute_string}:00`;
+};
+

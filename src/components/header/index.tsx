@@ -48,9 +48,9 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
   const headerStyles: React.CSSProperties = {
     backgroundColor: token.colorBgElevated,
     display: "flex",
-    justifyContent: "flex-end",
+    // justifyContent: "flex-end",
     alignItems: "center",
-    padding: "0px 24px",
+    padding: "16px 24px",
     height: "64px",
   };
 
@@ -71,32 +71,22 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
       optionLabel: "name",
     });
 
-  const { resource } = useResource();
-
   const go = useGo();
 
-  const { department_id_query_parameter } = useGetGlobalQueryFilters();
+  const {
+    department_id_query_parameter,
+    academic_year_semester_id_query_parameter,
+  } = useGetGlobalQueryFilters();
 
   console.log("department value", department_id_query_parameter);
-
-  // console.log("filters 4", filters);
-
-  // const [department_id, setDepartment_id] = useState(null);
-
-  // const { params } = useParsed();
-
-  // const department_id =
-  //   parseInt(
-  //     params?.filters?.find((item) => item.field! === "department_id")?.value
-  //   ) || null;
 
   const location = useLocation();
   const currentPath = location.pathname;
 
   return (
     <AntdLayout.Header style={headerStyles}>
-      <Space>
-        {/* <Switch
+      {/* <Space> */}
+      {/* <Switch
           checkedChildren="🌛"
           unCheckedChildren="🔆"
           onChange={() => setMode(mode === "light" ? "dark" : "light")}
@@ -106,83 +96,84 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
           {user?.name && <Text strong>{user.name}</Text>}
           {user?.avatar && <Avatar src={user?.avatar} alt={user?.name} />}
         </Space> */}
-        <Select
-          {...departmentSelectProps}
-          allowClear
-          onClear={() => {
-            console.log("resourse", resource);
-            alert("hello world");
-
-            go({
-              to: currentPath,
-              query: {
-                // filters: [
-                //   {
-                //     field: "department_id",
-                //     operator: "eq",
-                //     value: 2,
-                //   },
-                // ],
-              },
-              // options: {
-              //   keepQuery: true,
-              //   keepHash: true,
-              // },
-            });
-          }}
-          style={{ width: 300 }}
-          value={department_id_query_parameter}
-          onChange={(department_id) => {
-            // console.log("department_id", department_id);
-            localStorage.setItem(
-              "department_id_query_parameter",
-              department_id as unknown as string
-            );
-            // invalidate({ resource: "students", invalidates: ["all"] });
-            go({
-              to: currentPath,
-              query: {
-                department_id: department_id,
-                // filters: [
-                //   {
-                //     field: "department_id",
-                //     operator: "eq",
-                //     value: 2,
-                //   },
-                // ],
-              },
-              options: {
-                keepQuery: true,
-                keepHash: true,
-              },
-            });
-          }}
-        />
-        {/* <Select
-          {...academicYearSemestersSelectProps}
-          style={{ width: 300 }}
-          onChange={(academic_year_semester_id) => {
-            // invalidate({ resource: "students", invalidates: ["all"] });
-            go({
-              to: resource?.name,
-              query: {
-                // academic_year_semester_id,
-                filters: [
-                  {
-                    field: "academic_year_semester_id",
-                    operator: "eq",
-                    value: academic_year_semester_id,
-                  },
-                ],
-              },
-              options: {
-                keepQuery: true,
-                keepHash: true,
-              },
-            });
-          }}
-        /> */}
+      {/* <Space
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "1rem",
+          alignItems: "flex-start",
+        }}
+      > */}
+      <Space
+        style={{
+          display: "flex",
+          gap: "1rem",
+        }}
+      >
+        <Form.Item label="القسم" style={{ marginBottom: 0 }}>
+          <Select
+            {...departmentSelectProps}
+            placeholder="اختر قسم"
+            allowClear
+            onClear={() => {
+              go({
+                to: currentPath,
+              });
+            }}
+            style={{ width: 300 }}
+            value={department_id_query_parameter}
+            onChange={(department_id) => {
+              // console.log("department_id", department_id);
+              localStorage.setItem(
+                "department_id_query_parameter",
+                department_id as unknown as string
+              );
+              go({
+                to: currentPath,
+                query: {
+                  department_id: department_id,
+                },
+                options: {
+                  keepQuery: true,
+                  keepHash: true,
+                },
+              });
+            }}
+          />
+        </Form.Item>
+        <Form.Item label="السنةوالفصل الدراسي" style={{ marginBottom: 0 }}>
+          <Select
+            {...academicYearSemestersSelectProps}
+            placeholder="اختر السنة والفصل الدراسي "
+            allowClear
+            onClear={() => {
+              go({
+                to: currentPath,
+              });
+            }}
+            style={{ width: 300 }}
+            value={academic_year_semester_id_query_parameter}
+            onChange={(academic_year_semester_id) => {
+              localStorage.setItem(
+                "academic_year_semester_id_query_parameter",
+                academic_year_semester_id as unknown as string
+              );
+              go({
+                to: currentPath,
+                query: {
+                  academic_year_semester_id,
+                },
+                options: {
+                  keepQuery: true,
+                  keepHash: true,
+                },
+              });
+            }}
+          />
+        </Form.Item>
       </Space>
+
+      {/* </Space> */}
     </AntdLayout.Header>
   );
 };
