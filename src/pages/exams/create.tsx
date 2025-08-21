@@ -1,24 +1,26 @@
-import { Edit, useForm } from "@refinedev/antd";
-import { Form, Select, TimePicker } from "antd";
+import { Create, useForm } from "@refinedev/antd";
+import { DatePicker, Form, Input, Select, Switch, TimePicker } from "antd";
 import { useGetTeachers } from "../../hooks/API/select/useGetTeachers";
-import { DAYS } from "../../constants";
 import { useGetClassroomList } from "../../hooks/API/select/useGetClassroomList";
-import { getDayJsValueFromTime, getTimeStringFromDayJs } from "../../helpers";
+import { useState } from "react";
+import { getTimeStringFromDayJs } from "../../helpers";
 import { BaseRecord, HttpError } from "@refinedev/core";
 import { useGetOpenCourseRegisterations } from "../../hooks/API/select/useGetOpenCourseRegisterations";
+import { CreateExamRequestData } from "../../types/admins/exams";
 
-export const ClassroomCourseTeacherEdit = () => {
+export const ExamCreate = () => {
   const { formProps, saveButtonProps, onFinish, form } = useForm<
     BaseRecord,
-    HttpError
+    HttpError,
+    CreateExamRequestData
   >({});
+
+  const [selectedCourse, setSelectedCourse] = useState<number | undefined>();
 
   const { openCourseRegisterationssSelectProps } =
     useGetOpenCourseRegisterations();
 
-  const { teachersSelectProps } = useGetTeachers(
-    form.getFieldValue("course_id")
-  );
+  const { teachersSelectProps } = useGetTeachers(selectedCourse);
 
   const { classroomsSelectProps } = useGetClassroomList();
 
@@ -33,7 +35,7 @@ export const ClassroomCourseTeacherEdit = () => {
   };
 
   return (
-    <Edit saveButtonProps={saveButtonProps}>
+    <Create saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical" onFinish={handleOnFinish}>
         <Form.Item
           label="المادة"
@@ -49,8 +51,9 @@ export const ClassroomCourseTeacherEdit = () => {
             placeholder="اختر مادة"
             {...openCourseRegisterationssSelectProps}
             onChange={(option) => {
-              // form.resetFields() set it to inital value which is the value of get inital request
-              form.setFieldValue("teacher_id", undefined);
+              form.resetFields(["teacher_id"]);
+
+              setSelectedCourse(option);
             }}
           />
         </Form.Item>
@@ -66,7 +69,7 @@ export const ClassroomCourseTeacherEdit = () => {
           ]}
         >
           <Select
-            disabled={!form.getFieldValue("course_id")}
+            disabled={!selectedCourse}
             placeholder="اختر أستاذ"
             {...teachersSelectProps}
           />
@@ -86,15 +89,36 @@ export const ClassroomCourseTeacherEdit = () => {
         </Form.Item>
 
         <Form.Item
+          label="امتحان نهائي"
+          name="is_main_exam"
+          initialValue={false}
+        >
+          <Switch />
+        </Form.Item>
+
+        <Form.Item
+          label="العلامة النهائية"
+          name="max_mark"
+          rules={[
+            {
+              required: true,
+              message: "العلامة النهائية مطلوبة",
+            },
+          ]}
+        >
+          <Input type="number" />
+        </Form.Item>
+
+        <Form.Item
           label="اليوم"
-          name={["day"]}
+          name={["date"]}
           rules={[
             {
               required: true,
             },
           ]}
         >
-          <Select options={DAYS} />
+          <DatePicker />
         </Form.Item>
 
         <Form.Item
@@ -105,7 +129,6 @@ export const ClassroomCourseTeacherEdit = () => {
               required: true,
             },
           ]}
-          getValueProps={getDayJsValueFromTime}
         >
           <TimePicker />
         </Form.Item>
@@ -118,11 +141,10 @@ export const ClassroomCourseTeacherEdit = () => {
               required: true,
             },
           ]}
-          getValueProps={getDayJsValueFromTime}
         >
           <TimePicker />
         </Form.Item>
       </Form>
-    </Edit>
+    </Create>
   );
 };

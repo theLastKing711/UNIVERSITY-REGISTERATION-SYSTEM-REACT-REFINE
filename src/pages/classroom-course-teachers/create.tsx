@@ -1,24 +1,25 @@
 import { Create, useForm } from "@refinedev/antd";
 import { Form, Select, TimePicker } from "antd";
 import { useGetTeachers } from "../../hooks/API/select/useGetTeachers";
-import { useGetCourses } from "../../hooks/API/select/useGetCourses";
 import { DAYS } from "../../constants";
 import { useGetClassroomList } from "../../hooks/API/select/useGetClassroomList";
 import { useState } from "react";
-import { AssignClassroomToCourseTeacherRequestData } from "../../types/admins/classroom-course-teacher";
 import { getTimeStringFromDayJs } from "../../helpers";
 import { BaseRecord, HttpError } from "@refinedev/core";
+import { useGetOpenCourseRegisterations } from "../../hooks/API/select/useGetOpenCourseRegisterations";
+import { CreateClassroomToCourseTeacherRequestData } from "../../types/admins/classroom-course-teacher";
 
 export const ClassroomCourseTeacherCreate = () => {
   const { formProps, saveButtonProps, onFinish, form } = useForm<
     BaseRecord,
     HttpError,
-    AssignClassroomToCourseTeacherRequestData
+    CreateClassroomToCourseTeacherRequestData
   >({});
 
   const [selectedCourse, setSelectedCourse] = useState<number | undefined>();
 
-  const { coursesSelectProps } = useGetCourses();
+  const { openCourseRegisterationssSelectProps } =
+    useGetOpenCourseRegisterations();
 
   const { teachersSelectProps } = useGetTeachers(selectedCourse);
 
@@ -49,7 +50,7 @@ export const ClassroomCourseTeacherCreate = () => {
         >
           <Select
             placeholder="اختر مادة"
-            {...coursesSelectProps}
+            {...openCourseRegisterationssSelectProps}
             onChange={(option) => {
               form.resetFields(["teacher_id"]);
 

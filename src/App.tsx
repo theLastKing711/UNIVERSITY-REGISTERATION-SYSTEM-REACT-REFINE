@@ -56,6 +56,11 @@ import {
   COURSE_LIST,
   COURSE_SHOW,
   COURSE_URI,
+  EXAMS_CREATE,
+  EXAMS_EDIT,
+  EXAMS_LIST,
+  EXAMS_SHOW,
+  EXAMS_URI,
   OPEN_COURSE_REGISTERATION_CREATE,
   OPEN_COURSE_REGISTERATION_EDIT,
   OPEN_COURSE_REGISTERATION_LIST,
@@ -108,6 +113,7 @@ import {
   ClassroomCourseTeacherShow,
 } from "./pages/classroom-course-teachers";
 import { useGetGlobalQueryFilters } from "./hooks/useGetGlobalQueryFilters";
+import { ExamList, ExamCreate, ExamShow, ExamEdit } from "./pages/exams";
 
 const theme: ThemeConfig = {
   components: {
@@ -255,6 +261,17 @@ function App() {
                         canDelete: true,
                       },
                     },
+                    {
+                      name: EXAMS_URI,
+                      list: EXAMS_LIST,
+                      create: EXAMS_CREATE,
+                      edit: EXAMS_EDIT,
+                      show: EXAMS_SHOW,
+                      meta: {
+                        label: "الامتحانات",
+                        canDelete: true,
+                      },
+                    },
                   ]}
                   options={{
                     syncWithLocation: false,
@@ -359,6 +376,13 @@ function App() {
                           path="edit/:id"
                           element={<ClassroomCourseTeacherEdit />}
                         />
+                      </Route>
+
+                      <Route path={EXAMS_URI}>
+                        <Route index element={<ExamList />} />
+                        <Route path="create" element={<ExamCreate />} />
+                        <Route path="show/:id" element={<ExamShow />} />
+                        <Route path="edit/:id" element={<ExamEdit />} />
                       </Route>
                     </Route>
 

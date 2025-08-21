@@ -6,7 +6,6 @@ import { GetOpenCourseRegisterationListResponseData } from "../../../types/admin
     
     export const useGetOpenCourseRegisterations = () => {
     
-    
           const { selectProps: openCourseRegisterationssSelectProps } =
           useSelect<GetOpenCourseRegisterationListResponseData>({
             resource: `${OPEN_COURSE_REGISTERATION_URI}/list`,

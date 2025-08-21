@@ -15,6 +15,7 @@ export const RESOURSES = {
     classrooms: 'classrooms',
     teachers: 'teachers',
     classroomCourseTeachers: 'classroom-course-teachers',
+    exams: 'exams',
     images: "images"
 }
 
@@ -130,16 +131,26 @@ export const CLASSROOM_COURSE_TEACHER_SHOW =
     `/${TEACHER_URI}/show/:id`;
 
 
+
+export const EXAMS_URI =  ADMIN_ROLE + "/" + RESOURSES.exams;
+
+export const EXAMS_LIST = 
+    `/${EXAMS_URI}`;
+
+export const EXAMS_CREATE = 
+    `/${EXAMS_URI}/create`;
+
+export const EXAMS_EDIT = 
+    `/${EXAMS_URI}/edit/:id`;
+
+export const EXAMS_SHOW = 
+    `/${TEACHER_URI}/show/:id`;
+    
+
 export const PER_PAGE = 2;
-
-
-
-
 
 export const ADMIN_UPLOAD_IMAGE_URI = 
     `${BASE_URI}/${ADMIN_ROLE}/${RESOURSES.images}`
-
-
 
 
 export const DAYS: SelectProps["options"] = [

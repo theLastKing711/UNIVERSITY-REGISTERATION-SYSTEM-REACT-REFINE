@@ -27,7 +27,6 @@ export const useRemoveItem = <T extends {id: number}>(item: T, message: string, 
 }
 
 
-
 export const getDayJsValue = (value:any ) => {
 
     return {value: dayjs(value)};
@@ -67,7 +66,22 @@ export const getDayJsdateFormat = (date: string) => {
 };
 
 
-export const getTimeStringFromDayJs = (time: Dayjs) => {
+export const getTimeStringFromDayJs = (time: Dayjs | string) => {
+
+  if(typeof(time) === 'string')
+  {
+      const timeDayJs = dayjs(time, "hh:mm:ss");
+    
+      const minute = timeDayJs.get('m').toString();
+
+      const minute_string = minute.padStart(2, '0');
+
+      const hour = timeDayJs.get('h').toString();
+
+      const hour_string = hour.padStart(2, '0');
+
+      return `${hour_string}:${minute_string}:00`;
+  }
 
   const minute = time.get('m').toString();
 

@@ -1,3 +1,4 @@
+
 import { useLocation } from 'react-router';
 
 export const useGetGlobalQueryFilters = () => {
@@ -29,9 +30,6 @@ export const useGetGlobalQueryFilters = () => {
     const academic_year_semester_id_query = 
         isNaN(parseInt(academic_year_semester_id_query_parameter)) == true ? undefined : parseInt(academic_year_semester_id_query_parameter); 
     
-    const academic_year_semester_query_parameter = queryParams.get("academic_year_semester_id");
-    
-   
     
     return {
          department_id_query_parameter: department_id_query,
