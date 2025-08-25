@@ -17,13 +17,7 @@ import routerBindings, {
   UnsavedChangesNotifier,
 } from "@refinedev/react-router";
 import { App as AntdApp, ConfigProvider } from "antd";
-import {
-  BrowserRouter,
-  Outlet,
-  Route,
-  Routes,
-  useNavigate,
-} from "react-router";
+import { BrowserRouter, Outlet, Route, Routes } from "react-router";
 import { authProvider } from "./authProvider";
 import { Header } from "./components/header";
 import { ColorModeContextProvider } from "./contexts/color-mode";
@@ -56,16 +50,25 @@ import {
   COURSE_LIST,
   COURSE_SHOW,
   COURSE_URI,
-  EXAMS_CREATE,
-  EXAMS_EDIT,
-  EXAMS_LIST,
-  EXAMS_SHOW,
-  EXAMS_URI,
+  EXAM_CREATE,
+  EXAM_EDIT,
+  EXAM_LIST,
+  EXAM_SHOW,
+  EXAM_URI,
+  LECTURE_CREATE,
+  LECTURE_EDIT,
+  LECTURE_LIST,
+  LECTURE_SHOW,
+  LECTURE_URI,
   OPEN_COURSE_REGISTERATION_CREATE,
   OPEN_COURSE_REGISTERATION_EDIT,
   OPEN_COURSE_REGISTERATION_LIST,
   OPEN_COURSE_REGISTERATION_SHOW,
   OPEN_COURSE_REGISTERATION_URI,
+  STUDENT_CREATE,
+  STUDENT_EDIT,
+  STUDENT_LIST,
+  STUDENT_SHOW,
 } from "./constants";
 import Login from "./pages/auth/login/Login";
 import {
@@ -112,8 +115,13 @@ import {
   ClassroomCourseTeacherList,
   ClassroomCourseTeacherShow,
 } from "./pages/classroom-course-teachers";
-import { useGetGlobalQueryFilters } from "./hooks/useGetGlobalQueryFilters";
 import { ExamList, ExamCreate, ExamShow, ExamEdit } from "./pages/exams";
+import {
+  LectureCreate,
+  LectureEdit,
+  LectureList,
+  LectureShow,
+} from "./pages/lectures";
 
 const theme: ThemeConfig = {
   components: {
@@ -190,10 +198,10 @@ function App() {
                     },
                     {
                       name: ADMIN_STUDENT_URI,
-                      list: "/students",
-                      create: "/students/create",
-                      edit: "/students/edit/:id",
-                      show: "/students/show/:id",
+                      list: STUDENT_LIST,
+                      create: STUDENT_CREATE,
+                      edit: STUDENT_EDIT,
+                      show: STUDENT_SHOW,
                       meta: {
                         label: "التلاميذ",
                         canDelete: true,
@@ -233,11 +241,11 @@ function App() {
                       },
                     },
                     {
-                      name: "academic-year-semester",
-                      list: "/academic-year-semester",
-                      create: "/academic-year-semester/create",
-                      edit: "/academic-year-semester/edit/:id",
-                      show: "/academic-year-semester/show/:id",
+                      name: ADMIN_ACADEMIC_YEAR_SEMESTER_URI,
+                      list: ADMIN_ACADEMIC_YEAR_SEMESTER_LIST,
+                      create: ADMIN_ACADEMIC_YEAR_SEMESTER_CREATE,
+                      edit: ADMIN_ACADEMIC_YEAR_SEMESTER_EDIT,
+                      show: ADMIN_ACADEMIC_YEAR_SEMESTER_SHOW,
                     },
                     {
                       name: CLASSROOM_URI,
@@ -262,13 +270,24 @@ function App() {
                       },
                     },
                     {
-                      name: EXAMS_URI,
-                      list: EXAMS_LIST,
-                      create: EXAMS_CREATE,
-                      edit: EXAMS_EDIT,
-                      show: EXAMS_SHOW,
+                      name: EXAM_URI,
+                      list: EXAM_LIST,
+                      create: EXAM_CREATE,
+                      edit: EXAM_EDIT,
+                      show: EXAM_SHOW,
                       meta: {
                         label: "الامتحانات",
+                        canDelete: true,
+                      },
+                    },
+                    {
+                      name: LECTURE_URI,
+                      list: LECTURE_LIST,
+                      create: LECTURE_CREATE,
+                      edit: LECTURE_EDIT,
+                      show: LECTURE_SHOW,
+                      meta: {
+                        label: "تسجيل الحضور",
                         canDelete: true,
                       },
                     },
@@ -378,11 +397,18 @@ function App() {
                         />
                       </Route>
 
-                      <Route path={EXAMS_URI}>
+                      <Route path={EXAM_URI}>
                         <Route index element={<ExamList />} />
                         <Route path="create" element={<ExamCreate />} />
                         <Route path="show/:id" element={<ExamShow />} />
                         <Route path="edit/:id" element={<ExamEdit />} />
+                      </Route>
+
+                      <Route path={LECTURE_URI}>
+                        <Route index element={<LectureList />} />
+                        <Route path="create" element={<LectureCreate />} />
+                        <Route path="show/:id" element={<LectureShow />} />
+                        <Route path="edit/:id" element={<LectureEdit />} />
                       </Route>
                     </Route>
 

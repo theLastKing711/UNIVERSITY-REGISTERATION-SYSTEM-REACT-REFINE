@@ -1,5 +1,13 @@
 import { Create, useForm } from "@refinedev/antd";
-import { DatePicker, Form, Input, Select, Switch, TimePicker } from "antd";
+import {
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  Select,
+  Switch,
+  TimePicker,
+} from "antd";
 import { useGetTeachers } from "../../hooks/API/select/useGetTeachers";
 import { useGetClassroomList } from "../../hooks/API/select/useGetClassroomList";
 import { useState } from "react";
@@ -104,9 +112,15 @@ export const ExamCreate = () => {
               required: true,
               message: "العلامة النهائية مطلوبة",
             },
+            {
+              type: "number",
+              min: 0,
+              max: 60,
+              message: "العلامة يجب أن تكون بين 0 و 60",
+            },
           ]}
         >
-          <Input type="number" />
+          <InputNumber />
         </Form.Item>
 
         <Form.Item

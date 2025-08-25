@@ -16,6 +16,7 @@ export const RESOURSES = {
     teachers: 'teachers',
     classroomCourseTeachers: 'classroom-course-teachers',
     exams: 'exams',
+    lectures: 'lectures',
     images: "images"
 }
 
@@ -39,6 +40,18 @@ export const ADMIN_SHOW =
 
 
 export const ADMIN_STUDENT_URI = ADMIN_ROLE + "/" + RESOURSES.students;
+
+export const STUDENT_LIST = 
+    `/${ADMIN_STUDENT_URI}`;
+
+export const STUDENT_CREATE = 
+    `/${ADMIN_STUDENT_URI}/create`;
+
+export const STUDENT_EDIT = 
+    `/${ADMIN_STUDENT_URI}/edit/:id`;
+
+export const STUDENT_SHOW = 
+    `/${ADMIN_STUDENT_URI}/show/:id`;
 
 export const ADMIN_DEPARTMENT_URI = ADMIN_ROLE + "/" + RESOURSES.departments;
 
@@ -132,18 +145,33 @@ export const CLASSROOM_COURSE_TEACHER_SHOW =
 
 
 
-export const EXAMS_URI =  ADMIN_ROLE + "/" + RESOURSES.exams;
+export const EXAM_URI =  ADMIN_ROLE + "/" + RESOURSES.exams;
 
-export const EXAMS_LIST = 
-    `/${EXAMS_URI}`;
+export const EXAM_LIST = 
+    `/${EXAM_URI}`;
 
-export const EXAMS_CREATE = 
-    `/${EXAMS_URI}/create`;
+export const EXAM_CREATE = 
+    `/${EXAM_URI}/create`;
 
-export const EXAMS_EDIT = 
-    `/${EXAMS_URI}/edit/:id`;
+export const EXAM_EDIT = 
+    `/${EXAM_URI}/edit/:id`;
 
-export const EXAMS_SHOW = 
+export const EXAM_SHOW = 
+    `/${TEACHER_URI}/show/:id`;
+    
+
+export const LECTURE_URI =  ADMIN_ROLE + "/" + RESOURSES.lectures;
+
+export const LECTURE_LIST = 
+    `/${LECTURE_URI}`;
+
+export const LECTURE_CREATE = 
+    `/${LECTURE_URI}/create`;
+
+export const LECTURE_EDIT = 
+    `/${LECTURE_URI}/edit/:id`;
+
+export const LECTURE_SHOW = 
     `/${TEACHER_URI}/show/:id`;
     
 

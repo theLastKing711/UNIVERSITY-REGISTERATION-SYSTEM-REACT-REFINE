@@ -83,6 +83,10 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
   const location = useLocation();
   const currentPath = location.pathname;
 
+  const { params, resource } = useParsed();
+
+  console.log("resource", resource);
+
   return (
     <AntdLayout.Header style={headerStyles}>
       {/* <Space> */}
@@ -117,7 +121,8 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
             allowClear
             onClear={() => {
               go({
-                to: currentPath,
+                // to: currentPath,
+                to: resource?.name,
               });
             }}
             style={{ width: 300 }}
@@ -129,7 +134,8 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
                 department_id as unknown as string
               );
               go({
-                to: currentPath,
+                // to: currentPath,
+                to: resource?.name,
                 query: {
                   department_id: department_id,
                 },
@@ -148,7 +154,8 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
             allowClear
             onClear={() => {
               go({
-                to: currentPath,
+                // to: currentPath,
+                to: resource?.name,
               });
             }}
             style={{ width: 300 }}
@@ -159,7 +166,8 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
                 academic_year_semester_id as unknown as string
               );
               go({
-                to: currentPath,
+                // to: currentPath,
+                to: resource?.name,
                 query: {
                   academic_year_semester_id,
                 },

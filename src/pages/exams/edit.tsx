@@ -1,5 +1,13 @@
 import { Edit, useForm } from "@refinedev/antd";
-import { DatePicker, Form, Input, Select, Switch, TimePicker } from "antd";
+import {
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  Select,
+  Switch,
+  TimePicker,
+} from "antd";
 import { useGetTeachers } from "../../hooks/API/select/useGetTeachers";
 import { useGetClassroomList } from "../../hooks/API/select/useGetClassroomList";
 import {
@@ -9,8 +17,10 @@ import {
 } from "../../helpers";
 import { BaseRecord, HttpError } from "@refinedev/core";
 import { GetExamRequestData } from "../../types/admins/exams";
-import dayjs, { Dayjs } from "dayjs";
 import { useGetOpenCourseRegisterations } from "../../hooks/API/select/useGetOpenCourseRegisterations";
+import FormSection from "../../components/ui/From/FormSection";
+import { useGetStudents } from "../../hooks/API/select/useGetStudents";
+import FormItemsContainer from "../../components/ui/From/FormItemsContainer";
 
 export const ExamEdit = () => {
   const { formProps, saveButtonProps, onFinish, form } = useForm<
@@ -26,7 +36,13 @@ export const ExamEdit = () => {
     form.getFieldValue("course_id")
   );
 
+  // const { studentsSelectProps } = useGetStudents(selectedCourse);
+
   const { classroomsSelectProps } = useGetClassroomList();
+
+  const selectedCourse = form.getFieldValue("course_id");
+
+  const { studentsSelectProps } = useGetStudents(selectedCourse);
 
   const handleOnFinish = (values) => {
     onFinish({
@@ -106,9 +122,15 @@ export const ExamEdit = () => {
               required: true,
               message: "العلامة النهائية مطلوبة",
             },
+            {
+              type: "number",
+              min: 0,
+              max: 60,
+              message: "العلامة يجب أن تكون بين 0 و 60",
+            },
           ]}
         >
-          <Input type="number" />
+          <InputNumber />
         </Form.Item>
 
         <Form.Item
@@ -149,6 +171,61 @@ export const ExamEdit = () => {
         >
           <TimePicker />
         </Form.Item>
+
+        <FormSection title="علامات الطلاب">
+          <Form.List
+            name="exam_students"
+            // initialValue={studentsSelectProps.options?.map((item) => ({
+            //   student_id: item.id,
+            //   is_student_present: false,
+            // }))}
+          >
+            {(fields) => (
+              <>
+                {fields.map((field) => (
+                  <FormItemsContainer key={field.key}>
+                    <Form.Item
+                      {...field}
+                      key={0}
+                      name={[field.key, "student_id"]}
+                      label="الاسم"
+                      rules={[{ required: true, message: "القسم مطلوب" }]}
+                    >
+                      <Select
+                        disabled
+                        style={{ width: 200 }}
+                        placeholder="اختر طالب"
+                        {...studentsSelectProps}
+                      />
+                    </Form.Item>
+
+                    <Form.Item
+                      {...field}
+                      key={1}
+                      name={[field.key, "mark"]}
+                      label="العلامة النهائية"
+                      rules={[
+                        { required: true, message: "العلامة النهائية مطلوبة" },
+                        {
+                          type: "number",
+                          min: 0,
+                          max: 60,
+                          message: "العلامة يجب أن تكون بين 0 و 60",
+                        },
+                      ]}
+                    >
+                      <InputNumber
+                        style={{ width: 200 }}
+                        placeholder="حدد العلامة النهائية"
+                        {...studentsSelectProps}
+                      />
+                    </Form.Item>
+                  </FormItemsContainer>
+                ))}
+              </>
+            )}
+          </Form.List>
+        </FormSection>
       </Form>
     </Edit>
   );

@@ -82,3 +82,9 @@ export type RegisterStudentRequestData = {
 export type UploadStudentProfilePictureRequestData = {
     file: any;
 };
+
+export type GetStudentsListResponseData = {
+   id: number;
+   student_id: number;
+   name: string;
+};
