@@ -1,4 +1,4 @@
-import { BaseRecord, useCustom, useList } from "@refinedev/core";
+import { BaseRecord, useCustom } from "@refinedev/core";
 import {
   useTable,
   List,
@@ -6,20 +6,23 @@ import {
   ShowButton,
   DeleteButton,
   BooleanField,
+  CreateButton,
+  ExportButton,
 } from "@refinedev/antd";
 import { Table, Space, Row, Col, Card, Form, Select, Button } from "antd";
 import { useGetOpenCourseRegisterations } from "../../hooks/API/select/useGetOpenCourseRegisterations";
 import { useEffect, useState } from "react";
-import { Document, Page } from "react-pdf";
 
 export const ExamList = () => {
-  const { data, isLoading, refetch } = useCustom({
+  const { data, isFetching, refetch } = useCustom({
     url: `admins/exams/schedule`,
     method: "get",
     queryOptions: {
       enabled: false,
     },
   });
+
+  console.log("filename", data?.filename);
 
   const { tableProps, searchFormProps } = useTable({
     syncWithLocation: true,
@@ -46,16 +49,26 @@ export const ExamList = () => {
     refetch();
   };
 
-  const [file, setFile] = useState(null);
+  // const [file, setFile] = useState(null);
 
   useEffect(() => {
-    console.log("type", data?.data);
     if (data?.data instanceof Blob) {
-      setFile(data.data as unknown as any);
+      // setFile(data.data as unknown as any);
+
+      const url = window.URL.createObjectURL(data.data);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = data.filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url); // Clean up the object URL
     } else if (data?.data instanceof ArrayBuffer) {
-      setFile(data.data as unknown as any);
+      // setFile(data.data as unknown as any);
     }
   }, [data?.data]);
+
+  console.log("data", data);
 
   return (
     <Row gutter={[16, 16]}>
@@ -81,33 +94,22 @@ export const ExamList = () => {
         </Card>
       </Col>
       <Col lg={18} xs={24}>
-        <Button onClick={getExamSchedulePdf}>جدول الامتحانات</Button>
-        {file && (
+        {/* in case we use react-pdf {file && (
           <Document file={file}>
             <Page pageNumber={1}></Page>
           </Document>
-        )}
+        )} */}
 
-        {/* 
-        <div>
-          <iframe src={file ?? ""} width="100%" height="500px" />
-        </div> */}
-
-        {/* <object
-          data={file ?? ""}
-          type="application/pdf"
-          width="100%"
-          height="100%"
+        <List
+          headerButtons={
+            <>
+              <CreateButton>إنشاء</CreateButton>
+              <ExportButton loading={isFetching} onClick={getExamSchedulePdf}>
+                تحميل جدول الامتحانات
+              </ExportButton>
+            </>
+          }
         >
-          <p>
-            Alternative text - include a link{" "}
-            <a href="http://africau.edu/images/default/sample.pdf">
-              to the PDF!
-            </a>
-          </p>
-        </object> */}
-
-        <List>
           <Table {...tableProps} rowKey="id">
             <Table.Column dataIndex="id" title="#" />
             <Table.Column dataIndex="course_name" title="المادة" />

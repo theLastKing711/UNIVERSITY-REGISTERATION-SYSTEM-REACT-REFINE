@@ -214,8 +214,14 @@ export const dataProvider = (url: string, deartemnt_query_filter?: string): Data
           responseType: 'blob'
         });
 
+      const response_file_name = 
+        response.headers['content-disposition'].split("=")[1].replace(/"/g, "");
+
+      console.log("response", response_file_name);
+
     return {
       data: response.data,
+      filename: response_file_name,
       total: 10
     }
 
