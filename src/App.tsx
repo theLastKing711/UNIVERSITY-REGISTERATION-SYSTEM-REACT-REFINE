@@ -122,6 +122,7 @@ import {
   LectureList,
   LectureShow,
 } from "./pages/lectures";
+import { pdfjs } from "react-pdf";
 
 const theme: ThemeConfig = {
   components: {
@@ -160,6 +161,11 @@ const theme: ThemeConfig = {
 //     // ... other router provider methods (parse, etc.)
 //   };
 // };
+
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  "pdfjs-dist/build/pdf.worker.min.mjs",
+  import.meta.url
+).toString();
 
 function App() {
   return (

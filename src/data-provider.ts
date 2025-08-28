@@ -60,8 +60,6 @@ export const dataProvider = (url: string, deartemnt_query_filter?: string): Data
       return Promise.reject(error);
     }
 
-    // console.log("response", response);
-    
     const data = response.data.data ?? response.data; 
     // in case of pagination response
     //  response.data.data is the array
@@ -170,26 +168,52 @@ export const dataProvider = (url: string, deartemnt_query_filter?: string): Data
       return Promise.reject(httpError);
     }
   },
-  custom : async ({url, method, headers, payload, query }) => {
-    console.log("url", url);
-    if(method === 'get' || method == 'delete')
-    {
-      const response = await apiClient[method](`${url}`);
-      return {
-        data: response.data,
-        total: 10
-      }
-    }
-    // if(method == 'post' || method === 'patch')
-    // {
-    //   const response = await apiClient[method](`${url}`, payload);
-    //   return {
-    //     data: response.data,
-    //     total: 10
-    //   }
-    // }
+  custom : async ({url, method, headers, payload, query, filters, sorters, meta}) => {
+
+        const filtersQuery = getFiltersQuery(filters);
     
-    const response = await apiClient[method](`${url}`);
+    
+    // console.log("sorters after", getSortersQuery(sorters));
+    
+
+  
+
+    const department_id_query_parameter_value = 
+      (meta?.department_id || localStorage.getItem('department_id_query_parameter'));
+
+    const department_id_query_parameter_query = 
+    department_id_query_parameter_value
+      !== 'undefined' 
+      ?
+      `&department_id=${department_id_query_parameter_value}`
+      :
+      '';
+
+       const academic_year_semester_id_query_parameter_value = 
+      (meta?.academic_year_semester_id || localStorage.getItem('academic_year_semester_id_query_parameter'));
+
+    const academic_year_semester_id_query_parameter_query = 
+    academic_year_semester_id_query_parameter_value
+      !== 'undefined' 
+      ?
+      `&academic_year_semester_id=${academic_year_semester_id_query_parameter_value}`
+      :
+      '';
+
+      const queryQuestionMarkOrEmpty = 
+        getQueryQuestionMarkOrEmpty(filtersQuery, department_id_query_parameter_query, academic_year_semester_id_query_parameter_query);
+
+    const uri = `${url}/${queryQuestionMarkOrEmpty}${filtersQuery}${department_id_query_parameter_query}${academic_year_semester_id_query_parameter_query}`;
+
+    const response = 
+      await apiClient.get(`${uri}`, 
+        {
+          headers: {
+            'Accept': "application/pdf"
+          },
+          responseType: 'blob'
+        });
+
     return {
       data: response.data,
       total: 10
