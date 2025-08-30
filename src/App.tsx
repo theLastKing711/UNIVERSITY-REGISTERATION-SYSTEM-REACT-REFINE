@@ -1,4 +1,4 @@
-import { Authenticated, Refine } from "@refinedev/core";
+import { Authenticated, CanAccess, Refine } from "@refinedev/core";
 import { DevtoolsPanel, DevtoolsProvider } from "@refinedev/devtools";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 
@@ -123,6 +123,7 @@ import {
   LectureShow,
 } from "./pages/lectures";
 import { pdfjs } from "react-pdf";
+import { accessControlProvider } from "./pages/access-control-provider";
 
 const theme: ThemeConfig = {
   components: {
@@ -180,6 +181,7 @@ function App() {
                   notificationProvider={useNotificationProvider}
                   routerProvider={routerBindings}
                   authProvider={authProvider}
+                  accessControlProvider={accessControlProvider}
                   resources={[
                     // {
                     //   name: "categories",
@@ -310,10 +312,18 @@ function App() {
 
                     <Route
                       element={
-                        <ThemedLayoutV2>
-                          <Header />
-                          <Outlet />
-                        </ThemedLayoutV2>
+                        // <CanAccess>
+                        <Authenticated
+                          key="authenticated-outer"
+                          fallback={<CatchAllNavigate to="/login" />}
+                        >
+                          <ThemedLayoutV2>
+                            <Header />
+                            <Outlet />
+                          </ThemedLayoutV2>
+                        </Authenticated>
+
+                        // </CanAccess>
                       }
                     >
                       <Route path={ADMIN_ADMIN_URI}>
@@ -424,14 +434,14 @@ function App() {
                           key="authenticated-inner"
                           fallback={<CatchAllNavigate to="/login" />}
                         >
-                          <ThemedLayoutV2
+                          {/* <ThemedLayoutV2
                             Header={Header}
                             Sider={(props) => (
                               <ThemedSiderV2 {...props} fixed />
                             )}
                           >
                             <Outlet />
-                          </ThemedLayoutV2>
+                          </ThemedLayoutV2> */}
                         </Authenticated>
                       }
                     >

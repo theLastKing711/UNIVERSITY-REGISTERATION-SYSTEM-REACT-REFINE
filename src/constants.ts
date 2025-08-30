@@ -38,7 +38,6 @@ export const ADMIN_EDIT =
 export const ADMIN_SHOW = 
     `/${ADMIN_ADMIN_URI}/show/:id`;
 
-
 export const ADMIN_STUDENT_URI = ADMIN_ROLE + "/" + RESOURSES.students;
 
 export const STUDENT_LIST = 
@@ -52,6 +51,7 @@ export const STUDENT_EDIT =
 
 export const STUDENT_SHOW = 
     `/${ADMIN_STUDENT_URI}/show/:id`;
+    
 
 export const ADMIN_DEPARTMENT_URI = ADMIN_ROLE + "/" + RESOURSES.departments;
 

@@ -11,6 +11,8 @@ export const authProvider: AuthProvider = {
 
     const LOGIN_END_POINT = ADMIN_URI + "/auth/login";
 
+
+
     try {
         const data = await apiClient.post(LOGIN_END_POINT, {
             name,
@@ -31,13 +33,62 @@ export const authProvider: AuthProvider = {
         };
     }
 
+    localStorage.setItem("is_authenticated", "true")
+
     return {
         success: true,
         redirectTo: "/admins/admins",
     };
+  },
+  check: async () => {
 
+    console.log("value", localStorage.getItem("is_authenticated"))
+
+    if(localStorage.getItem("is_authenticated") === "true")
+    {
+      return Promise.resolve({
+        authenticated: true
+      })
+    }
+
+    console.log("checking")
+
+
+    return Promise.resolve({
+        authenticated: false
+      });
 
   },
+  logout: async () => {
+
+    const LOGOUT_OUTPOINT = ADMIN_URI + "/auth/logout";
+
+    try {
+        const data = await apiClient.post(LOGOUT_OUTPOINT);
+        
+        localStorage.removeItem("is_authenticated");
+
+        return {
+          success:  true,
+          // redirectTo: "\\login"
+        };
+    }
+    catch(error){
+
+        const axiosError = error as AxiosError;
+        
+        console.log("error", axiosError.status);
+        return {
+            success: false,
+            error: {
+              message: "خطأ في عملية تسجيل الخروج",
+              name: "تسجيل الخروج",
+            },
+        };
+    }
+    
+    
+  }
 };
 
 

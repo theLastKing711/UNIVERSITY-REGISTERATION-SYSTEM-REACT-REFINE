@@ -2,6 +2,7 @@ import { Card } from "antd";
 import { createStyles } from "antd-style";
 import React from "react";
 import LoginForm from "./components/LoginForm";
+import { useIsAuthenticated } from "@refinedev/core";
 
 const useStyles = createStyles(({ token, css }) => ({
   // Supports the writing style of css object
@@ -59,6 +60,10 @@ const cardHeaderStyles: React.CSSProperties | undefined = {
 
 const Login = () => {
   const { styles, cx } = useStyles();
+
+  const x = useIsAuthenticated();
+
+  console.log("sex", x.data);
 
   return (
     <div className={cx("login-root-class", styles.container)}>

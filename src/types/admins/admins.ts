@@ -27,3 +27,8 @@ export type GetAdminsResponsePaginationResultData = {
     per_page: number;
     total: number;
 };
+
+export type GetUserRoleResponseData = {
+    id: number;
+    name: string;
+};
