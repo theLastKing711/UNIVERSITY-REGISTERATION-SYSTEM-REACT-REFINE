@@ -44,7 +44,9 @@ export const accessControlProvider: AccessControlProvider = {
     console.log("datas", user_has_required_permissions);
 
 
-    return { can: user_has_required_permissions}
+    return { 
+      can: user_has_required_permissions,
+    }
     
   },
   options: {

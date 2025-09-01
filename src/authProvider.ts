@@ -11,19 +11,26 @@ export const authProvider: AuthProvider = {
 
     const LOGIN_END_POINT = ADMIN_URI + "/auth/login";
 
-
-
     try {
-        const data = await apiClient.post(LOGIN_END_POINT, {
+        const { data } = await apiClient.post<{id: number, name: string, redirect_to: string}>(LOGIN_END_POINT, {
             name,
             password
         });
+
+        localStorage.setItem("is_authenticated", "true");
+
+        return {
+            success: true,
+            redirectTo: data.redirect_to
+        };
+        
     }
     catch(error){
 
         const axiosError = error as AxiosError;
         
         console.log("error", axiosError.status);
+
         return {
             success: false,
             error: {
@@ -33,12 +40,7 @@ export const authProvider: AuthProvider = {
         };
     }
 
-    localStorage.setItem("is_authenticated", "true")
 
-    return {
-        success: true,
-        redirectTo: "/admins/admins",
-    };
   },
   check: async () => {
 
