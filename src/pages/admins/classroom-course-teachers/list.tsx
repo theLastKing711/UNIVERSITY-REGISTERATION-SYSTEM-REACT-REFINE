@@ -7,7 +7,7 @@ import {
   DeleteButton,
 } from "@refinedev/antd";
 import { Table, Space } from "antd";
-import { getDayOfWeek } from "../../constants";
+import { getDayOfWeek } from "../../../constants";
 
 export const ClassroomCourseTeacherList = () => {
   const { tableProps } = useTable({

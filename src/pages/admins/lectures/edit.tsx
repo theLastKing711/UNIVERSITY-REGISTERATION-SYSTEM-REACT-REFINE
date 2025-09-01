@@ -1,13 +1,13 @@
 import { Edit, useForm } from "@refinedev/antd";
 import { DatePicker, Form, Select, Switch } from "antd";
-import { useGetTeachers } from "../../hooks/API/select/useGetTeachers";
+import { useGetTeachers } from "../../../hooks/API/select/useGetTeachers";
 import { BaseRecord, HttpError } from "@refinedev/core";
-import { useGetOpenCourseRegisterations } from "../../hooks/API/select/useGetOpenCourseRegisterations";
-import FormSection from "../../components/ui/From/FormSection";
-import FormItemsContainer from "../../components/ui/From/FormItemsContainer";
-import { useGetStudents } from "../../hooks/API/select/useGetStudents";
-import { CreateLectureRequestData } from "../../types/admins/lectures";
-import { getDayJsValue } from "../../helpers";
+import { useGetOpenCourseRegisterations } from "../../../hooks/API/select/useGetOpenCourseRegisterations";
+import FormSection from "../../../components/ui/From/FormSection";
+import FormItemsContainer from "../../../components/ui/From/FormItemsContainer";
+import { useGetStudents } from "../../../hooks/API/select/useGetStudents";
+import { CreateLectureRequestData } from "../../../types/admins/lectures";
+import { getDayJsValue } from "../../../helpers";
 
 export const LectureEdit = () => {
   const { formProps, saveButtonProps, form } = useForm<

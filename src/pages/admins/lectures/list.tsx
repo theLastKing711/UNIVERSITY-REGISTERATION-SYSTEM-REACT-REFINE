@@ -8,7 +8,7 @@ import {
   DeleteButton,
 } from "@refinedev/antd";
 import { Table, Space, Row, Col, Card, Form, Select, Button } from "antd";
-import { useGetOpenCourseRegisterations } from "../../hooks/API/select/useGetOpenCourseRegisterations";
+import { useGetOpenCourseRegisterations } from "../../../hooks/API/select/useGetOpenCourseRegisterations";
 
 export const LectureList = () => {
   const { tableProps, searchFormProps } = useTable({

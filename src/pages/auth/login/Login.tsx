@@ -63,7 +63,7 @@ const Login = () => {
 
   const x = useIsAuthenticated();
 
-  console.log("sex", x.data);
+  console.log("useIsAuthenticated", x.data);
 
   return (
     <div className={cx("login-root-class", styles.container)}>

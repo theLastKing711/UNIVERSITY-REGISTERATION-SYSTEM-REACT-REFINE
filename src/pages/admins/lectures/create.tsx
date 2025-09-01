@@ -1,13 +1,13 @@
 import { Create, useForm } from "@refinedev/antd";
 import { DatePicker, Form, Select, Switch } from "antd";
-import { useGetTeachers } from "../../hooks/API/select/useGetTeachers";
+import { useGetTeachers } from "../../../hooks/API/select/useGetTeachers";
 import { useEffect, useState } from "react";
 import { BaseRecord, HttpError } from "@refinedev/core";
-import { useGetOpenCourseRegisterations } from "../../hooks/API/select/useGetOpenCourseRegisterations";
-import FormSection from "../../components/ui/From/FormSection";
-import FormItemsContainer from "../../components/ui/From/FormItemsContainer";
-import { useGetStudents } from "../../hooks/API/select/useGetStudents";
-import { CreateLectureRequestData } from "../../types/admins/lectures";
+import { useGetOpenCourseRegisterations } from "../../../hooks/API/select/useGetOpenCourseRegisterations";
+import FormSection from "../../../components/ui/From/FormSection";
+import FormItemsContainer from "../../../components/ui/From/FormItemsContainer";
+import { useGetStudents } from "../../../hooks/API/select/useGetStudents";
+import { CreateLectureRequestData } from "../../../types/admins/lectures";
 
 export const LectureCreate = () => {
   const { formProps, saveButtonProps, onFinish, form } = useForm<

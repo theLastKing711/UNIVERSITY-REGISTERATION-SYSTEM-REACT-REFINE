@@ -80,9 +80,11 @@ export const authProvider: AuthProvider = {
         console.log("error", axiosError.status);
         return {
             success: false,
+            // redirectTo: "/login",
             error: {
               message: "خطأ في عملية تسجيل الخروج",
               name: "تسجيل الخروج",
+              
             },
         };
     }

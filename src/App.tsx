@@ -103,25 +103,25 @@ import {
   OpenCourseRegisterationsList,
   OpenCourseRegisterationsShow,
 } from "./pages/admins/open-course-registerations";
-import { ClassroomList } from "./pages/classrooms/list";
+import { ClassroomList } from "./pages/admins/classrooms/list";
 import {
   ClassroomCreate,
   ClassroomEdit,
   ClassroomShow,
-} from "./pages/classrooms";
+} from "./pages/admins/classrooms";
 import {
   ClassroomCourseTeacherCreate,
   ClassroomCourseTeacherEdit,
   ClassroomCourseTeacherList,
   ClassroomCourseTeacherShow,
-} from "./pages/classroom-course-teachers";
-import { ExamList, ExamCreate, ExamShow, ExamEdit } from "./pages/exams";
+} from "./pages/admins/classroom-course-teachers";
+import { ExamList, ExamCreate, ExamShow, ExamEdit } from "./pages/admins/exams";
 import {
   LectureCreate,
   LectureEdit,
   LectureList,
   LectureShow,
-} from "./pages/lectures";
+} from "./pages/admins/lectures";
 import { pdfjs } from "react-pdf";
 import { accessControlProvider } from "./pages/access-control-provider";
 

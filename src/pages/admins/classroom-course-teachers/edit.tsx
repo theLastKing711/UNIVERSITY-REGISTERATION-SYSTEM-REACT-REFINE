@@ -1,34 +1,27 @@
-import { Create, useForm } from "@refinedev/antd";
+import { Edit, useForm } from "@refinedev/antd";
+import { Form, Select, TimePicker } from "antd";
+import { useGetTeachers } from "../../../hooks/API/select/useGetTeachers";
+import { DAYS } from "../../../constants";
+import { useGetClassroomList } from "../../../hooks/API/select/useGetClassroomList";
 import {
-  DatePicker,
-  Form,
-  Input,
-  InputNumber,
-  Select,
-  Switch,
-  TimePicker,
-} from "antd";
-import { useGetTeachers } from "../../hooks/API/select/useGetTeachers";
-import { useGetClassroomList } from "../../hooks/API/select/useGetClassroomList";
-import { useState } from "react";
-import { getTimeStringFromDayJs } from "../../helpers";
+  getDayJsValueFromTime,
+  getTimeStringFromDayJs,
+} from "../../../helpers";
 import { BaseRecord, HttpError } from "@refinedev/core";
-import { useGetOpenCourseRegisterations } from "../../hooks/API/select/useGetOpenCourseRegisterations";
-import { CreateExamRequestData } from "../../types/admins/exams";
+import { useGetOpenCourseRegisterations } from "../../../hooks/API/select/useGetOpenCourseRegisterations";
 
-export const ExamCreate = () => {
+export const ClassroomCourseTeacherEdit = () => {
   const { formProps, saveButtonProps, onFinish, form } = useForm<
     BaseRecord,
-    HttpError,
-    CreateExamRequestData
+    HttpError
   >({});
-
-  const [selectedCourse, setSelectedCourse] = useState<number | undefined>();
 
   const { openCourseRegisterationssSelectProps } =
     useGetOpenCourseRegisterations();
 
-  const { teachersSelectProps } = useGetTeachers(selectedCourse);
+  const { teachersSelectProps } = useGetTeachers(
+    form.getFieldValue("course_id")
+  );
 
   const { classroomsSelectProps } = useGetClassroomList();
 
@@ -43,7 +36,7 @@ export const ExamCreate = () => {
   };
 
   return (
-    <Create saveButtonProps={saveButtonProps}>
+    <Edit saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical" onFinish={handleOnFinish}>
         <Form.Item
           label="المادة"
@@ -59,9 +52,8 @@ export const ExamCreate = () => {
             placeholder="اختر مادة"
             {...openCourseRegisterationssSelectProps}
             onChange={(option) => {
-              form.resetFields(["teacher_id"]);
-
-              setSelectedCourse(option);
+              // form.resetFields() set it to inital value which is the value of get inital request
+              form.setFieldValue("teacher_id", undefined);
             }}
           />
         </Form.Item>
@@ -77,7 +69,7 @@ export const ExamCreate = () => {
           ]}
         >
           <Select
-            disabled={!selectedCourse}
+            disabled={!form.getFieldValue("course_id")}
             placeholder="اختر أستاذ"
             {...teachersSelectProps}
           />
@@ -97,42 +89,15 @@ export const ExamCreate = () => {
         </Form.Item>
 
         <Form.Item
-          label="امتحان نهائي"
-          name="is_main_exam"
-          initialValue={false}
-        >
-          <Switch />
-        </Form.Item>
-
-        <Form.Item
-          label="العلامة النهائية"
-          name="max_mark"
-          rules={[
-            {
-              required: true,
-              message: "العلامة النهائية مطلوبة",
-            },
-            {
-              type: "number",
-              min: 0,
-              max: 60,
-              message: "العلامة يجب أن تكون بين 0 و 60",
-            },
-          ]}
-        >
-          <InputNumber />
-        </Form.Item>
-
-        <Form.Item
           label="اليوم"
-          name={["date"]}
+          name={["day"]}
           rules={[
             {
               required: true,
             },
           ]}
         >
-          <DatePicker />
+          <Select options={DAYS} />
         </Form.Item>
 
         <Form.Item
@@ -143,6 +108,7 @@ export const ExamCreate = () => {
               required: true,
             },
           ]}
+          getValueProps={getDayJsValueFromTime}
         >
           <TimePicker />
         </Form.Item>
@@ -155,10 +121,11 @@ export const ExamCreate = () => {
               required: true,
             },
           ]}
+          getValueProps={getDayJsValueFromTime}
         >
           <TimePicker />
         </Form.Item>
       </Form>
-    </Create>
+    </Edit>
   );
 };

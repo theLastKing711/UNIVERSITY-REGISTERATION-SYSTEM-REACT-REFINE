@@ -26,46 +26,30 @@ export const accessControlProvider: AccessControlProvider = {
         
     }
     
-    console.log("resourse", resource);
+    console.log("resourses", resource);
 
     console.log("action", action);
 
+    console.log("params", params);
+
     const { data } = 
         await apiClient.get<GetUserRoleResponseData>(
-            `admins/admins/role?resourse=${resource}`
+            `admins/admins/role?resourse=${resource}&action=${action}`
         );
 
-    console.log("data", data);
 
-    const role = data.name;
+    const user_has_required_permissions = data.can_access;
 
-    localStorage.setItem("role", role);
+    // localStorage.setItem("role", role);
+    console.log("datas", user_has_required_permissions);
 
-    console.log("role", role);
-    
 
-    return {
-      can: true
-    };
-
-    if(role.includes("admin"))
-    {
-        return {
-            can: true
-        }
-    }
-        
-    // if(role.includes("student") && resource?.includes("student"))
-    // {
-    //     return {can: true};
-    // }
-
-    return { can: false}
+    return { can: user_has_required_permissions}
     
   },
   options: {
     buttons: {
-      enableAccessControl: true,
+      enableAccessControl: false,
       hideIfUnauthorized: false,
     },
     queryOptions: {

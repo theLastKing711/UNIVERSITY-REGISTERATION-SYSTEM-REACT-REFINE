@@ -29,6 +29,5 @@ export type GetAdminsResponsePaginationResultData = {
 };
 
 export type GetUserRoleResponseData = {
-    id: number;
-    name: string;
+    can_access: boolean;
 };
