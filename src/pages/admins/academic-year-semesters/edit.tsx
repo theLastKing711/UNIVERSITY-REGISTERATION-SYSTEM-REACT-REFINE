@@ -21,7 +21,11 @@ export const AcademicYearSemesterEdit = () => {
   const { departmentSelectProps } = useGetDepratments();
 
   return (
-    <Edit saveButtonProps={saveButtonProps}>
+    <Edit
+      saveButtonProps={saveButtonProps}
+      resource="academic-year-semesters"
+      recordItemId={1}
+    >
       <Form {...formProps} layout="vertical">
         <Form.Item
           label="السنة"

@@ -64,13 +64,6 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
 
   const { academicYearSemestersSelectProps } = useGetAcademicYearSemesters();
 
-  const { selectProps: departmentSelectPropss } =
-    useSelect<GetDepartmentsResponseData>({
-      resource: ADMIN_DEPARTMENT_URI,
-      optionValue: "id",
-      optionLabel: "name",
-    });
-
   const go = useGo();
 
   const {
@@ -78,14 +71,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
     academic_year_semester_id_query_parameter,
   } = useGetGlobalQueryFilters();
 
-  console.log("department value", department_id_query_parameter);
-
-  const location = useLocation();
-  const currentPath = location.pathname;
-
-  const { params, resource } = useParsed();
-
-  console.log("resource", resource);
+  const { resource } = useParsed();
 
   return (
     <AntdLayout.Header style={headerStyles}>

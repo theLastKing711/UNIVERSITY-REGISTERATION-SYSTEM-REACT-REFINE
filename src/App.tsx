@@ -1,4 +1,9 @@
-import { Authenticated, CanAccess, Refine } from "@refinedev/core";
+import {
+  Authenticated,
+  CanAccess,
+  Refine,
+  ResourceProps,
+} from "@refinedev/core";
 import { DevtoolsPanel, DevtoolsProvider } from "@refinedev/devtools";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 
@@ -124,6 +129,7 @@ import {
 } from "./pages/admins/lectures";
 import { pdfjs } from "react-pdf";
 import { accessControlProvider } from "./pages/access-control-provider";
+import { useMemo } from "react";
 
 const theme: ThemeConfig = {
   components: {
@@ -169,6 +175,130 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 ).toString();
 
 function App() {
+  console.log("testing");
+
+  const resources: ResourceProps[] | undefined = useMemo(
+    () => [
+      // {
+      //   name: "categories",
+      //   list: "/categories",
+      //   create: "/categories/create",
+      //   edit: "/categories/edit/:id",
+      //   show: "/categories/show/:id",
+      //   meta: {
+      // canDelete: true,
+      //   },
+      // },
+      {
+        name: ADMIN_ADMIN_URI,
+        list: ADMIN_LIST_URI,
+        create: ADMIN_CREATE,
+        edit: ADMIN_EDIT,
+        show: ADMIN_SHOW,
+        // meta: {
+        //   label: "الإداريين",
+        //   // canDelete: true,
+        // },
+      },
+      {
+        name: ADMIN_STUDENT_URI,
+        list: STUDENT_LIST,
+        create: STUDENT_CREATE,
+        edit: STUDENT_EDIT,
+        show: STUDENT_SHOW,
+        meta: {
+          label: "التلاميذ",
+          // canDelete: true,
+        },
+      },
+      {
+        name: ADMIN_ACADEMIC_YEAR_SEMESTER_URI,
+        list: ADMIN_ACADEMIC_YEAR_SEMESTER_LIST,
+        create: ADMIN_ACADEMIC_YEAR_SEMESTER_CREATE,
+        edit: ADMIN_ACADEMIC_YEAR_SEMESTER_EDIT,
+        show: ADMIN_ACADEMIC_YEAR_SEMESTER_SHOW,
+        // meta: {
+        //   label: "الفصول الدراسية",
+        // canDelete: true,
+        // },
+      },
+      {
+        name: COURSE_URI,
+        list: COURSE_LIST,
+        create: COURSE_CREATE,
+        edit: COURSE_EDIT,
+        show: COURSE_SHOW,
+        meta: {
+          label: "المواد الدراسية",
+          // canDelete: true,
+        },
+      },
+      {
+        name: OPEN_COURSE_REGISTERATION_URI,
+        list: OPEN_COURSE_REGISTERATION_LIST,
+        create: OPEN_COURSE_REGISTERATION_CREATE,
+        edit: OPEN_COURSE_REGISTERATION_EDIT,
+        show: OPEN_COURSE_REGISTERATION_SHOW,
+        meta: {
+          label: "فتح مواد دراسية",
+          // canDelete: true,
+        },
+      },
+      {
+        name: ADMIN_ACADEMIC_YEAR_SEMESTER_URI,
+        list: ADMIN_ACADEMIC_YEAR_SEMESTER_LIST,
+        create: ADMIN_ACADEMIC_YEAR_SEMESTER_CREATE,
+        edit: ADMIN_ACADEMIC_YEAR_SEMESTER_EDIT,
+        show: ADMIN_ACADEMIC_YEAR_SEMESTER_SHOW,
+      },
+      {
+        name: CLASSROOM_URI,
+        list: CLASSROOM_LIST,
+        create: CLASSROOM_CREATE,
+        edit: CLASSROOM_EDIT,
+        show: CLASSROOM_SHOW,
+        meta: {
+          label: "الصفوف",
+          // canDelete: true,
+        },
+      },
+      {
+        name: CLASSROOM_COURSE_TEACHER_URI,
+        list: CLASSROOM_COURSE_TEACHER_LIST,
+        create: CLASSROOM_COURSE_TEACHER_CREATE,
+        edit: CLASSROOM_COURSE_TEACHER_EDIT,
+        show: CLASSROOM_COURSE_TEACHER_SHOW,
+        meta: {
+          label: "أوقات المحاضرات",
+          // canDelete: true,
+        },
+      },
+      {
+        name: EXAM_URI,
+        list: EXAM_LIST,
+        create: EXAM_CREATE,
+        edit: EXAM_EDIT,
+        show: EXAM_SHOW,
+        meta: {
+          label: "الامتحانات",
+          // canDelete: true,
+        },
+      },
+      {
+        name: LECTURE_URI,
+        list: LECTURE_LIST,
+        create: LECTURE_CREATE,
+        edit: LECTURE_EDIT,
+        show: LECTURE_SHOW,
+        meta: {
+          label: "تسجيل الحضور",
+          // canDelete: true,
+        },
+      },
+    ],
+    []
+  );
+
   return (
     <BrowserRouter>
       <ConfigProvider direction={"rtl"} theme={RefineThemes.Blue}>
@@ -182,129 +312,23 @@ function App() {
                   routerProvider={routerBindings}
                   authProvider={authProvider}
                   accessControlProvider={accessControlProvider}
-                  resources={[
-                    // {
-                    //   name: "categories",
-                    //   list: "/categories",
-                    //   create: "/categories/create",
-                    //   edit: "/categories/edit/:id",
-                    //   show: "/categories/show/:id",
-                    //   meta: {
-                    //     canDelete: true,
-                    //   },
-                    // },
-                    {
-                      name: ADMIN_ADMIN_URI,
-                      list: ADMIN_LIST_URI,
-                      create: ADMIN_CREATE,
-                      edit: ADMIN_EDIT,
-                      show: ADMIN_SHOW,
-                      meta: {
-                        label: "الإداريين",
-                        canDelete: true,
-                      },
-                    },
-                    {
-                      name: ADMIN_STUDENT_URI,
-                      list: STUDENT_LIST,
-                      create: STUDENT_CREATE,
-                      edit: STUDENT_EDIT,
-                      show: STUDENT_SHOW,
-                      meta: {
-                        label: "التلاميذ",
-                        canDelete: true,
-                      },
-                    },
-                    {
-                      name: ADMIN_ACADEMIC_YEAR_SEMESTER_URI,
-                      list: ADMIN_ACADEMIC_YEAR_SEMESTER_LIST,
-                      create: ADMIN_ACADEMIC_YEAR_SEMESTER_CREATE,
-                      edit: ADMIN_ACADEMIC_YEAR_SEMESTER_EDIT,
-                      show: ADMIN_ACADEMIC_YEAR_SEMESTER_SHOW,
-                      meta: {
-                        label: "الفصول الدراسية",
-                        canDelete: true,
-                      },
-                    },
-                    {
-                      name: COURSE_URI,
-                      list: COURSE_LIST,
-                      create: COURSE_CREATE,
-                      edit: COURSE_EDIT,
-                      show: COURSE_SHOW,
-                      meta: {
-                        label: "المواد الدراسية",
-                        canDelete: true,
-                      },
-                    },
-                    {
-                      name: OPEN_COURSE_REGISTERATION_URI,
-                      list: OPEN_COURSE_REGISTERATION_LIST,
-                      create: OPEN_COURSE_REGISTERATION_CREATE,
-                      edit: OPEN_COURSE_REGISTERATION_EDIT,
-                      show: OPEN_COURSE_REGISTERATION_SHOW,
-                      meta: {
-                        label: "فتح مواد دراسية",
-                        canDelete: true,
-                      },
-                    },
-                    {
-                      name: ADMIN_ACADEMIC_YEAR_SEMESTER_URI,
-                      list: ADMIN_ACADEMIC_YEAR_SEMESTER_LIST,
-                      create: ADMIN_ACADEMIC_YEAR_SEMESTER_CREATE,
-                      edit: ADMIN_ACADEMIC_YEAR_SEMESTER_EDIT,
-                      show: ADMIN_ACADEMIC_YEAR_SEMESTER_SHOW,
-                    },
-                    {
-                      name: CLASSROOM_URI,
-                      list: CLASSROOM_LIST,
-                      create: CLASSROOM_CREATE,
-                      edit: CLASSROOM_EDIT,
-                      show: CLASSROOM_SHOW,
-                      meta: {
-                        label: "الصفوف",
-                        canDelete: true,
-                      },
-                    },
-                    {
-                      name: CLASSROOM_COURSE_TEACHER_URI,
-                      list: CLASSROOM_COURSE_TEACHER_LIST,
-                      create: CLASSROOM_COURSE_TEACHER_CREATE,
-                      edit: CLASSROOM_COURSE_TEACHER_EDIT,
-                      show: CLASSROOM_COURSE_TEACHER_SHOW,
-                      meta: {
-                        label: "أوقات المحاضرات",
-                        canDelete: true,
-                      },
-                    },
-                    {
-                      name: EXAM_URI,
-                      list: EXAM_LIST,
-                      create: EXAM_CREATE,
-                      edit: EXAM_EDIT,
-                      show: EXAM_SHOW,
-                      meta: {
-                        label: "الامتحانات",
-                        canDelete: true,
-                      },
-                    },
-                    {
-                      name: LECTURE_URI,
-                      list: LECTURE_LIST,
-                      create: LECTURE_CREATE,
-                      edit: LECTURE_EDIT,
-                      show: LECTURE_SHOW,
-                      meta: {
-                        label: "تسجيل الحضور",
-                        canDelete: true,
-                      },
-                    },
-                  ]}
+                  resources={resources}
                   options={{
                     syncWithLocation: false,
                     warnWhenUnsavedChanges: true,
                     useNewQueryKeys: true,
                     projectId: "BsRq8M-JCn5LZ-y3rY11",
+                    // is independent (has below settings) from accessControlProvider queryOptions
+                    // reactQuery: {
+                    //   clientConfig: {
+                    //     defaultOptions: {
+                    //       queries: {
+                    //         staleTime: 1000 * 5 * 30,
+                    //         refetchOnWindowFocus: false,
+                    //       },
+                    //     },
+                    //   },
+                    // },
                   }}
                 >
                   <Routes>
@@ -317,6 +341,7 @@ function App() {
                           key="authenticated-outer"
                           fallback={<CatchAllNavigate to="/login" />}
                         >
+                          z
                           <ThemedLayoutV2>
                             <Header />
                             <Outlet />
@@ -428,42 +453,6 @@ function App() {
                       </Route>
                     </Route>
 
-                    <Route
-                      element={
-                        <Authenticated
-                          key="authenticated-inner"
-                          fallback={<CatchAllNavigate to="/login" />}
-                        >
-                          {/* <ThemedLayoutV2
-                            Header={Header}
-                            Sider={(props) => (
-                              <ThemedSiderV2 {...props} fixed />
-                            )}
-                          >
-                            <Outlet />
-                          </ThemedLayoutV2> */}
-                        </Authenticated>
-                      }
-                    >
-                      <Route path="/login" element={<Login />} />
-                      {/* <Route
-                        index
-                        element={<NavigateToResource resource="blog_posts" />}
-                      /> */}
-                      {/* <Route path="/blog-posts">
-                        <Route index element={<BlogPostList />} />
-                        <Route path="create" element={<BlogPostCreate />} />
-                        <Route path="edit/:id" element={<BlogPostEdit />} />
-                        <Route path="show/:id" element={<BlogPostShow />} />
-                      </Route>
-                      <Route path="/categories">
-                        <Route index element={<CategoryList />} />
-                        <Route path="create" element={<CategoryCreate />} />
-                        <Route path="edit/:id" element={<CategoryEdit />} />
-                        <Route path="show/:id" element={<CategoryShow />} />
-                      </Route> */}
-                      <Route path="*" element={<ErrorComponent />} />
-                    </Route>
                     {/* <Route
                       element={
                         <Authenticated
@@ -498,3 +487,40 @@ function App() {
 }
 
 export default App;
+
+// <Route
+//               element={
+//                 <Authenticated
+//                   key="authenticated-inner"
+//                   fallback={<CatchAllNavigate to="/login" />}
+//                 >
+//                   {/* <ThemedLayoutV2
+//                     Header={Header}
+//                     Sider={(props) => (
+//                       <ThemedSiderV2 {...props} fixed />
+//                     )}
+//                   >
+//                     <Outlet />
+//                   </ThemedLayoutV2> */}
+//                 </Authenticated>
+//               }
+//             >
+//               <Route path="/login" element={<Login />} />
+//               {/* <Route
+//                 index
+//                 element={<NavigateToResource resource="blog_posts" />}
+//               /> */}
+//               {/* <Route path="/blog-posts">
+//                 <Route index element={<BlogPostList />} />
+//                 <Route path="create" element={<BlogPostCreate />} />
+//                 <Route path="edit/:id" element={<BlogPostEdit />} />
+//                 <Route path="show/:id" element={<BlogPostShow />} />
+//               </Route>
+//               <Route path="/categories">
+//                 <Route index element={<CategoryList />} />
+//                 <Route path="create" element={<CategoryCreate />} />
+//                 <Route path="edit/:id" element={<CategoryEdit />} />
+//                 <Route path="show/:id" element={<CategoryShow />} />
+//               </Route> */}
+//               <Route path="*" element={<ErrorComponent />} />
+//             </Route>
