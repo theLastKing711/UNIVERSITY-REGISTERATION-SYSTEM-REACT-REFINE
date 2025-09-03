@@ -55,6 +55,11 @@ import {
   COURSE_LIST,
   COURSE_SHOW,
   COURSE_URI,
+  DEPARTMENT_CREATE,
+  DEPARTMENT_EDIT,
+  DEPARTMENT_LIST,
+  DEPARTMENT_SHOW,
+  DEPARTMENT_URI,
   EXAM_CREATE,
   EXAM_EDIT,
   EXAM_LIST,
@@ -130,6 +135,12 @@ import {
 import { pdfjs } from "react-pdf";
 import { accessControlProvider } from "./pages/access-control-provider";
 import { useMemo } from "react";
+import {
+  DepartmentList,
+  DepartmentCreate,
+  DepartmentShow,
+  DepartmentEdit,
+} from "./pages/admins/departments";
 
 const theme: ThemeConfig = {
   components: {
@@ -230,6 +241,17 @@ function App() {
         show: COURSE_SHOW,
         meta: {
           label: "المواد الدراسية",
+          // canDelete: true,
+        },
+      },
+      {
+        name: DEPARTMENT_URI,
+        list: DEPARTMENT_LIST,
+        create: DEPARTMENT_CREATE,
+        edit: DEPARTMENT_EDIT,
+        show: DEPARTMENT_SHOW,
+        meta: {
+          label: "الأقسام",
           // canDelete: true,
         },
       },
@@ -394,6 +416,13 @@ function App() {
                         <Route path="create" element={<CourseCreate />} />
                         <Route path="show/:id" element={<CourseShow />} />
                         <Route path="edit/:id" element={<CourseEdit />} />
+                      </Route>
+
+                      <Route path={DEPARTMENT_URI}>
+                        <Route index element={<DepartmentList />} />
+                        <Route path="create" element={<DepartmentCreate />} />
+                        <Route path="show/:id" element={<DepartmentShow />} />
+                        <Route path="edit/:id" element={<DepartmentEdit />} />
                       </Route>
 
                       <Route path={OPEN_COURSE_REGISTERATION_URI}>

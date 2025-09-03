@@ -1,14 +1,8 @@
-import {
-  DeleteButton,
-  EditButton,
-  List,
-  ShowButton,
-  useTable,
-} from "@refinedev/antd";
-import { type BaseRecord, useDelete } from "@refinedev/core";
-import { Space, Table } from "antd";
+import { List, useTable } from "@refinedev/antd";
+import { useDelete } from "@refinedev/core";
+import { Table } from "antd";
 import { GetAdminsResponseData } from "../../../types/admins/admins";
-import { useGetGlobalQueryFilters } from "../../../hooks/useGetGlobalQueryFilters";
+import CustomTable from "../../../components/ui/AntDesgin/CustomTable";
 
 export const AdminList = () => {
   // const { filters } = useGetGlobalQueryFilters();
@@ -62,21 +56,10 @@ export const AdminList = () => {
         subTitle: "Subtitle",
       }}
     >
-      <Table {...tableProps} rowKey="id">
+      <CustomTable {...tableProps}>
         <Table.Column dataIndex="id" title="المعرف" />
         <Table.Column dataIndex="name" title="اسم الستخدم" />
-        <Table.Column
-          title={"Actions"}
-          dataIndex="actions"
-          render={(_, record: BaseRecord) => (
-            <Space>
-              <EditButton hideText size="small" recordItemId={record.id} />
-              <ShowButton hideText size="small" recordItemId={record.id} />
-              <DeleteButton hideText size="small" recordItemId={record.id} />
-            </Space>
-          )}
-        />
-      </Table>
+      </CustomTable>
     </List>
   );
 };

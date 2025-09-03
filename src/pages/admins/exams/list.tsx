@@ -1,17 +1,15 @@
-import { BaseRecord, useCustom } from "@refinedev/core";
+import { useCustom } from "@refinedev/core";
 import {
   useTable,
   List,
-  EditButton,
-  ShowButton,
-  DeleteButton,
   BooleanField,
   CreateButton,
   ExportButton,
 } from "@refinedev/antd";
 import { Table, Space, Row, Col, Card, Form, Select, Button } from "antd";
 import { useGetOpenCourseRegisterations } from "../../../hooks/API/select/useGetOpenCourseRegisterations";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import CustomTable from "../../../components/ui/AntDesgin/CustomTable";
 
 export const ExamList = () => {
   const { data, isFetching, refetch } = useCustom({
@@ -110,7 +108,7 @@ export const ExamList = () => {
             </>
           }
         >
-          <Table {...tableProps} rowKey="id">
+          <CustomTable {...tableProps}>
             <Table.Column dataIndex="id" title="#" />
             <Table.Column dataIndex="course_name" title="المادة" />
             <Table.Column dataIndex="teacher_name" title="المدرس" />
@@ -124,22 +122,7 @@ export const ExamList = () => {
               title="امتحان نهائي"
               render={(value: any) => <BooleanField value={value} />}
             />
-            <Table.Column
-              title="Actions"
-              dataIndex="actions"
-              render={(_, record: BaseRecord) => (
-                <Space>
-                  <EditButton hideText size="small" recordItemId={record.id} />
-                  <ShowButton hideText size="small" recordItemId={record.id} />
-                  <DeleteButton
-                    hideText
-                    size="small"
-                    recordItemId={record.id}
-                  />
-                </Space>
-              )}
-            />
-          </Table>
+          </CustomTable>
         </List>
       </Col>
     </Row>

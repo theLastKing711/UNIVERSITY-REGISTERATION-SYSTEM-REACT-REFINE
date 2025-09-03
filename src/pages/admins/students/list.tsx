@@ -1,17 +1,5 @@
-import {
-  DeleteButton,
-  EditButton,
-  getValueFromEvent,
-  List,
-  ShowButton,
-  useTable,
-} from "@refinedev/antd";
-import {
-  type BaseRecord,
-  HttpError,
-  useDelete,
-  useSelect,
-} from "@refinedev/core";
+import { List, useTable } from "@refinedev/antd";
+import { type BaseRecord, HttpError, useDelete } from "@refinedev/core";
 import {
   Button,
   Card,
@@ -31,6 +19,7 @@ import {
 import { PER_PAGE } from "../../../constants";
 import { useGetDepratments } from "../../../hooks/API/select/useGetDepartments";
 import { getDayJsdateFormat } from "../../../helpers";
+import CustomTable from "../../../components/ui/AntDesgin/CustomTable";
 
 export const StudentsList = () => {
   const { tableProps, searchFormProps } = useTable<
@@ -120,7 +109,7 @@ export const StudentsList = () => {
       </Col>
       <Col lg={18} xs={24}>
         <List>
-          <Table {...tableProps} rowKey="id">
+          <CustomTable {...tableProps}>
             <Table.Column
               dataIndex="id"
               title="المعرف"
@@ -162,22 +151,7 @@ export const StudentsList = () => {
               title="رقم الهاتف"
               sorter={{ multiple: 1 }}
             />
-            <Table.Column
-              title={"Actions"}
-              dataIndex="actions"
-              render={(_, record: BaseRecord) => (
-                <Space>
-                  <EditButton hideText size="small" recordItemId={record.id} />
-                  <ShowButton hideText size="small" recordItemId={record.id} />
-                  <DeleteButton
-                    hideText
-                    size="small"
-                    recordItemId={record.id}
-                  />
-                </Space>
-              )}
-            />
-          </Table>
+          </CustomTable>
         </List>
       </Col>
     </Row>

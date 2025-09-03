@@ -84,6 +84,20 @@ export const COURSE_SHOW =
     `/${COURSE_URI}/show/:id`;
 
 
+export const DEPARTMENT_URI =  ADMIN_ROLE + "/" + RESOURSES.departments;
+
+export const DEPARTMENT_LIST = 
+    `/${DEPARTMENT_URI}`;
+
+export const DEPARTMENT_CREATE = 
+    `/${DEPARTMENT_URI}/create`;
+
+export const DEPARTMENT_EDIT = 
+    `/${DEPARTMENT_URI}/edit/:id`;
+
+export const DEPARTMENT_SHOW = 
+    `/${DEPARTMENT_URI}/show/:id`;
+
 export const OPEN_COURSE_REGISTERATION_URI =  ADMIN_ROLE + "/" + RESOURSES.openCourseRegisterations;
 
 export const OPEN_COURSE_REGISTERATION_LIST = 

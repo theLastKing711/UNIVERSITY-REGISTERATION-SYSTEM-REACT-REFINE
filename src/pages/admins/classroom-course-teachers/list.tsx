@@ -1,13 +1,7 @@
-import { BaseRecord } from "@refinedev/core";
-import {
-  useTable,
-  List,
-  EditButton,
-  ShowButton,
-  DeleteButton,
-} from "@refinedev/antd";
-import { Table, Space } from "antd";
+import { useTable, List } from "@refinedev/antd";
+import { Table } from "antd";
 import { getDayOfWeek } from "../../../constants";
+import CustomTable from "../../../components/ui/AntDesgin/CustomTable";
 
 export const ClassroomCourseTeacherList = () => {
   const { tableProps } = useTable({
@@ -16,31 +10,23 @@ export const ClassroomCourseTeacherList = () => {
 
   return (
     <List>
-      <Table {...tableProps} rowKey="id">
+      <CustomTable {...tableProps}>
         <Table.Column dataIndex="id" title="المعرف" />
 
         <Table.Column dataIndex="course_name" title="المادة" />
 
         <Table.Column dataIndex="teacher_name" title="الأستاذ" />
+
         <Table.Column
           dataIndex="day"
           title="اليوم"
           render={(_, record) => getDayOfWeek(record.day)}
         />
+
         <Table.Column dataIndex="from" title="من" />
+
         <Table.Column dataIndex="to" title="إلى" />
-        <Table.Column
-          title="Actions"
-          dataIndex="actions"
-          render={(_, record: BaseRecord) => (
-            <Space>
-              <EditButton hideText size="small" recordItemId={record.id} />
-              <ShowButton hideText size="small" recordItemId={record.id} />
-              <DeleteButton hideText size="small" recordItemId={record.id} />
-            </Space>
-          )}
-        />
-      </Table>
+      </CustomTable>
     </List>
   );
 };

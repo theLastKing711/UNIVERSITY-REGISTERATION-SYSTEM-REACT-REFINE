@@ -1,9 +1,9 @@
-import { AccessControlProvider, CanParams, CanResponse, IAccessControlContext } from "@refinedev/core";
+import { AccessControlProvider, CanParams, CanResponse } from "@refinedev/core";
 import { apiClient } from "../libs/axios/config";
 import { GetUserRoleResponseData } from "../types/admins/admins";
 
 export const accessControlProvider: AccessControlProvider = {
-  //it get called autmatically for every sider item for actiosn(list, create)
+  //it get called autmatically for every sider item for actions(list, create)
   //when route changed always, even when cached or stale time is active
   //when we enter sider menu item
   //for every table item (show,delete, edit) can gets called only first time
@@ -14,19 +14,11 @@ export const accessControlProvider: AccessControlProvider = {
     params,
   }: CanParams): Promise<CanResponse> => {
 
-
-    if(action === "edit")
-    {
-      // alert("hello world")
-    }
-        
     console.log("resourses", resource);
 
     console.log("action", action);
 
     console.log("params", params);
-
-    
 
     if(localStorage.getItem("is_authenticated") !== "true")
     {
@@ -34,18 +26,6 @@ export const accessControlProvider: AccessControlProvider = {
         can: false
       };
     }
-
-    // if(resource === undefined)
-    // {
-
-    //   console.log("hello world");
-      
-    //     return {
-    //         can: true
-    //     }
-        
-    // }
-
     const route = 
       `admins/admins/role?resourse=${resource}&action=${action}`;
 
@@ -53,7 +33,6 @@ export const accessControlProvider: AccessControlProvider = {
 
     const { data } = 
         await apiClient.get<GetUserRoleResponseData>(
-            // `admins/admins/role?resourse=admins/admins&action=list`,
             route
         );
 
@@ -61,7 +40,7 @@ export const accessControlProvider: AccessControlProvider = {
     const user_has_required_permissions = data.can_access;
 
     // localStorage.setItem("role", role);
-    console.log("datas", user_has_required_permissions);
+    console.log("edit", user_has_required_permissions);
 
 
     return { 
@@ -70,10 +49,10 @@ export const accessControlProvider: AccessControlProvider = {
     
   },
   options: {
-    // buttons: {
-    //   enableAccessControl: false,
-    //   hideIfUnauthorized: false,
-    // },
+    buttons: {
+      enableAccessControl: true,
+      hideIfUnauthorized: true,
+    },
     queryOptions: {
       // ... query options for this can method
       //data get shown immediatly if it is cached(within cachetime duration)

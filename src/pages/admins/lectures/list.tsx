@@ -1,14 +1,8 @@
 import React from "react";
-import { BaseRecord } from "@refinedev/core";
-import {
-  useTable,
-  List,
-  EditButton,
-  ShowButton,
-  DeleteButton,
-} from "@refinedev/antd";
+import { useTable, List } from "@refinedev/antd";
 import { Table, Space, Row, Col, Card, Form, Select, Button } from "antd";
 import { useGetOpenCourseRegisterations } from "../../../hooks/API/select/useGetOpenCourseRegisterations";
+import CustomTable from "../../../components/ui/AntDesgin/CustomTable";
 
 export const LectureList = () => {
   const { tableProps, searchFormProps } = useTable({
@@ -53,27 +47,12 @@ export const LectureList = () => {
       </Col>
       <Col lg={18} xs={24}>
         <List>
-          <Table {...tableProps} rowKey="id">
+          <CustomTable {...tableProps}>
             <Table.Column dataIndex="id" title="#" />
             <Table.Column dataIndex="course_name" title="المادة" />
             <Table.Column dataIndex="teacher_name" title="الأستاذ" />
             <Table.Column dataIndex="happened_at" title="تاريخ المحاضرة" />
-            <Table.Column
-              title="Actions"
-              dataIndex="actions"
-              render={(_, record: BaseRecord) => (
-                <Space>
-                  <EditButton hideText size="small" recordItemId={record.id} />
-                  <ShowButton hideText size="small" recordItemId={record.id} />
-                  <DeleteButton
-                    hideText
-                    size="small"
-                    recordItemId={record.id}
-                  />
-                </Space>
-              )}
-            />
-          </Table>
+          </CustomTable>
         </List>
       </Col>
     </Row>

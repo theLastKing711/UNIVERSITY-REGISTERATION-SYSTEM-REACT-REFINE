@@ -1,36 +1,18 @@
-import { BaseRecord } from "@refinedev/core";
-import {
-  useTable,
-  List,
-  EditButton,
-  ShowButton,
-  DeleteButton,
-} from "@refinedev/antd";
-import { Table, Space } from "antd";
+import { useTable, List } from "@refinedev/antd";
+import { Table } from "antd";
+import CustomTable from "../../../components/ui/AntDesgin/CustomTable";
 
 export const OpenCourseRegisterationsList = () => {
   const { tableProps } = useTable({});
 
   return (
     <List>
-      <Table {...tableProps} rowKey="id">
+      <CustomTable {...tableProps}>
         <Table.Column dataIndex="course_name" title="الاسم" />
-
         <Table.Column dataIndex="year" title="السنة" />
         <Table.Column dataIndex="semester" title="الفصل" />
         <Table.Column dataIndex="price_in_usd" title="السعر" />
-        <Table.Column
-          title="Actions"
-          dataIndex="actions"
-          render={(_, record: BaseRecord) => (
-            <Space>
-              <EditButton hideText size="small" recordItemId={record.id} />
-              <ShowButton hideText size="small" recordItemId={record.id} />
-              <DeleteButton hideText size="small" recordItemId={record.id} />
-            </Space>
-          )}
-        />
-      </Table>
+      </CustomTable>
     </List>
   );
 };
