@@ -8,7 +8,7 @@ export const useGetDepratments = () => {
 
       const { selectProps: departmentSelectProps } =
           useSelect<GetDepartmentsResponseData>({
-            resource: `${ADMIN_DEPARTMENT_URI}`,
+            resource: `${ADMIN_DEPARTMENT_URI}/list`,
             optionValue: "id",
             optionLabel: "name",
           });

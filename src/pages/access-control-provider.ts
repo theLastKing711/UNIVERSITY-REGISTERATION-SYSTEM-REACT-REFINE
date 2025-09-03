@@ -40,8 +40,6 @@ export const accessControlProvider: AccessControlProvider = {
     const user_has_required_permissions = data.can_access;
 
     // localStorage.setItem("role", role);
-    console.log("edit", user_has_required_permissions);
-
 
     return { 
       can: user_has_required_permissions,
@@ -52,6 +50,7 @@ export const accessControlProvider: AccessControlProvider = {
     buttons: {
       enableAccessControl: true,
       hideIfUnauthorized: true,
+
     },
     queryOptions: {
       // ... query options for this can method

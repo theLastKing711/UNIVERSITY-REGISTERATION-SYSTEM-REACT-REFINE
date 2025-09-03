@@ -5,11 +5,14 @@ import {
   BooleanField,
   CreateButton,
   ExportButton,
+  ShowButton,
+  ListButton,
 } from "@refinedev/antd";
 import { Table, Space, Row, Col, Card, Form, Select, Button } from "antd";
 import { useGetOpenCourseRegisterations } from "../../../hooks/API/select/useGetOpenCourseRegisterations";
 import { useEffect } from "react";
 import CustomTable from "../../../components/ui/AntDesgin/CustomTable";
+import { DownloadOutlined } from "@ant-design/icons";
 
 export const ExamList = () => {
   const { data, isFetching, refetch } = useCustom({
@@ -102,9 +105,15 @@ export const ExamList = () => {
           headerButtons={
             <>
               <CreateButton>إنشاء</CreateButton>
-              <ExportButton loading={isFetching} onClick={getExamSchedulePdf}>
+              <ListButton
+                icon={<DownloadOutlined />}
+                loading={isFetching}
+                onClick={getExamSchedulePdf}
+                resource="admins/exams schedule"
+              >
                 تحميل جدول الامتحانات
-              </ExportButton>
+              </ListButton>
+              {/* <ExportButton resource="asldjasldj/est"></ExportButton> */}
             </>
           }
         >
