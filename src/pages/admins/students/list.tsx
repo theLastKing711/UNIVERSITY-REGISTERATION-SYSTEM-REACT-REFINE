@@ -21,7 +21,7 @@ import { useGetDepratments } from "../../../hooks/API/select/useGetDepartments";
 import { getDayJsdateFormat } from "../../../helpers";
 import CustomTable from "../../../components/ui/AntDesgin/CustomTable";
 
-export const StudentsList = () => {
+export const StudentList = () => {
   const { tableProps, searchFormProps } = useTable<
     GetStudentsResponseData,
     HttpError,

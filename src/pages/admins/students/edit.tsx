@@ -20,7 +20,7 @@ import { HttpError } from "@refinedev/core";
 import { useImageUpload } from "../../../hooks/useUploadImage";
 import { useImagePreview } from "../../../hooks/useImagePreview";
 
-export const StudentsEdit = () => {
+export const StudentEdit = () => {
   const {
     formProps,
     saveButtonProps,

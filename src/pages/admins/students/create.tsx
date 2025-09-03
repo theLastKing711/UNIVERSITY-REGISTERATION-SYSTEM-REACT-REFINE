@@ -14,7 +14,7 @@ import {
   getIdsFromCustomUploadFiles,
 } from "../../../helpers";
 
-export const StudentsCreate = () => {
+export const StudentCreate = () => {
   const {
     formProps,
     saveButtonProps,

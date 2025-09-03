@@ -1,4 +1,4 @@
-import { TEACHER_URI } from "../../../constants";
+import { ADMIN_TEACHER_URI } from "../../../constants";
 import { useSelect } from "@refinedev/antd";
 
 
@@ -15,7 +15,7 @@ export const useGetTeachers = (course_id?: number) => {
 
       const { selectProps: teachersSelectProps } =
           useSelect({
-            resource: `${TEACHER_URI}/list`,
+            resource: `${ADMIN_TEACHER_URI}/list`,
             optionValue: "id",
             optionLabel: "name",
             filters: [

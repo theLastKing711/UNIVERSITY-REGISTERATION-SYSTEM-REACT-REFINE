@@ -1,17 +1,10 @@
-import {
-  Authenticated,
-  CanAccess,
-  Refine,
-  ResourceProps,
-} from "@refinedev/core";
+import { Authenticated, Refine, ResourceProps } from "@refinedev/core";
 import { DevtoolsPanel, DevtoolsProvider } from "@refinedev/devtools";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 
 import {
-  ErrorComponent,
   RefineThemes,
   ThemedLayoutV2,
-  ThemedSiderV2,
   useNotificationProvider,
 } from "@refinedev/antd";
 import "@refinedev/antd/dist/reset.css";
@@ -39,6 +32,7 @@ import {
   ADMIN_LIST_URI,
   ADMIN_SHOW,
   ADMIN_STUDENT_URI,
+  ADMIN_TEACHER_URI,
   BASE_URI,
   CLASSROOM_COURSE_TEACHER_CREATE,
   CLASSROOM_COURSE_TEACHER_EDIT,
@@ -79,6 +73,10 @@ import {
   STUDENT_EDIT,
   STUDENT_LIST,
   STUDENT_SHOW,
+  TEACHER_CREATE,
+  TEACHER_EDIT,
+  TEACHER_LIST,
+  TEACHER_SHOW,
 } from "./constants";
 import Login from "./pages/auth/login/Login";
 import {
@@ -88,10 +86,10 @@ import {
   AdminShow,
 } from "./pages/admins/admins";
 import {
-  StudentsList,
-  StudentsCreate,
-  StudentsShow,
-  StudentsEdit,
+  StudentCreate,
+  StudentEdit,
+  StudentList,
+  StudentShow,
 } from "./pages/admins/students";
 import { dataProvider } from "./data-provider";
 import { ThemeConfig } from "antd/lib";
@@ -141,6 +139,12 @@ import {
   DepartmentShow,
   DepartmentEdit,
 } from "./pages/admins/departments";
+import {
+  TeacherList,
+  TeacherCreate,
+  TeacherShow,
+  TeacherEdit,
+} from "./pages/admins/teachers";
 
 const theme: ThemeConfig = {
   components: {
@@ -211,17 +215,7 @@ function App() {
         //   // canDelete: true,
         // },
       },
-      {
-        name: ADMIN_STUDENT_URI,
-        list: STUDENT_LIST,
-        create: STUDENT_CREATE,
-        edit: STUDENT_EDIT,
-        show: STUDENT_SHOW,
-        meta: {
-          label: "التلاميذ",
-          // canDelete: true,
-        },
-      },
+
       {
         name: ADMIN_ACADEMIC_YEAR_SEMESTER_URI,
         list: ADMIN_ACADEMIC_YEAR_SEMESTER_LIST,
@@ -317,6 +311,28 @@ function App() {
           // canDelete: true,
         },
       },
+      {
+        name: ADMIN_STUDENT_URI,
+        list: STUDENT_LIST,
+        create: STUDENT_CREATE,
+        edit: STUDENT_EDIT,
+        show: STUDENT_SHOW,
+        meta: {
+          label: "التلاميذ",
+          // canDelete: true,
+        },
+      },
+      {
+        name: ADMIN_TEACHER_URI,
+        list: TEACHER_LIST,
+        create: TEACHER_CREATE,
+        edit: TEACHER_EDIT,
+        show: TEACHER_SHOW,
+        meta: {
+          label: "الأساتذة",
+          // canDelete: true,
+        },
+      },
     ],
     []
   );
@@ -333,7 +349,6 @@ function App() {
                   notificationProvider={useNotificationProvider}
                   routerProvider={routerBindings}
                   authProvider={authProvider}
-                  accessControlProvider={accessControlProvider}
                   resources={resources}
                   options={{
                     syncWithLocation: false,
@@ -385,15 +400,15 @@ function App() {
                       </Route>
 
                       <Route path={ADMIN_STUDENT_URI}>
-                        <Route index element={<StudentsList />} />
-                        <Route path="create" element={<StudentsCreate />} />
-                        <Route path="show/:id" element={<StudentsShow />} />
-                        <Route path="edit/:id" element={<StudentsEdit />} />
+                        <Route index element={<StudentList />} />
+                        <Route path="create" element={<StudentCreate />} />
+                        <Route path="show/:id" element={<StudentShow />} />
+                        <Route path="edit/:id" element={<StudentEdit />} />
+                      </Route>
 
-                        {/* <Route path="create" element={<BlogPostCreate />} />
+                      {/* <Route path="create" element={<BlogPostCreate />} />
                         <Route path="edit/:id" element={<BlogPostEdit />} />
                         <Route path="show/:id" element={<BlogPostShow />} /> */}
-                      </Route>
 
                       <Route path={ADMIN_ACADEMIC_YEAR_SEMESTER_URI}>
                         <Route index element={<AcademicYearSemesterList />} />
@@ -443,14 +458,12 @@ function App() {
                           element={<OpenCourseRegisterationsEdit />}
                         />
                       </Route>
-
                       <Route path={CLASSROOM_URI}>
                         <Route index element={<ClassroomList />} />
                         <Route path="create" element={<ClassroomCreate />} />
                         <Route path="show/:id" element={<ClassroomShow />} />
                         <Route path="edit/:id" element={<ClassroomEdit />} />
                       </Route>
-
                       <Route path={CLASSROOM_COURSE_TEACHER_URI}>
                         <Route index element={<ClassroomCourseTeacherList />} />
                         <Route
@@ -466,20 +479,30 @@ function App() {
                           element={<ClassroomCourseTeacherEdit />}
                         />
                       </Route>
-
                       <Route path={EXAM_URI}>
                         <Route index element={<ExamList />} />
                         <Route path="create" element={<ExamCreate />} />
                         <Route path="show/:id" element={<ExamShow />} />
                         <Route path="edit/:id" element={<ExamEdit />} />
                       </Route>
-
+                      <Route path={ADMIN_TEACHER_URI}>
+                        <Route index element={<TeacherList />} />
+                        <Route path="create" element={<TeacherCreate />} />
+                        <Route path="show/:id" element={<TeacherShow />} />
+                        <Route path="edit/:id" element={<TeacherEdit />} />
+                      </Route>
                       <Route path={LECTURE_URI}>
                         <Route index element={<LectureList />} />
                         <Route path="create" element={<LectureCreate />} />
                         <Route path="show/:id" element={<LectureShow />} />
                         <Route path="edit/:id" element={<LectureEdit />} />
                       </Route>
+                    </Route>
+                    <Route path={ADMIN_STUDENT_URI}>
+                      <Route index element={<StudentList />} />
+                      <Route path="create" element={<StudentCreate />} />
+                      <Route path="show/:id" element={<StudentShow />} />
+                      <Route path="edit/:id" element={<StudentEdit />} />
                     </Route>
 
                     {/* <Route

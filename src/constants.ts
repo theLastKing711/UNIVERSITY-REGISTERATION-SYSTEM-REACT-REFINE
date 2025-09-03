@@ -128,19 +128,19 @@ export const CLASSROOM_SHOW =
     `/${CLASSROOM_URI}/show/:id`;
 
 
-export const TEACHER_URI =  ADMIN_ROLE + "/" + RESOURSES.teachers;
+export const ADMIN_TEACHER_URI =  ADMIN_ROLE + "/" + RESOURSES.teachers;
 
 export const TEACHER_LIST = 
-    `/${TEACHER_URI}`;
+    `/${ADMIN_TEACHER_URI}`;
 
 export const TEACHER_CREATE = 
-    `/${TEACHER_URI}/create`;
+    `/${ADMIN_TEACHER_URI}/create`;
 
 export const TEACHER_EDIT = 
-    `/${TEACHER_URI}/edit/:id`;
+    `/${ADMIN_TEACHER_URI}/edit/:id`;
 
 export const TEACHER_SHOW = 
-    `/${TEACHER_URI}/show/:id`;
+    `/${ADMIN_TEACHER_URI}/show/:id`;
 
 
 export const CLASSROOM_COURSE_TEACHER_URI =  ADMIN_ROLE + "/" + RESOURSES.classroomCourseTeachers;
@@ -155,7 +155,7 @@ export const CLASSROOM_COURSE_TEACHER_EDIT =
     `/${CLASSROOM_COURSE_TEACHER_URI}/edit/:id`;
 
 export const CLASSROOM_COURSE_TEACHER_SHOW = 
-    `/${TEACHER_URI}/show/:id`;
+    `/${CLASSROOM_COURSE_TEACHER_URI}/show/:id`;
 
 
 
@@ -171,7 +171,7 @@ export const EXAM_EDIT =
     `/${EXAM_URI}/edit/:id`;
 
 export const EXAM_SHOW = 
-    `/${TEACHER_URI}/show/:id`;
+    `/${EXAM_URI}/show/:id`;
     
 
 export const LECTURE_URI =  ADMIN_ROLE + "/" + RESOURSES.lectures;
@@ -186,7 +186,7 @@ export const LECTURE_EDIT =
     `/${LECTURE_URI}/edit/:id`;
 
 export const LECTURE_SHOW = 
-    `/${TEACHER_URI}/show/:id`;
+    `/${LECTURE_URI}/show/:id`;
     
 
 export const PER_PAGE = 2;
