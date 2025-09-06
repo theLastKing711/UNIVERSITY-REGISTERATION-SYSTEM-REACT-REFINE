@@ -72,7 +72,11 @@ import {
   STUDENT_CREATE,
   STUDENT_EDIT,
   STUDENT_LIST,
+  STUDENT_OPEN_COURSE_REGISTERATION_MARKS_LIST,
+  STUDENT_OPEN_COURSE_REGISTERATION_MARKS_URI,
   STUDENT_OPEN_COURSE_REGISTERATION_THIS_SEMESTER_LIST,
+  STUDENT_OPEN_COURSE_REGISTERATION_THIS_SEMESTER_MARKS_LIST,
+  STUDENT_OPEN_COURSE_REGISTERATION_THIS_SEMESTER_MARKS_URI,
   STUDENT_OPEN_COURSE_REGISTERATION_URI,
   STUDENT_SHOW,
   TEACHER_CREATE,
@@ -146,7 +150,11 @@ import {
   TeacherShow,
   TeacherEdit,
 } from "./pages/admins/teachers";
-import { StudentOpenCourseRegisterationsThisSemesterList } from "./pages/students/open-course-registerations";
+import {
+  StudentOpenCourseRegisterationsMarksList,
+  StudentOpenCourseRegisterationsMarksThisSemesterList,
+  StudentOpenCourseRegisterationsThisSemesterList,
+} from "./pages/students/open-course-registerations";
 
 const theme: ThemeConfig = {
   components: {
@@ -343,6 +351,22 @@ function App() {
           // canDelete: true,
         },
       },
+      {
+        name: STUDENT_OPEN_COURSE_REGISTERATION_THIS_SEMESTER_MARKS_URI,
+        list: STUDENT_OPEN_COURSE_REGISTERATION_THIS_SEMESTER_MARKS_LIST,
+        meta: {
+          label: "علامات الفصل الحالي",
+          // canDelete: true,
+        },
+      },
+      {
+        name: STUDENT_OPEN_COURSE_REGISTERATION_MARKS_URI,
+        list: STUDENT_OPEN_COURSE_REGISTERATION_MARKS_LIST,
+        meta: {
+          label: "العلامات",
+          // canDelete: true,
+        },
+      },
     ],
     []
   );
@@ -403,6 +427,30 @@ function App() {
                           element={
                             <StudentOpenCourseRegisterationsThisSemesterList />
                           }
+                        />
+                      </Route>
+
+                      <Route
+                        path={
+                          STUDENT_OPEN_COURSE_REGISTERATION_THIS_SEMESTER_MARKS_URI
+                        }
+                      >
+                        <Route
+                          index
+                          element={
+                            <StudentOpenCourseRegisterationsMarksThisSemesterList />
+                          }
+                        />
+                      </Route>
+
+                      <Route
+                        path={
+                          STUDENT_OPEN_COURSE_REGISTERATION_THIS_SEMESTER_MARKS_URI
+                        }
+                      >
+                        <Route
+                          index
+                          element={<StudentOpenCourseRegisterationsMarksList />}
                         />
                       </Route>
 

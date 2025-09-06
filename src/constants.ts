@@ -189,7 +189,7 @@ export const LECTURE_SHOW =
     `/${LECTURE_URI}/show/:id`;
     
 export const STUDENT_RESOURSES = {
-    openCourseRegisterations: "open-course-registerations" 
+    openCourseRegisterations: "open-course-registerations",
 }
 
 
@@ -202,6 +202,21 @@ export const STUDENT_OPEN_COURSE_REGISTERATION_URI =
 
     export const STUDENT_OPEN_COURSE_REGISTERATION_THIS_SEMESTER_LIST = 
     `/${STUDENT_OPEN_COURSE_REGISTERATION_URI}`;
+
+
+    export const STUDENT_OPEN_COURSE_REGISTERATION_THIS_SEMESTER_MARKS_URI = 
+        `${STUDENT_OPEN_COURSE_REGISTERATION_URI}/marks/this-semester`;
+    
+    export const STUDENT_OPEN_COURSE_REGISTERATION_THIS_SEMESTER_MARKS_LIST = 
+        `/${STUDENT_OPEN_COURSE_REGISTERATION_THIS_SEMESTER_MARKS_URI}`;
+
+
+    export const STUDENT_OPEN_COURSE_REGISTERATION_MARKS_URI = 
+        `${STUDENT_OPEN_COURSE_REGISTERATION_URI}/marks`;
+    
+    export const STUDENT_OPEN_COURSE_REGISTERATION_MARKS_LIST = 
+        `/${STUDENT_OPEN_COURSE_REGISTERATION_THIS_SEMESTER_MARKS_URI}`;
+
 
 export const PER_PAGE = 2;
 

@@ -158,7 +158,7 @@ export const StudentOpenCourseRegisterationsThisSemesterList = () => {
           </List>
         </Col>
       </Row>
-      <Row>
+      <Row gutter={[16, 16]}>
         <Col lg={6} xs={24}>
           <Card title="الفلاتر" style={{ marginTop: "1rem" }}>
             <Form {...studentRegisteredCoursesSearchProps}>
@@ -175,7 +175,7 @@ export const StudentOpenCourseRegisterationsThisSemesterList = () => {
             </Form>
           </Card>
         </Col>
-        <Col lg={24} xs={24}>
+        <Col lg={18} xs={24}>
           <List title="موادي">
             <Table {...studentRegisteredCoursesTableProps} rowKey="id">
               <Table.Column dataIndex="id" title="#" />

@@ -88,3 +88,5 @@ export type GetStudentsListResponseData = {
    student_id: number;
    name: string;
 };
+
+
