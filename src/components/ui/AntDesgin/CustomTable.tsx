@@ -5,9 +5,14 @@ import React from "react";
 
 export type CustomTableProps<T> = TableProps<T> & {
   children: React.ReactNode;
+  actions?: React.ReactNode;
 };
 
-const CustomTable = <T,>({ children, ...tableProps }: CustomTableProps<T>) => {
+const CustomTable = <T,>({
+  children,
+  // actions,
+  ...tableProps
+}: CustomTableProps<T>) => {
   return (
     <Table {...tableProps} rowKey="id">
       {children}

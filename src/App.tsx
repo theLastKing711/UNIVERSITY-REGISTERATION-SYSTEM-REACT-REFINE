@@ -72,6 +72,8 @@ import {
   STUDENT_CREATE,
   STUDENT_EDIT,
   STUDENT_LIST,
+  STUDENT_OPEN_COURSE_REGISTERATION_THIS_SEMESTER_LIST,
+  STUDENT_OPEN_COURSE_REGISTERATION_URI,
   STUDENT_SHOW,
   TEACHER_CREATE,
   TEACHER_EDIT,
@@ -131,7 +133,6 @@ import {
   LectureShow,
 } from "./pages/admins/lectures";
 import { pdfjs } from "react-pdf";
-import { accessControlProvider } from "./pages/access-control-provider";
 import { useMemo } from "react";
 import {
   DepartmentList,
@@ -145,6 +146,7 @@ import {
   TeacherShow,
   TeacherEdit,
 } from "./pages/admins/teachers";
+import { StudentOpenCourseRegisterationsThisSemesterList } from "./pages/students/open-course-registerations";
 
 const theme: ThemeConfig = {
   components: {
@@ -333,6 +335,14 @@ function App() {
           // canDelete: true,
         },
       },
+      {
+        name: STUDENT_OPEN_COURSE_REGISTERATION_URI,
+        list: STUDENT_OPEN_COURSE_REGISTERATION_THIS_SEMESTER_LIST,
+        meta: {
+          label: "تسجيل مواد",
+          // canDelete: true,
+        },
+      },
     ],
     []
   );
@@ -378,7 +388,6 @@ function App() {
                           key="authenticated-outer"
                           fallback={<CatchAllNavigate to="/login" />}
                         >
-                          z
                           <ThemedLayoutV2>
                             <Header />
                             <Outlet />
@@ -388,6 +397,15 @@ function App() {
                         // </CanAccess>
                       }
                     >
+                      <Route path={STUDENT_OPEN_COURSE_REGISTERATION_URI}>
+                        <Route
+                          index
+                          element={
+                            <StudentOpenCourseRegisterationsThisSemesterList />
+                          }
+                        />
+                      </Route>
+
                       <Route path={ADMIN_ADMIN_URI}>
                         <Route index element={<AdminList />} />
                         <Route path="create" element={<AdminCreate />} />

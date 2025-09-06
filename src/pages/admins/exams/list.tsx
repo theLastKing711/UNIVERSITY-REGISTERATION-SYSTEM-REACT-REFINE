@@ -4,8 +4,6 @@ import {
   List,
   BooleanField,
   CreateButton,
-  ExportButton,
-  ShowButton,
   ListButton,
 } from "@refinedev/antd";
 import { Table, Space, Row, Col, Card, Form, Select, Button } from "antd";
@@ -40,11 +38,6 @@ export const ExamList = () => {
 
   const { openCourseRegisterationssSelectProps } =
     useGetOpenCourseRegisterations();
-
-  console.log(
-    "openCourseRegisterationssSelectProps",
-    openCourseRegisterationssSelectProps.options
-  );
 
   const getExamSchedulePdf = () => {
     refetch();
@@ -95,7 +88,7 @@ export const ExamList = () => {
         </Card>
       </Col>
       <Col lg={18} xs={24}>
-        {/* in case we use react-pdf {file && (
+        {/* in case we use react-pdf to view inside this page{file && (
           <Document file={file}>
             <Page pageNumber={1}></Page>
           </Document>

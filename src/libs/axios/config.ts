@@ -24,7 +24,7 @@ export const apiClient =
             (error) => {
 
                 // Check if the error response has a 401 status code
-                if (error.response && (error.response.status === 401)) {
+                if (error.response && (error.response.status === 401 || error.response.status === 419)) {
                     console.log("unauthenticated");
                 // Handle 401 error:
                 // 1. Clear authentication data (e.g., token from localStorage or cookies)

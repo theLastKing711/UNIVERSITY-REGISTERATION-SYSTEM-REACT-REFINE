@@ -17,7 +17,7 @@ export const RESOURSES = {
     classroomCourseTeachers: 'classroom-course-teachers',
     exams: 'exams',
     lectures: 'lectures',
-    images: "images"
+    images: "images",
 }
 
 export const ADMIN_ROLE = "admins";
@@ -188,6 +188,20 @@ export const LECTURE_EDIT =
 export const LECTURE_SHOW = 
     `/${LECTURE_URI}/show/:id`;
     
+export const STUDENT_RESOURSES = {
+    openCourseRegisterations: "open-course-registerations" 
+}
+
+
+export const STUDENT_ROLE = "students";
+
+export const STUDENT_OPEN_COURSE_REGISTERATION_URI = 
+    // `${STUDENT_ROLE}\\${STUDENT_RESOURSES.openCourseRegisterations}`;
+    STUDENT_ROLE + '/' + STUDENT_RESOURSES.openCourseRegisterations;
+
+
+    export const STUDENT_OPEN_COURSE_REGISTERATION_THIS_SEMESTER_LIST = 
+    `/${STUDENT_OPEN_COURSE_REGISTERATION_URI}`;
 
 export const PER_PAGE = 2;
 
