@@ -1,4 +1,9 @@
-import { Authenticated, Refine, ResourceProps } from "@refinedev/core";
+import {
+  Authenticated,
+  CanAccess,
+  Refine,
+  ResourceProps,
+} from "@refinedev/core";
 import { DevtoolsPanel, DevtoolsProvider } from "@refinedev/devtools";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 
@@ -52,6 +57,7 @@ import {
   DEPARTMENT_CREATE,
   DEPARTMENT_EDIT,
   DEPARTMENT_LIST,
+  DEPARTMENT_LIST_LIST,
   DEPARTMENT_SHOW,
   DEPARTMENT_URI,
   EXAM_CREATE,
@@ -155,6 +161,7 @@ import {
   StudentOpenCourseRegisterationsMarksThisSemesterList,
   StudentOpenCourseRegisterationsThisSemesterList,
 } from "./pages/students/open-course-registerations";
+import { accessControlProvider } from "./pages/access-control-provider";
 
 const theme: ThemeConfig = {
   components: {
@@ -200,8 +207,6 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 ).toString();
 
 function App() {
-  console.log("testing");
-
   const resources: ResourceProps[] | undefined = useMemo(
     () => [
       // {
@@ -220,10 +225,10 @@ function App() {
         create: ADMIN_CREATE,
         edit: ADMIN_EDIT,
         show: ADMIN_SHOW,
-        // meta: {
-        //   label: "الإداريين",
-        //   // canDelete: true,
-        // },
+        meta: {
+          label: "الإداريين",
+          // canDelete: true,
+        },
       },
 
       {
@@ -232,10 +237,10 @@ function App() {
         create: ADMIN_ACADEMIC_YEAR_SEMESTER_CREATE,
         edit: ADMIN_ACADEMIC_YEAR_SEMESTER_EDIT,
         show: ADMIN_ACADEMIC_YEAR_SEMESTER_SHOW,
-        // meta: {
-        //   label: "الفصول الدراسية",
-        // canDelete: true,
-        // },
+        meta: {
+          label: "الفصول الدراسية",
+          canDelete: true,
+        },
       },
       {
         name: COURSE_URI,
@@ -383,6 +388,7 @@ function App() {
                   notificationProvider={useNotificationProvider}
                   routerProvider={routerBindings}
                   authProvider={authProvider}
+                  accessControlProvider={accessControlProvider}
                   resources={resources}
                   options={{
                     syncWithLocation: false,
@@ -407,18 +413,20 @@ function App() {
 
                     <Route
                       element={
-                        // <CanAccess>
                         <Authenticated
                           key="authenticated-outer"
                           fallback={<CatchAllNavigate to="/login" />}
                         >
                           <ThemedLayoutV2>
-                            <Header />
+                            <CanAccess
+                              resource={DEPARTMENT_LIST_LIST}
+                              action="list"
+                            >
+                              <Header />
+                            </CanAccess>
                             <Outlet />
                           </ThemedLayoutV2>
                         </Authenticated>
-
-                        // </CanAccess>
                       }
                     >
                       <Route path={STUDENT_OPEN_COURSE_REGISTERATION_URI}>
@@ -443,11 +451,7 @@ function App() {
                         />
                       </Route>
 
-                      <Route
-                        path={
-                          STUDENT_OPEN_COURSE_REGISTERATION_THIS_SEMESTER_MARKS_URI
-                        }
-                      >
+                      <Route path={STUDENT_OPEN_COURSE_REGISTERATION_MARKS_URI}>
                         <Route
                           index
                           element={<StudentOpenCourseRegisterationsMarksList />}

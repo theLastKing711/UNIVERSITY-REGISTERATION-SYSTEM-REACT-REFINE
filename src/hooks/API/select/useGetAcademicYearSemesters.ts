@@ -1,5 +1,5 @@
 
-    import {  ADMIN_ACADEMIC_YEAR_SEMESTER_URI  } from "../../../constants";
+    import {  ACADEMIC_YEAR_SEMESTER_LIST_LIST, ADMIN_ACADEMIC_YEAR_SEMESTER_URI  } from "../../../constants";
     import { useSelect } from "@refinedev/antd";
     import { GetCoursesListResponseData } from "../../../types/admins/courses";
     
@@ -9,7 +9,7 @@
     
           const { selectProps: academicYearSemestersSelectProps } =
             useSelect<GetCoursesListResponseData>({
-                resource: `${ADMIN_ACADEMIC_YEAR_SEMESTER_URI}/list`,
+                resource: ACADEMIC_YEAR_SEMESTER_LIST_LIST,
             });
     
         return {
