@@ -1,10 +1,17 @@
-import { useTable, List, CreateButton, DeleteButton } from "@refinedev/antd";
+import {
+  useTable,
+  List,
+  CreateButton,
+  DeleteButton,
+  ListButton,
+} from "@refinedev/antd";
 import { Button, Card, Col, Form, Input, Row, Space, Table } from "antd";
 import {
   BaseKey,
   BaseRecord,
   HttpError,
   useCreate,
+  useCustom,
   useDelete,
   useInvalidate,
 } from "@refinedev/core";
@@ -13,7 +20,13 @@ import {
   GetOpenCoursesThisSemesterResponseData,
   GetStudentRegisteredOpenCoursesThisSemesterResponseData,
 } from "../../../types/students/open-course-registerations";
-import { STUDENT_OPEN_COURSE_REGISTERATION_URI } from "../../../constants";
+import {
+  STUDENT_OPEN_COURSE_REGISTERATION_REGISTERED_THIS_SEMESTER_URI,
+  STUDENT_OPEN_COURSE_REGISTERATION_SCHEDULE_LIST,
+  STUDENT_OPEN_COURSE_REGISTERATION_URI,
+} from "../../../constants";
+import { DownloadOutlined } from "@ant-design/icons";
+import { useEffect } from "react";
 
 export const StudentOpenCourseRegisterationsThisSemesterList = () => {
   const { tableProps, searchFormProps } = useTable<
@@ -60,6 +73,22 @@ export const StudentOpenCourseRegisterationsThisSemesterList = () => {
 
   const { mutate: deleteMutate } = useDelete();
 
+  const {
+    data: examScheduleData,
+    isFetching,
+    refetch: GetCoursesScheduleApi,
+  } = useCustom({
+    url: STUDENT_OPEN_COURSE_REGISTERATION_SCHEDULE_LIST,
+    method: "get",
+    queryOptions: {
+      enabled: false,
+    },
+  });
+
+  const GetCoursesSchedule = () => {
+    GetCoursesScheduleApi();
+  };
+
   const registerInCourse = (id: BaseKey | undefined) => {
     mutate(
       {
@@ -73,7 +102,8 @@ export const StudentOpenCourseRegisterationsThisSemesterList = () => {
             invalidates: ["list"],
           });
           invalidate({
-            resource: `${STUDENT_OPEN_COURSE_REGISTERATION_URI}/registered-courses/this-semester`,
+            resource:
+              STUDENT_OPEN_COURSE_REGISTERATION_REGISTERED_THIS_SEMESTER_URI,
             invalidates: ["list"],
           });
         },
@@ -94,13 +124,31 @@ export const StudentOpenCourseRegisterationsThisSemesterList = () => {
             invalidates: ["list"],
           });
           invalidate({
-            resource: `${STUDENT_OPEN_COURSE_REGISTERATION_URI}/registered-courses/this-semester`,
+            resource:
+              STUDENT_OPEN_COURSE_REGISTERATION_REGISTERED_THIS_SEMESTER_URI,
             invalidates: ["list"],
           });
         },
       }
     );
   };
+
+  useEffect(() => {
+    if (examScheduleData?.data instanceof Blob) {
+      // setFile(data.data as unknown as any);
+
+      const url = window.URL.createObjectURL(examScheduleData.data);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = examScheduleData.filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url); // Clean up the object URL
+    } else if (examScheduleData?.data instanceof ArrayBuffer) {
+      // setFile(data.data as unknown as any);
+    }
+  }, [examScheduleData?.data]);
 
   return (
     <>
@@ -176,7 +224,22 @@ export const StudentOpenCourseRegisterationsThisSemesterList = () => {
           </Card>
         </Col>
         <Col lg={18} xs={24}>
-          <List title="موادي">
+          <List
+            title="موادي"
+            headerButtons={
+              <>
+                <CreateButton>إنشاء</CreateButton>
+                <ListButton
+                  icon={<DownloadOutlined />}
+                  loading={isFetching}
+                  onClick={GetCoursesSchedule}
+                  resource="admins/exams schedule"
+                >
+                  تحميل جدول الامتحانات
+                </ListButton>
+              </>
+            }
+          >
             <Table {...studentRegisteredCoursesTableProps} rowKey="id">
               <Table.Column dataIndex="id" title="#" />
               <Table.Column

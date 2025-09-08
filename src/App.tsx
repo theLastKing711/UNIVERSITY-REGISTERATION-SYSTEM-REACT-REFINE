@@ -250,7 +250,6 @@ function App() {
         show: COURSE_SHOW,
         meta: {
           label: "المواد الدراسية",
-          // canDelete: true,
         },
       },
       {
@@ -261,7 +260,6 @@ function App() {
         show: DEPARTMENT_SHOW,
         meta: {
           label: "الأقسام",
-          // canDelete: true,
         },
       },
       {
@@ -272,7 +270,6 @@ function App() {
         show: OPEN_COURSE_REGISTERATION_SHOW,
         meta: {
           label: "فتح مواد دراسية",
-          // canDelete: true,
         },
       },
       {
@@ -290,7 +287,6 @@ function App() {
         show: CLASSROOM_SHOW,
         meta: {
           label: "الصفوف",
-          // canDelete: true,
         },
       },
       {
@@ -301,7 +297,6 @@ function App() {
         show: CLASSROOM_COURSE_TEACHER_SHOW,
         meta: {
           label: "أوقات المحاضرات",
-          // canDelete: true,
         },
       },
       {
@@ -312,7 +307,6 @@ function App() {
         show: EXAM_SHOW,
         meta: {
           label: "الامتحانات",
-          // canDelete: true,
         },
       },
       {
@@ -323,7 +317,6 @@ function App() {
         show: LECTURE_SHOW,
         meta: {
           label: "تسجيل الحضور",
-          // canDelete: true,
         },
       },
       {
@@ -334,7 +327,6 @@ function App() {
         show: STUDENT_SHOW,
         meta: {
           label: "التلاميذ",
-          // canDelete: true,
         },
       },
       {
@@ -345,7 +337,6 @@ function App() {
         show: TEACHER_SHOW,
         meta: {
           label: "الأساتذة",
-          // canDelete: true,
         },
       },
       {
@@ -353,7 +344,6 @@ function App() {
         list: STUDENT_OPEN_COURSE_REGISTERATION_THIS_SEMESTER_LIST,
         meta: {
           label: "تسجيل مواد",
-          // canDelete: true,
         },
       },
       {
@@ -361,7 +351,6 @@ function App() {
         list: STUDENT_OPEN_COURSE_REGISTERATION_THIS_SEMESTER_MARKS_LIST,
         meta: {
           label: "علامات الفصل الحالي",
-          // canDelete: true,
         },
       },
       {
@@ -369,7 +358,13 @@ function App() {
         list: STUDENT_OPEN_COURSE_REGISTERATION_MARKS_LIST,
         meta: {
           label: "العلامات",
-          // canDelete: true,
+        },
+      },
+      {
+        name: STUDENT_OPEN_COURSE_REGISTERATION_MARKS_URI,
+        list: STUDENT_OPEN_COURSE_REGISTERATION_MARKS_LIST,
+        meta: {
+          label: "جدول الدوام",
         },
       },
     ],
@@ -388,7 +383,7 @@ function App() {
                   notificationProvider={useNotificationProvider}
                   routerProvider={routerBindings}
                   authProvider={authProvider}
-                  accessControlProvider={accessControlProvider}
+                  // accessControlProvider={accessControlProvider}
                   resources={resources}
                   options={{
                     syncWithLocation: false,
