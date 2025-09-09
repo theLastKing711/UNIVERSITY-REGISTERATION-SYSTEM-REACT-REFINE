@@ -40,7 +40,6 @@ export type CourseItemData = {
     credits: number,
 }
 
-
 export type GetCoursesMarksResponseData = {
     id: number,
     course: CourseItemData,

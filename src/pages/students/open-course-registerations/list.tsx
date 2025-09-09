@@ -23,6 +23,7 @@ import {
 import {
   STUDENT_OPEN_COURSE_REGISTERATION_REGISTERED_THIS_SEMESTER_URI,
   STUDENT_OPEN_COURSE_REGISTERATION_SCHEDULE_LIST,
+  STUDENT_OPEN_COURSE_REGISTERATION_SCHEDULE_URI,
   STUDENT_OPEN_COURSE_REGISTERATION_URI,
 } from "../../../constants";
 import { DownloadOutlined } from "@ant-design/icons";
@@ -233,7 +234,7 @@ export const StudentOpenCourseRegisterationsThisSemesterList = () => {
                   icon={<DownloadOutlined />}
                   loading={isFetching}
                   onClick={GetCoursesSchedule}
-                  resource="admins/exams schedule"
+                  resource={STUDENT_OPEN_COURSE_REGISTERATION_SCHEDULE_URI}
                 >
                   تحميل جدول الامتحانات
                 </ListButton>

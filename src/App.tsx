@@ -383,7 +383,7 @@ function App() {
                   notificationProvider={useNotificationProvider}
                   routerProvider={routerBindings}
                   authProvider={authProvider}
-                  // accessControlProvider={accessControlProvider}
+                  accessControlProvider={accessControlProvider}
                   resources={resources}
                   options={{
                     syncWithLocation: false,
