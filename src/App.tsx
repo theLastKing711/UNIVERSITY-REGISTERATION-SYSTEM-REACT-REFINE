@@ -162,6 +162,7 @@ import {
   StudentOpenCourseRegisterationsThisSemesterList,
 } from "./pages/students/open-course-registerations";
 import { accessControlProvider } from "./pages/access-control-provider";
+import { liveProvider } from "./live-provider";
 
 const theme: ThemeConfig = {
   components: {
@@ -383,7 +384,8 @@ function App() {
                   notificationProvider={useNotificationProvider}
                   routerProvider={routerBindings}
                   authProvider={authProvider}
-                  accessControlProvider={accessControlProvider}
+                  // accessControlProvider={accessControlProvider}
+                  liveProvider={liveProvider(window.Echo)}
                   resources={resources}
                   options={{
                     syncWithLocation: false,
