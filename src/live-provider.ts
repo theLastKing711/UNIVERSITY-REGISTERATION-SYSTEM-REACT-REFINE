@@ -4,12 +4,6 @@ import Echo from "laravel-echo";
 import { apiClient } from './libs/axios/config';
 import Pusher from 'pusher-js';
 
-// const liveProvider = {
-//     subscribe: ({ channel, params: { ids }, types, callback, meta }) => any,
-//     unsubscribe: (subscription) => void,
-//     publish?: ({ channel, type, payload, date, meta }) => void,
-// };
-
 declare global {
   interface Window {
     Pusher: typeof Pusher;
@@ -17,8 +11,7 @@ declare global {
   }
 }
 
- window.Pusher = Pusher; // This line is crucial for Laravel Echo
-
+window.Pusher = Pusher; // This line is crucial for Laravel Echo
 
 window.Echo = new Echo<"reverb">({
     broadcaster: 'reverb',
@@ -50,18 +43,15 @@ window.Echo = new Echo<"reverb">({
 export const liveProvider = (client: Echo<"reverb">): LiveProvider => {
   return {
     subscribe: ({ channel, types, params, callback }) => {
-    //   const channelInstance = client.channels.get(channel);
-
     console.log("channel", client);
 
-
-    console.log("channel name", channel);
+    console.log("subscribing to channel with name", channel);
 
       const channelInstance = 
         client
         .private(channel);
 
-      //names of the backend events, which are here laravel eventClass name like ["newTeacherAdded"]
+      //names of the backend events, which are here laravel eventClass name like ["newTeacherAdded", ".created"]
       console.log("types", types);
       
       console.log("params", params);
@@ -93,18 +83,16 @@ export const liveProvider = (client: Echo<"reverb">): LiveProvider => {
       channelInstance
         .subscribe();
 
-      
       types.forEach((eventName) => 
         {
 
-            console.log("hello world", eventName);
+            console.log("subscribing to event with name", eventName);
             
             channelInstance
                 .listen(
                     eventName,
-                    (message: LiveEvent) => console.log("event message", message)
+                    (event: LiveEvent) => callback(event)
                 );
-
         }
     );
 
