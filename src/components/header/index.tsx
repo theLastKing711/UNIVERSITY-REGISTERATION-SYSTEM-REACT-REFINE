@@ -5,6 +5,8 @@ import {
 import {
   Layout as AntdLayout,
   Avatar,
+  Button,
+  Flex,
   Form,
   Select,
   Space,
@@ -28,6 +30,7 @@ import {
 import { useGetAcademicYearSemesters } from "../../hooks/API/select/useGetAcademicYearSemesters";
 import { useGetGlobalQueryFilters } from "../../hooks/useGetGlobalQueryFilters";
 import { useLocation } from "react-router";
+import { BellFilled, NotificationFilled } from "@ant-design/icons";
 
 const { Text } = Typography;
 const { useToken } = theme;
@@ -52,6 +55,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
     alignItems: "center",
     padding: "16px 24px",
     height: "64px",
+    justifyContent: "space-between",
   };
 
   if (sticky) {
@@ -94,6 +98,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
           alignItems: "flex-start",
         }}
       > */}
+      {/* <Flex justify="space-between"> */}
       <Space
         style={{
           display: "flex",
@@ -166,6 +171,8 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
           />
         </Form.Item>
       </Space>
+      <Button shape="circle" icon={<BellFilled />} size="large" />
+      {/* </Flex> */}
 
       {/* </Space> */}
     </AntdLayout.Header>

@@ -14,7 +14,6 @@ export const TeacherEdit = () => {
     channel: `teachers.${id}`,
     types: [".updated"],
     onLiveEvent: (event) => {
-      console.log("event", event);
       open?.({
         type: "success",
         message: event.payload["message"],
