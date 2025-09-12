@@ -12,12 +12,20 @@ export const authProvider: AuthProvider = {
     const LOGIN_END_POINT = ADMIN_URI + "/auth/login";
 
     try {
-        const { data } = await apiClient.post<{id: number, name: string, redirect_to: string}>(LOGIN_END_POINT, {
-            name,
-            password
-        });
+        const { data } = 
+          await apiClient
+            .post<{id: number, name: string, redirect_to: string}>(
+              LOGIN_END_POINT,
+              {
+                name,
+                password
+              }
+            );
 
         localStorage.setItem("is_authenticated", "true");
+
+        localStorage.setItem("user_id", JSON.stringify(data.id));
+
 
         return {
             success: true,

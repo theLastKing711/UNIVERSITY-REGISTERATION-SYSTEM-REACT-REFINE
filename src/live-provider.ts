@@ -1,8 +1,8 @@
-import { PusherChannel } from './../node_modules/laravel-echo/src/channel/pusher-channel';
 import { LiveEvent, LiveProvider } from "@refinedev/core";
 import Echo from "laravel-echo";
 import { apiClient } from './libs/axios/config';
 import Pusher from 'pusher-js';
+import { PusherPrivateChannel } from 'laravel-echo/src/channel';
 
 declare global {
   interface Window {
@@ -39,17 +39,12 @@ window.Echo = new Echo<"reverb">({
     enabledTransports: ['ws', 'wss'],
 });
 
-
 export const liveProvider = (client: Echo<"reverb">): LiveProvider => {
   return {
     subscribe: ({ channel, types, params, callback }) => {
     console.log("channel", client);
 
     console.log("subscribing to channel with name", channel);
-
-      const channelInstance = 
-        client
-        .private(channel);
 
       //names of the backend events, which are here laravel eventClass name like ["newTeacherAdded", ".created"]
       console.log("types", types);
@@ -79,34 +74,57 @@ export const liveProvider = (client: Echo<"reverb">): LiveProvider => {
         //   }
         // }
       };
-      
-      channelInstance
-        .subscribe();
 
-      types.forEach((eventName) => 
+        const channelInstance = 
+            client
+            .private(channel);
+
+        // channelInstance
+        //     .subscribe();
+
+        
+        if(channel.includes("App.Models.User."))
         {
 
-            console.log("subscribing to event with name", eventName);
+            console.log("subscribing to notification channel with name", channel);
             
             channelInstance
-                .listen(
-                    eventName,
-                    (event: LiveEvent) => callback(event)
-                );
+                .notification((notification: any) => {
+                    console.log("notification", notification);
+                    callback(notification);
+                });
+                
+            return { channelInstance };
         }
-    );
 
+        types.forEach((eventName) => 
+            {
 
-      return { channelInstance };
+                console.log("subscribing to event with name", eventName);
+                
+                channelInstance
+                    .listen(
+                        eventName,
+                        (event: LiveEvent) => callback(event)
+                    );
+            }
+        );
+
+      return { channelInstance, client };
+
     },
-
     unsubscribe: (payload: {
-      channelInstance: PusherChannel<"reverb">
+      channelInstance: PusherPrivateChannel<"reverb">,
+      client: Echo<"reverb">;
+        
     }) => {
       const { channelInstance } = payload;
-      channelInstance.unsubscribe();
-    },
 
+      client.leave(channelInstance.name);
+      
+    //   console.log("unsubscribing from channel");
+    //   channelInstance.unsubscribe();
+    },
     publish: (event: LiveEvent) => {
     //   const channelInstance = client.channels.get(event.channel);
 

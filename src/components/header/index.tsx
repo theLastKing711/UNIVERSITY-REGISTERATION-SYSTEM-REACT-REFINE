@@ -23,9 +23,11 @@ import {
   useGetIdentity,
   useGo,
   useInvalidate,
+  useNotification,
   useParse,
   useParsed,
   useResource,
+  useSubscription,
 } from "@refinedev/core";
 import { useGetAcademicYearSemesters } from "../../hooks/API/select/useGetAcademicYearSemesters";
 import { useGetGlobalQueryFilters } from "../../hooks/useGetGlobalQueryFilters";
@@ -47,6 +49,24 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
   const { token } = useToken();
   const { data: user } = useGetIdentity<IUser>();
   const { mode, setMode } = useContext(ColorModeContext);
+
+  const user_id = localStorage.getItem("user_id");
+
+  console.log("user_id is changing to ", user_id);
+
+  const { open } = useNotification();
+
+  useSubscription({
+    // channel: `App.Models.User.${user_id}`,
+    channel: `App.Models.User.${user_id}`,
+    onLiveEvent: (event) => {
+      open?.({
+        type: "success",
+        message: event.payload["message"],
+      });
+      console.log("event", event);
+    },
+  });
 
   const headerStyles: React.CSSProperties = {
     backgroundColor: token.colorBgElevated,
