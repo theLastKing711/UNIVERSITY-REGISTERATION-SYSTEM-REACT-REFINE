@@ -17,6 +17,7 @@ export const RESOURSES = {
     classroomCourseTeachers: 'classroom-course-teachers',
     exams: 'exams',
     lectures: 'lectures',
+    notifications: "notifications",
     images: "images",
 }
 
@@ -191,6 +192,9 @@ export const LECTURE_SHOW =
 export const STUDENT_RESOURSES = {
     openCourseRegisterations: "open-course-registerations",
 }
+
+
+export const NOTIFICATION_URI =  ADMIN_ROLE + "/" + RESOURSES.notifications;
 
 
 export const DEPARTMENT_LIST_LIST = `${ADMIN_DEPARTMENT_URI}/list`;

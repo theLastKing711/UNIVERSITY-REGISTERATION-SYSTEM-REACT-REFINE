@@ -16,7 +16,8 @@ export const dataProvider = (url: string, deartemnt_query_filter?: string): Data
 
     const filtersQuery = getFiltersQuery(filters);
     
-    const paginationQuery = getPaginationQuery(pagination); 
+    const paginationQuery =
+       meta?.isCursorPagiantion ?  getCursorPaginationQuery(pagination) : getPaginationQuery(pagination); 
     
     const sortersQuery = getSortersQuery(sorters);  
 
@@ -69,6 +70,17 @@ export const dataProvider = (url: string, deartemnt_query_filter?: string): Data
      // in case of pagination response
     //  response.data.total is the total in server not in sent to client.
     // data.length in case of response an array of items  
+
+    console.log("datas", response);
+
+    if(meta?.isCursorPagiantion)
+      {
+        return {
+          data,
+          total,
+          cursor: response?.data.next_cursor
+      }
+    }
 
     return {
         data,
@@ -259,6 +271,20 @@ const getPaginationQuery = (pagination: Pagination | undefined) => {
     const pageSize = pagination.pageSize;
 
     query += `&page=${pageNumber}`;
+    query += `&perPage=${pageSize}`;
+  }
+  return query;
+}
+
+const getCursorPaginationQuery = (pagination: Pagination | undefined) => {
+  
+  let query = '';
+  if(pagination)
+  {
+    const pageNumber = pagination?.current;
+    const pageSize = pagination.pageSize;
+
+    query += pageNumber ? `&cursor=${pageNumber}` : '';
     query += `&perPage=${pageSize}`;
   }
   return query;
