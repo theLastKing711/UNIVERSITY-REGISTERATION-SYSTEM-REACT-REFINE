@@ -55,6 +55,9 @@ export const ClassroomCourseTeacherEdit = () => {
               // form.resetFields() set it to inital value which is the value of get inital request
               form.setFieldValue("teacher_id", undefined);
             }}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
           />
         </Form.Item>
 
@@ -72,6 +75,9 @@ export const ClassroomCourseTeacherEdit = () => {
             disabled={!form.getFieldValue("course_id")}
             placeholder="اختر أستاذ"
             {...teachersSelectProps}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
           />
         </Form.Item>
 
@@ -85,7 +91,13 @@ export const ClassroomCourseTeacherEdit = () => {
             },
           ]}
         >
-          <Select placeholder="اختر قاعة" {...classroomsSelectProps} />
+          <Select
+            placeholder="اختر قاعة"
+            {...classroomsSelectProps}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
+          />
         </Form.Item>
 
         <Form.Item
@@ -97,7 +109,12 @@ export const ClassroomCourseTeacherEdit = () => {
             },
           ]}
         >
-          <Select options={DAYS} />
+          <Select
+            options={DAYS}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
+          />
         </Form.Item>
 
         <Form.Item

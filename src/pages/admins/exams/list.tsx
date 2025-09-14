@@ -75,7 +75,12 @@ export const ExamList = () => {
                   allowClear
                   placeholder="اختر مادة"
                   {...openCourseRegisterationssSelectProps}
-                  style={{ width: 100 }}
+                  style={{ width: 200 }}
+                  filterOption={(input, option) =>
+                    (option?.label ?? "")
+                      .toLowerCase()
+                      .includes(input.toLowerCase())
+                  }
                 />
               </Form.Item>
             </Space>
@@ -106,7 +111,6 @@ export const ExamList = () => {
               >
                 تحميل جدول الامتحانات
               </ListButton>
-              {/* <ExportButton resource="asldjasldj/est"></ExportButton> */}
             </>
           }
         >

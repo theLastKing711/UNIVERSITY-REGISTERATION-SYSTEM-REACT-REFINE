@@ -29,7 +29,13 @@ export const OpenCourseRegisterationsCreate = () => {
             },
           ]}
         >
-          <Select placeholder="" {...academicYearSemestersSelectProps} />
+          <Select
+            placeholder=""
+            {...academicYearSemestersSelectProps}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
+          />
         </Form.Item>
 
         <Form.Item
@@ -42,7 +48,13 @@ export const OpenCourseRegisterationsCreate = () => {
             },
           ]}
         >
-          <Select placeholder="" {...coursesSelectProps} />
+          <Select
+            placeholder=""
+            {...coursesSelectProps}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
+          />
         </Form.Item>
 
         <Form.Item label="السعر بالدولار" name={["price_in_usd"]}>
@@ -66,6 +78,11 @@ export const OpenCourseRegisterationsCreate = () => {
                         style={{ width: 200 }}
                         placeholder="اختر أستاذ"
                         {...teachersSelectProps}
+                        filterOption={(input, option) =>
+                          (option?.label ?? "")
+                            .toLowerCase()
+                            .includes(input.toLowerCase())
+                        }
                       />
                     </Form.Item>
 

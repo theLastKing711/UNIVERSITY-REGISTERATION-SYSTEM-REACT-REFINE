@@ -297,6 +297,9 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
                 },
               });
             }}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
           />
         </Form.Item>
       </Space>

@@ -32,7 +32,13 @@ export const TeacherCreate = () => {
             },
           ]}
         >
-          <Select placeholder="اختر قسم" {...departmentSelectProps} />
+          <Select
+            placeholder="اختر قسم"
+            {...departmentSelectProps}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
+          />
         </Form.Item>
       </Form>
     </Create>

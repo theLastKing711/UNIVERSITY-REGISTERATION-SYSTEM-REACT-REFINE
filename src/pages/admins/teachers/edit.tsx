@@ -46,7 +46,13 @@ export const TeacherEdit = () => {
             },
           ]}
         >
-          <Select placeholder="اختر قسم" {...departmentSelectProps} />
+          <Select
+            placeholder="اختر قسم"
+            {...departmentSelectProps}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
+          />
         </Form.Item>
       </Form>
     </Edit>

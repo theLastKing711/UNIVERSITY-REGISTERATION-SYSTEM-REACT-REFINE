@@ -50,7 +50,12 @@ export const BlogPostEdit = () => {
             },
           ]}
         >
-          <Select {...categorySelectProps} />
+          <Select
+            {...categorySelectProps}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
+          />
         </Form.Item>
         <Form.Item
           label={"Status"}
@@ -70,6 +75,9 @@ export const BlogPostEdit = () => {
               { value: "rejected", label: "Rejected" },
             ]}
             style={{ width: 120 }}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
           />
         </Form.Item>
       </Form>

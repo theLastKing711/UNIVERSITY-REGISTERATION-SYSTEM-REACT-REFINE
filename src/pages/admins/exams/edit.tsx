@@ -73,6 +73,9 @@ export const ExamEdit = () => {
             onChange={(option) => {
               form.setFieldValue("teacher_id", undefined);
             }}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
           />
         </Form.Item>
 
@@ -90,6 +93,9 @@ export const ExamEdit = () => {
             disabled={!form.getFieldValue("course_id")}
             placeholder="اختر أستاذ"
             {...teachersSelectProps}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
           />
         </Form.Item>
 
@@ -103,7 +109,13 @@ export const ExamEdit = () => {
             },
           ]}
         >
-          <Select placeholder="اختر قاعة" {...classroomsSelectProps} />
+          <Select
+            placeholder="اختر قاعة"
+            {...classroomsSelectProps}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
+          />
         </Form.Item>
 
         <Form.Item
@@ -196,6 +208,11 @@ export const ExamEdit = () => {
                         style={{ width: 200 }}
                         placeholder="اختر طالب"
                         {...studentsSelectProps}
+                        filterOption={(input, option) =>
+                          (option?.label ?? "")
+                            .toLowerCase()
+                            .includes(input.toLowerCase())
+                        }
                       />
                     </Form.Item>
 

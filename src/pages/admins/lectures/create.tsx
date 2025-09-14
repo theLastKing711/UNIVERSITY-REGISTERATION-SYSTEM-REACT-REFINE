@@ -57,6 +57,9 @@ export const LectureCreate = () => {
             onChange={(option) => {
               form.setFieldValue("teacher_id", undefined);
             }}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
           />
         </Form.Item>
 
@@ -74,6 +77,9 @@ export const LectureCreate = () => {
             disabled={!form.getFieldValue("course_id")}
             placeholder="اختر أستاذ"
             {...teachersSelectProps}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
           />
         </Form.Item>
 
@@ -113,6 +119,11 @@ export const LectureCreate = () => {
                         style={{ width: 200 }}
                         placeholder="اختر طالب"
                         {...studentsSelectProps}
+                        filterOption={(input, option) =>
+                          (option?.label ?? "")
+                            .toLowerCase()
+                            .includes(input.toLowerCase())
+                        }
                       />
                     </Form.Item>
 

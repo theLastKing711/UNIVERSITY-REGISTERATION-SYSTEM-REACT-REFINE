@@ -44,6 +44,9 @@ export const LectureEdit = () => {
             onChange={(option) => {
               form.resetFields(["teacher_id"]);
             }}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
           />
         </Form.Item>
 
@@ -61,6 +64,9 @@ export const LectureEdit = () => {
             disabled={!selectedCourse}
             placeholder="اختر أستاذ"
             {...teachersSelectProps}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
           />
         </Form.Item>
 
@@ -101,6 +107,11 @@ export const LectureEdit = () => {
                         style={{ width: 200 }}
                         placeholder="اختر طالب"
                         {...studentsSelectProps}
+                        filterOption={(input, option) =>
+                          (option?.label ?? "")
+                            .toLowerCase()
+                            .includes(input.toLowerCase())
+                        }
                       />
                     </Form.Item>
 

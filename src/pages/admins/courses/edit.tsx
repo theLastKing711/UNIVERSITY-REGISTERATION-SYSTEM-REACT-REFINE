@@ -20,7 +20,13 @@ export const CourseEdit = () => {
     <Edit saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
         <Form.Item label="القسم" name="department_id">
-          <Select placeholder="" {...departmentSelectProps} />
+          <Select
+            placeholder=""
+            {...departmentSelectProps}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
+          />
         </Form.Item>
 
         <Form.Item
@@ -94,6 +100,11 @@ export const CourseEdit = () => {
                         style={{ width: 200 }}
                         placeholder="اختر مادة"
                         {...coursesSelectProps}
+                        filterOption={(input, option) =>
+                          (option?.label ?? "")
+                            .toLowerCase()
+                            .includes(input.toLowerCase())
+                        }
                       />
                     </Form.Item>
                     <MinusCircleOutlined onClick={() => remove(field.name)} />
@@ -131,6 +142,11 @@ export const CourseEdit = () => {
                         style={{ width: 200 }}
                         placeholder="اختر مادة"
                         {...coursesSelectProps}
+                        filterOption={(input, option) =>
+                          (option?.label ?? "")
+                            .toLowerCase()
+                            .includes(input.toLowerCase())
+                        }
                       />
                     </Form.Item>
                     <MinusCircleOutlined onClick={() => remove(field.name)} />

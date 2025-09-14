@@ -63,6 +63,9 @@ export const ExamCreate = () => {
 
               setSelectedCourse(option);
             }}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
           />
         </Form.Item>
 
@@ -80,6 +83,9 @@ export const ExamCreate = () => {
             disabled={!selectedCourse}
             placeholder="اختر أستاذ"
             {...teachersSelectProps}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
           />
         </Form.Item>
 
@@ -93,7 +99,13 @@ export const ExamCreate = () => {
             },
           ]}
         >
-          <Select placeholder="اختر قاعة" {...classroomsSelectProps} />
+          <Select
+            placeholder="اختر قاعة"
+            {...classroomsSelectProps}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
+          />
         </Form.Item>
 
         <Form.Item

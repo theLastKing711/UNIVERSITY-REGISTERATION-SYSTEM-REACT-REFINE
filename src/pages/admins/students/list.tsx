@@ -91,7 +91,15 @@ export const StudentList = () => {
             </Space>
             <Space>
               <Form.Item label="القسم" name="department_id">
-                <Select placeholder="اختر القسم" {...departmentSelectProps} />
+                <Select
+                  placeholder="اختر القسم"
+                  {...departmentSelectProps}
+                  filterOption={(input, option) =>
+                    (option?.label ?? "")
+                      .toLowerCase()
+                      .includes(input.toLowerCase())
+                  }
+                />
               </Form.Item>
             </Space>
             <Space>

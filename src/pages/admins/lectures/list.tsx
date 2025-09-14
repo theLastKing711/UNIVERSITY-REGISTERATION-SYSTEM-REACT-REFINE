@@ -34,6 +34,11 @@ export const LectureList = () => {
                   placeholder="اختر مادة"
                   {...openCourseRegisterationssSelectProps}
                   style={{ width: 100 }}
+                  filterOption={(input, option) =>
+                    (option?.label ?? "")
+                      .toLowerCase()
+                      .includes(input.toLowerCase())
+                  }
                 />
               </Form.Item>
             </Space>

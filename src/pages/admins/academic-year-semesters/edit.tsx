@@ -68,6 +68,11 @@ export const AcademicYearSemesterEdit = () => {
                         style={{ width: 200 }}
                         placeholder="اختر قسم"
                         {...departmentSelectProps}
+                        filterOption={(input, option) =>
+                          (option?.label ?? "")
+                            .toLowerCase()
+                            .includes(input.toLowerCase())
+                        }
                       />
                     </Form.Item>
 

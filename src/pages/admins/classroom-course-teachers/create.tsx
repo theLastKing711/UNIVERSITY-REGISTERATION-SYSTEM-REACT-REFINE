@@ -56,6 +56,9 @@ export const ClassroomCourseTeacherCreate = () => {
 
               setSelectedCourse(option);
             }}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
           />
         </Form.Item>
 
@@ -73,6 +76,9 @@ export const ClassroomCourseTeacherCreate = () => {
             disabled={!selectedCourse}
             placeholder="اختر أستاذ"
             {...teachersSelectProps}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
           />
         </Form.Item>
 
@@ -86,7 +92,13 @@ export const ClassroomCourseTeacherCreate = () => {
             },
           ]}
         >
-          <Select placeholder="اختر قاعة" {...classroomsSelectProps} />
+          <Select
+            placeholder="اختر قاعة"
+            {...classroomsSelectProps}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
+          />
         </Form.Item>
 
         <Form.Item
@@ -98,7 +110,12 @@ export const ClassroomCourseTeacherCreate = () => {
             },
           ]}
         >
-          <Select options={DAYS} />
+          <Select
+            options={DAYS}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
+          />
         </Form.Item>
 
         <Form.Item

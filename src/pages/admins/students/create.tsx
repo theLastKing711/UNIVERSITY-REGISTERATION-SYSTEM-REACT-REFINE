@@ -89,6 +89,9 @@ export const StudentCreate = () => {
             placeholder="اختر القسم"
             style={{ width: 300 }}
             {...departmentSelectProps}
+            filterOption={(input, option) =>
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+            }
           />
         </Form.Item>
 
