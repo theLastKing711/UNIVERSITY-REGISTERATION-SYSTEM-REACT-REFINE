@@ -20,10 +20,12 @@ import {
   useGetIdentity,
   useGo,
   useInfiniteList,
+  useInvalidate,
   useNavigation,
   useNotification,
   useParsed,
   useSubscription,
+  useUpdate,
 } from "@refinedev/core";
 import { useGetAcademicYearSemesters } from "../../hooks/API/select/useGetAcademicYearSemesters";
 import { useGetGlobalQueryFilters } from "../../hooks/useGetGlobalQueryFilters";
@@ -41,45 +43,6 @@ type IUser = {
   name: string;
   avatar: string;
 };
-
-const items: MenuProps["items"] = [
-  {
-    key: "1",
-    label: (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://www.antgroup.com"
-      >
-        1st menu item
-      </a>
-    ),
-  },
-  {
-    key: "2",
-    label: (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://www.aliyun.com"
-      >
-        2nd menu item
-      </a>
-    ),
-  },
-  {
-    key: "3",
-    label: (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://www.luohanacademy.com"
-      >
-        3rd menu item
-      </a>
-    ),
-  },
-];
 
 const useStyles = createStyles(({ token, css }) => ({
   myButton: {
@@ -121,6 +84,28 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
     },
     meta: { isCursorPagiantion: true },
   });
+
+  const invalidate = useInvalidate();
+
+  const { mutate } = useUpdate();
+
+  const markNotificationAsRead = (id: any) => {
+    mutate(
+      {
+        resource: NOTIFICATION_URI,
+        id,
+        values: {},
+      },
+      {
+        onSuccess: () => {
+          invalidate({
+            resource: NOTIFICATION_URI,
+            invalidates: ["list"],
+          });
+        },
+      }
+    );
+  };
 
   const notifications = data?.pages.flatMap((page) => page.data);
 
@@ -193,9 +178,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
     boxShadow: token.boxShadowSecondary,
   };
 
-  console.log("notifications?.length", notifications?.length);
-
-  const { editUrl } = useNavigation();
+  const { editUrl, push } = useNavigation();
 
   return (
     <AntdLayout.Header style={headerStyles}>
@@ -239,7 +222,6 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
             style={{ width: 300 }}
             value={department_id_query_parameter}
             onChange={(department_id) => {
-              // console.log("department_id", department_id);
               localStorage.setItem(
                 "department_id_query_parameter",
                 department_id as unknown as string
@@ -292,9 +274,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
         </Form.Item>
       </Space>
       <div>
-        {/* </Flex> */}
         <Dropdown
-          menu={{ items }}
           placement="bottomLeft"
           open={isNotificationDropdownOpen}
           popupRender={(menu) => (
@@ -305,24 +285,14 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
                 }>,
                 { style: menuStyle }
               )} */}
-
               <InfiniteScroll
-                // dataLength={notifications?.length || 0}
                 dataLength={notifications?.length || 0}
                 height={400}
                 next={fetchNextPage}
-                // style={{ display: "flex" }} //To put endMessage and loader to the top.
-                // inverse={true}
                 inverse={false}
                 hasMore={!!hasNextPage}
                 loader={<h4>Loading...</h4>}
-                // scrollableTarget="scrollableDiv"
               >
-                {/* {notifications?.map((item) => (
-                  <div key={item.id} style={{ padding: "16px" }}>
-                    {item.data.message}
-                  </div>
-                ))} */}
                 <List
                   style={{
                     minWidth: "600px",
@@ -334,23 +304,28 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
                   renderItem={(item) => (
                     <List.Item
                       key={item.id}
-                      className={styles.myButton}
-                      onClick={() => editUrl("admins\\admins", "1")}
+                      // className={styles.myButton}
+                      style={{
+                        backgroundColor: item.read_at
+                          ? ""
+                          : token.colorLinkHover,
+                      }}
+                      onClick={() => {
+                        markNotificationAsRead(item.id);
+                        closeNotificationDropdown();
+                        push(item.data.link);
+                      }}
                     >
-                      <List.Item.Meta
+                      {/* <List.Item.Meta
                         // avatar={<Avatar src={item.avatar} />}
                         // title={<a href={item.data.link}>{item.data.link}</a>}
                         description={item.data.message}
-                      />
-                      <div>{item.data.link}</div>
+                      /> */}
+                      <div>{item.data.message}</div>
                     </List.Item>
                   )}
                 />
               </InfiniteScroll>
-              {/* <Divider style={{ margin: 0 }} />
-              <Space style={{ padding: 8 }} onClick={() => fetchNextPage()}>
-                <Button type="primary">Click me!</Button>
-              </Space> */}
             </div>
           )}
         >
@@ -361,8 +336,6 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
             onClick={openNotificationDropdown}
           />
         </Dropdown>
-
-        {/* </Space> */}
       </div>
     </AntdLayout.Header>
   );

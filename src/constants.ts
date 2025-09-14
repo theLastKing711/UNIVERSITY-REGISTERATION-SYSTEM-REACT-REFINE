@@ -1,5 +1,4 @@
-import { DefaultOptionType } from "antd/es/select";
-import { DayOfWeek, TimeInterval } from "./types/shared";
+import { TimeInterval } from "./types/shared";
 import { SelectProps } from "antd/lib";
 
 export const BASE_URI = 'http://localhost:8000';

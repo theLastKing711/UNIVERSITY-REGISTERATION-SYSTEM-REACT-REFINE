@@ -1,7 +1,6 @@
 import { CrudFilter, CrudSort, DataProvider, HttpError, Pagination, ValidationErrors } from "@refinedev/core";
 import { apiClient } from "./libs/axios/config";
 import { AxiosError } from "axios";
-import { PER_PAGE } from "./constants";
 
 export const dataProvider = (url: string, deartemnt_query_filter?: string): DataProvider => ({
     getList: async ({resource, filters, pagination, sorters, meta}) => {
@@ -15,10 +14,6 @@ export const dataProvider = (url: string, deartemnt_query_filter?: string): Data
     // console.log("filters" ,filters);
 
     const filtersQuery = getFiltersQuery(filters);
-
-    console.log("meta.queryContext?.pageParam.cursor", meta?.queryContext?.pageParam)
-
-    console.log("meta?.isCursorPagiantion", pagination);
     
     const paginationQuery =
        meta?.isCursorPagiantion ?  getCursorPaginationQuery(pagination, meta?.queryContext?.pageParam?.cursor) : getPaginationQuery(pagination); 
@@ -281,8 +276,6 @@ const getPaginationQuery = (pagination: Pagination | undefined) => {
 }
 
 const getCursorPaginationQuery = (pagination: Pagination | undefined) => {
-  
-  console.log("pagess", pagination);
   
   let query = '';
   if(pagination)

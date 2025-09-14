@@ -3,5 +3,6 @@ export type GetNotificationsResponseData = {
     data: {
         message: string;
         link: string;
-    }
+    };
+    read_at: string | null;
 }
