@@ -1,42 +1,37 @@
-import {
-  useSelect,
-  type RefineThemedLayoutV2HeaderProps,
-} from "@refinedev/antd";
+import { type RefineThemedLayoutV2HeaderProps } from "@refinedev/antd";
 import {
   Layout as AntdLayout,
-  Avatar,
   Button,
   Divider,
   Dropdown,
-  Flex,
   Form,
+  List,
   MenuProps,
+  notification,
   Select,
   Space,
-  Switch,
   theme,
   Typography,
 } from "antd";
 import React, { useContext, useState } from "react";
 import { ColorModeContext } from "../../contexts/color-mode";
 import { useGetDepratments } from "../../hooks/API/select/useGetDepartments";
-import { GetDepartmentsResponseData } from "../../types/admins/departments";
-import { ADMIN_DEPARTMENT_URI, NOTIFICATION_URI } from "../../constants";
 import {
   useGetIdentity,
   useGo,
   useInfiniteList,
-  useInvalidate,
+  useNavigation,
   useNotification,
-  useParse,
   useParsed,
-  useResource,
   useSubscription,
 } from "@refinedev/core";
 import { useGetAcademicYearSemesters } from "../../hooks/API/select/useGetAcademicYearSemesters";
 import { useGetGlobalQueryFilters } from "../../hooks/useGetGlobalQueryFilters";
-import { useLocation } from "react-router";
-import { BellFilled, NotificationFilled } from "@ant-design/icons";
+import { BellFilled } from "@ant-design/icons";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { NOTIFICATION_URI } from "../../constants";
+import { GetNotificationsResponseData } from "../../types/admins/notifications";
+import { createStyles } from "antd-style";
 
 const { Text } = Typography;
 const { useToken } = theme;
@@ -86,6 +81,16 @@ const items: MenuProps["items"] = [
   },
 ];
 
+const useStyles = createStyles(({ token, css }) => ({
+  myButton: {
+    // backgroundColor: token.colorPrimary,
+    "&:hover": {
+      // Define hover styles using the '&:hover' selector
+      backgroundColor: token.colorLinkHover,
+    },
+  },
+}));
+
 export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
   sticky = true,
 }) => {
@@ -99,7 +104,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
-  } = useInfiniteList({
+  } = useInfiniteList<GetNotificationsResponseData>({
     resource: NOTIFICATION_URI,
     // pagination: {
     //   pageSize: 20,
@@ -107,7 +112,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
     // },
     queryOptions: {
       getNextPageParam: (lastPage, allPages) => {
-        console.log("lastPage", lastPage.data);
+        console.log("lastPage", lastPage.cursor);
         console.log("allPages", allPages);
 
         return lastPage.cursor;
@@ -116,6 +121,10 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
     },
     meta: { isCursorPagiantion: true },
   });
+
+  const notifications = data?.pages.flatMap((page) => page.data);
+
+  const { styles } = useStyles();
 
   const { token } = useToken();
   const { data: user } = useGetIdentity<IUser>();
@@ -183,6 +192,10 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
     borderRadius: token.borderRadiusLG,
     boxShadow: token.boxShadowSecondary,
   };
+
+  console.log("notifications?.length", notifications?.length);
+
+  const { editUrl } = useNavigation();
 
   return (
     <AntdLayout.Header style={headerStyles}>
@@ -286,16 +299,58 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
           open={isNotificationDropdownOpen}
           popupRender={(menu) => (
             <div style={contentStyle}>
-              {React.cloneElement(
+              {/* {React.cloneElement(
                 menu as React.ReactElement<{
                   style: React.CSSProperties;
                 }>,
                 { style: menuStyle }
-              )}
-              <Divider style={{ margin: 0 }} />
-              <Space style={{ padding: 8 }}>
+              )} */}
+
+              <InfiniteScroll
+                // dataLength={notifications?.length || 0}
+                dataLength={notifications?.length || 0}
+                height={400}
+                next={fetchNextPage}
+                // style={{ display: "flex" }} //To put endMessage and loader to the top.
+                // inverse={true}
+                inverse={false}
+                hasMore={!!hasNextPage}
+                loader={<h4>Loading...</h4>}
+                // scrollableTarget="scrollableDiv"
+              >
+                {/* {notifications?.map((item) => (
+                  <div key={item.id} style={{ padding: "16px" }}>
+                    {item.data.message}
+                  </div>
+                ))} */}
+                <List
+                  style={{
+                    minWidth: "600px",
+                    // paddingInline: "8px",
+                    cursor: "pointer",
+                  }}
+                  size="large"
+                  dataSource={notifications}
+                  renderItem={(item) => (
+                    <List.Item
+                      key={item.id}
+                      className={styles.myButton}
+                      onClick={() => editUrl("admins\\admins", "1")}
+                    >
+                      <List.Item.Meta
+                        // avatar={<Avatar src={item.avatar} />}
+                        // title={<a href={item.data.link}>{item.data.link}</a>}
+                        description={item.data.message}
+                      />
+                      <div>{item.data.link}</div>
+                    </List.Item>
+                  )}
+                />
+              </InfiniteScroll>
+              {/* <Divider style={{ margin: 0 }} />
+              <Space style={{ padding: 8 }} onClick={() => fetchNextPage()}>
                 <Button type="primary">Click me!</Button>
-              </Space>
+              </Space> */}
             </div>
           )}
         >
@@ -306,6 +361,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
             onClick={openNotificationDropdown}
           />
         </Dropdown>
+
         {/* </Space> */}
       </div>
     </AntdLayout.Header>

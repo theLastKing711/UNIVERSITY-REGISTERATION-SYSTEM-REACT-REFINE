@@ -15,9 +15,13 @@ export const dataProvider = (url: string, deartemnt_query_filter?: string): Data
     // console.log("filters" ,filters);
 
     const filtersQuery = getFiltersQuery(filters);
+
+    console.log("meta.queryContext?.pageParam.cursor", meta?.queryContext?.pageParam)
+
+    console.log("meta?.isCursorPagiantion", pagination);
     
     const paginationQuery =
-       meta?.isCursorPagiantion ?  getCursorPaginationQuery(pagination) : getPaginationQuery(pagination); 
+       meta?.isCursorPagiantion ?  getCursorPaginationQuery(pagination, meta?.queryContext?.pageParam?.cursor) : getPaginationQuery(pagination); 
     
     const sortersQuery = getSortersQuery(sorters);  
 
@@ -278,15 +282,20 @@ const getPaginationQuery = (pagination: Pagination | undefined) => {
 
 const getCursorPaginationQuery = (pagination: Pagination | undefined) => {
   
+  console.log("pagess", pagination);
+  
   let query = '';
   if(pagination)
   {
-    const pageNumber = pagination?.current;
+    const pageNumber = pagination.current;
     const pageSize = pagination.pageSize;
 
-    query += pageNumber ? `&cursor=${pageNumber}` : '';
+    query += `&cursor=${pageNumber}`;
     query += `&perPage=${pageSize}`;
   }
+
+  console.log("query", query);
+  
   return query;
 }
 
