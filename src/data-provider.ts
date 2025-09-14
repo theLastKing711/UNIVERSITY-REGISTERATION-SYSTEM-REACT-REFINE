@@ -70,10 +70,14 @@ export const dataProvider = (url: string, deartemnt_query_filter?: string): Data
     //  response.data.total is the total in server not in sent to client.
     // data.length in case of response an array of items  
 
+
     console.log("datas", response);
 
     if(meta?.isCursorPagiantion)
       {
+
+        console.log("total", total);
+
         return {
           data,
           total,
@@ -138,7 +142,7 @@ export const dataProvider = (url: string, deartemnt_query_filter?: string): Data
 
   },
   update: async ({resource, variables, id}) => {
-    const updateUrl = `${url}/${resource}/${id}`;
+    const updateUrl = id != "-1" ? `${url}/${resource}/${id}` : `${url}/${resource}`;
 
     try {
       const response = await apiClient.patch(updateUrl, variables);

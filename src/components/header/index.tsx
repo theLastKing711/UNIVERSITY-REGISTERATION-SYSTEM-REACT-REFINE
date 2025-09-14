@@ -1,9 +1,11 @@
 import { type RefineThemedLayoutV2HeaderProps } from "@refinedev/antd";
 import {
   Layout as AntdLayout,
+  Badge,
   Button,
   Divider,
   Dropdown,
+  Flex,
   Form,
   List,
   MenuProps,
@@ -29,7 +31,7 @@ import {
 } from "@refinedev/core";
 import { useGetAcademicYearSemesters } from "../../hooks/API/select/useGetAcademicYearSemesters";
 import { useGetGlobalQueryFilters } from "../../hooks/useGetGlobalQueryFilters";
-import { BellFilled } from "@ant-design/icons";
+import { BellFilled, ClockCircleOutlined } from "@ant-design/icons";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { NOTIFICATION_URI } from "../../constants";
 import { GetNotificationsResponseData } from "../../types/admins/notifications";
@@ -100,7 +102,25 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
         onSuccess: () => {
           invalidate({
             resource: NOTIFICATION_URI,
-            invalidates: ["list"],
+            invalidates: ["all"],
+          });
+        },
+      }
+    );
+  };
+
+  const markNotificationsAsRead = () => {
+    mutate(
+      {
+        id: "-1",
+        resource: NOTIFICATION_URI,
+        values: {},
+      },
+      {
+        onSuccess: () => {
+          invalidate({
+            resource: NOTIFICATION_URI,
+            invalidates: ["all"],
           });
         },
       }
@@ -128,6 +148,11 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
         message: event.payload["message"],
       });
       console.log("event", event);
+
+      invalidate({
+        resource: NOTIFICATION_URI,
+        invalidates: ["all"],
+      });
     },
   });
 
@@ -179,6 +204,8 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
   };
 
   const { editUrl, push } = useNavigation();
+
+  console.log("sex", data);
 
   return (
     <AntdLayout.Header style={headerStyles}>
@@ -279,12 +306,25 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
           open={isNotificationDropdownOpen}
           popupRender={(menu) => (
             <div style={contentStyle}>
+              -
               {/* {React.cloneElement(
                 menu as React.ReactElement<{
                   style: React.CSSProperties;
                 }>,
                 { style: menuStyle }
               )} */}
+              <Flex
+                justify="space-between"
+                align="center"
+                style={{ padding: "8px" }}
+              >
+                <Typography.Title level={5} style={{ margin: "12px" }}>
+                  الإشعارات
+                </Typography.Title>
+                <Button onClick={() => markNotificationsAsRead()}>
+                  تحديد الكل كمقروء
+                </Button>
+              </Flex>
               <InfiniteScroll
                 dataLength={notifications?.length || 0}
                 height={400}
@@ -329,12 +369,14 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
             </div>
           )}
         >
-          <Button
-            shape="circle"
-            icon={<BellFilled />}
-            size="large"
-            onClick={openNotificationDropdown}
-          />
+          <Badge count={data?.pages[0]?.total}>
+            <Button
+              shape="circle"
+              icon={<BellFilled />}
+              size="large"
+              onClick={openNotificationDropdown}
+            />
+          </Badge>
         </Dropdown>
       </div>
     </AntdLayout.Header>
