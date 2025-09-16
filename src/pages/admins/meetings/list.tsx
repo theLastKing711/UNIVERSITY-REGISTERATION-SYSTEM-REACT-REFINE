@@ -1,34 +1,40 @@
-import { List, useTable } from "@refinedev/antd";
-import { useDelete } from "@refinedev/core";
-import CustomTable from "../../../components/ui/AntDesgin/CustomTable";
-import { Table } from "antd";
-
+import { List } from "@refinedev/antd";
+import { useList } from "@refinedev/core";
+import { Calendar } from "antd";
+import { GetMeetingsResponseData } from "../../../types/admins/meetings";
+import dayjs, { Dayjs } from "dayjs";
 export const MeetingList = () => {
-  const { tableProps } = useTable({
-    syncWithLocation: false,
-  });
+  //   const { tableProps } = useTable({
+  //     syncWithLocation: false,
+  //   });
 
-  const { mutate: remove } = useDelete();
+  const { data } = useList<GetMeetingsResponseData>();
 
-  const removeItem = (record: any) => {
-    console.log("record", record);
-    remove({
-      resource: "admin",
-      id: record.id,
-      successNotification: (data, values, resourses) => ({
-        message: "حذف اجتماع",
-        description: "تم حذف السمتخدم بنجاح",
-        type: "success",
-      }),
-    });
-  };
+  console.log("data", data);
 
   return (
     <List>
-      <CustomTable {...tableProps}>
-        <Table.Column dataIndex="id" title="المعرف" />
-        <Table.Column dataIndex="name" title="اسم الستخدم" />
-      </CustomTable>
+      <Calendar
+        cellRender={(date) => {
+          console.log("date", date);
+
+          const meetingDate = data?.data.find((meeting) => {
+            const meetingDate = meeting.happens_at;
+
+            return (
+              dayjs(meetingDate).isSame(date, "year") &&
+              dayjs(meetingDate).isSame(date, "month") &&
+              dayjs(meetingDate).isSame(date, "day")
+            );
+          });
+
+          if (meetingDate) {
+            return <div>{meetingDate.happens_at}</div>;
+          }
+
+          return <div></div>;
+        }}
+      />
     </List>
   );
 };
