@@ -11,6 +11,7 @@ import { useGetOpenCourseRegisterations } from "../../../hooks/API/select/useGet
 import { useEffect } from "react";
 import CustomTable from "../../../components/ui/AntDesgin/CustomTable";
 import { DownloadOutlined } from "@ant-design/icons";
+import CustomSearchSelect from "../../../components/ui/AntDesgin/CustomSearchSelect";
 
 export const ExamList = () => {
   const { data, isFetching, refetch } = useCustom({
@@ -71,16 +72,11 @@ export const ExamList = () => {
           <Form {...searchFormProps}>
             <Space style={{ display: "block" }}>
               <Form.Item label="المادة" name="course_id">
-                <Select
+                <CustomSearchSelect
                   allowClear
                   placeholder="اختر مادة"
                   {...openCourseRegisterationssSelectProps}
                   style={{ width: 200 }}
-                  filterOption={(input, option) =>
-                    (option?.label ?? "")
-                      .toLowerCase()
-                      .includes(input.toLowerCase())
-                  }
                 />
               </Form.Item>
             </Space>

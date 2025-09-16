@@ -1,6 +1,7 @@
 import { type RefineThemedLayoutV2HeaderProps } from "@refinedev/antd";
 import {
   Layout as AntdLayout,
+  Avatar,
   Badge,
   Button,
   Divider,
@@ -36,6 +37,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { NOTIFICATION_URI } from "../../constants";
 import { GetNotificationsResponseData } from "../../types/admins/notifications";
 import { createStyles } from "antd-style";
+import CustomSearchSelect from "../ui/AntDesgin/CustomSearchSelect";
 
 const { Text } = Typography;
 const { useToken } = theme;
@@ -59,6 +61,12 @@ const useStyles = createStyles(({ token, css }) => ({
 export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
   sticky = true,
 }) => {
+  const [username, setUsername] = useState(() => {
+    const username = localStorage.getItem("username");
+
+    return username ? username : "";
+  });
+
   const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] =
     useState(false);
 
@@ -215,11 +223,11 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
           unCheckedChildren="🔆"
           onChange={() => setMode(mode === "light" ? "dark" : "light")}
           defaultChecked={mode === "dark"}
-        />
-        <Space style={{ marginLeft: "8px" }} size="middle">
-          {user?.name && <Text strong>{user.name}</Text>}
-          {user?.avatar && <Avatar src={user?.avatar} alt={user?.name} />}
-        </Space> */}
+        /> */}
+      {/* <Space style={{ marginLeft: "8px" }} size="middle"> */}
+      {/* {username && <Text strong>{username}</Text>} */}
+      {/* {user?.avatar && <Avatar src={user?.avatar} alt={user?.name} />} */}
+      {/* </Space> */}
       {/* <Space
         style={{
           display: "flex",
@@ -236,7 +244,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
         }}
       >
         <Form.Item label="القسم" style={{ marginBottom: 0 }}>
-          <Select
+          <CustomSearchSelect
             {...departmentSelectProps}
             placeholder="اختر قسم"
             allowClear
@@ -268,7 +276,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
           />
         </Form.Item>
         <Form.Item label="السنةوالفصل الدراسي" style={{ marginBottom: 0 }}>
-          <Select
+          <CustomSearchSelect
             {...academicYearSemestersSelectProps}
             placeholder="اختر السنة والفصل الدراسي "
             allowClear
@@ -297,13 +305,12 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
                 },
               });
             }}
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
           />
         </Form.Item>
       </Space>
-      <div>
+      <Space size="middle">
+        {username && <Text strong>أهلا {username}</Text>}
+        {/* {username && <Avatar src={username} />} */}
         <Dropdown
           placement="bottomLeft"
           open={isNotificationDropdownOpen}
@@ -381,7 +388,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
             />
           </Badge>
         </Dropdown>
-      </div>
+      </Space>
     </AntdLayout.Header>
   );
 };

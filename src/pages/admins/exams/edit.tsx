@@ -21,6 +21,7 @@ import { useGetOpenCourseRegisterations } from "../../../hooks/API/select/useGet
 import FormSection from "../../../components/ui/From/FormSection";
 import { useGetStudents } from "../../../hooks/API/select/useGetStudents";
 import FormItemsContainer from "../../../components/ui/From/FormItemsContainer";
+import CustomSearchSelect from "../../../components/ui/AntDesgin/CustomSearchSelect";
 
 export const ExamEdit = () => {
   const { formProps, saveButtonProps, onFinish, form } = useForm<
@@ -67,15 +68,12 @@ export const ExamEdit = () => {
             },
           ]}
         >
-          <Select
+          <CustomSearchSelect
             placeholder="اختر مادة"
             {...openCourseRegisterationssSelectProps}
             onChange={(option) => {
               form.setFieldValue("teacher_id", undefined);
             }}
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
           />
         </Form.Item>
 
@@ -89,13 +87,10 @@ export const ExamEdit = () => {
             },
           ]}
         >
-          <Select
+          <CustomSearchSelect
             disabled={!form.getFieldValue("course_id")}
             placeholder="اختر أستاذ"
             {...teachersSelectProps}
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
           />
         </Form.Item>
 
@@ -109,12 +104,9 @@ export const ExamEdit = () => {
             },
           ]}
         >
-          <Select
+          <CustomSearchSelect
             placeholder="اختر قاعة"
             {...classroomsSelectProps}
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
           />
         </Form.Item>
 
@@ -203,16 +195,11 @@ export const ExamEdit = () => {
                       label="الاسم"
                       rules={[{ required: true, message: "القسم مطلوب" }]}
                     >
-                      <Select
+                      <CustomSearchSelect
                         disabled
                         style={{ width: 200 }}
                         placeholder="اختر طالب"
                         {...studentsSelectProps}
-                        filterOption={(input, option) =>
-                          (option?.label ?? "")
-                            .toLowerCase()
-                            .includes(input.toLowerCase())
-                        }
                       />
                     </Form.Item>
 

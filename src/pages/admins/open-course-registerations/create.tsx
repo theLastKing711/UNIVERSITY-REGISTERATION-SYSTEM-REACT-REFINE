@@ -6,6 +6,7 @@ import { useGetTeachers } from "../../../hooks/API/select/useGetTeachers";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import FormItemsContainer from "../../../components/ui/From/FormItemsContainer";
 import FormSection from "../../../components/ui/From/FormSection";
+import CustomSearchSelect from "../../../components/ui/AntDesgin/CustomSearchSelect";
 
 export const OpenCourseRegisterationsCreate = () => {
   const { formProps, saveButtonProps, query } = useForm();
@@ -29,13 +30,7 @@ export const OpenCourseRegisterationsCreate = () => {
             },
           ]}
         >
-          <Select
-            placeholder=""
-            {...academicYearSemestersSelectProps}
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
-          />
+          <CustomSearchSelect {...academicYearSemestersSelectProps} />
         </Form.Item>
 
         <Form.Item
@@ -48,13 +43,7 @@ export const OpenCourseRegisterationsCreate = () => {
             },
           ]}
         >
-          <Select
-            placeholder=""
-            {...coursesSelectProps}
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
-          />
+          <CustomSearchSelect {...coursesSelectProps} />
         </Form.Item>
 
         <Form.Item label="السعر بالدولار" name={["price_in_usd"]}>
@@ -74,15 +63,10 @@ export const OpenCourseRegisterationsCreate = () => {
                       rules={[{ required: true, message: "الأستاذ مطلوب" }]}
                       initialValue={false}
                     >
-                      <Select
+                      <CustomSearchSelect
                         style={{ width: 200 }}
                         placeholder="اختر أستاذ"
                         {...teachersSelectProps}
-                        filterOption={(input, option) =>
-                          (option?.label ?? "")
-                            .toLowerCase()
-                            .includes(input.toLowerCase())
-                        }
                       />
                     </Form.Item>
 

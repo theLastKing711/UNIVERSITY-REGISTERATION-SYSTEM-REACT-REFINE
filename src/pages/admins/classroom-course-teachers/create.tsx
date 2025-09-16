@@ -8,6 +8,7 @@ import { getTimeStringFromDayJs } from "../../../helpers";
 import { BaseRecord, HttpError } from "@refinedev/core";
 import { useGetOpenCourseRegisterations } from "../../../hooks/API/select/useGetOpenCourseRegisterations";
 import { CreateClassroomToCourseTeacherRequestData } from "../../../types/admins/classroom-course-teacher";
+import CustomSearchSelect from "../../../components/ui/AntDesgin/CustomSearchSelect";
 
 export const ClassroomCourseTeacherCreate = () => {
   const { formProps, saveButtonProps, onFinish, form } = useForm<
@@ -48,7 +49,7 @@ export const ClassroomCourseTeacherCreate = () => {
             },
           ]}
         >
-          <Select
+          <CustomSearchSelect
             placeholder="اختر مادة"
             {...openCourseRegisterationssSelectProps}
             onChange={(option) => {
@@ -56,9 +57,6 @@ export const ClassroomCourseTeacherCreate = () => {
 
               setSelectedCourse(option);
             }}
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
           />
         </Form.Item>
 
@@ -72,13 +70,10 @@ export const ClassroomCourseTeacherCreate = () => {
             },
           ]}
         >
-          <Select
+          <CustomSearchSelect
             disabled={!selectedCourse}
             placeholder="اختر أستاذ"
             {...teachersSelectProps}
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
           />
         </Form.Item>
 
@@ -92,12 +87,9 @@ export const ClassroomCourseTeacherCreate = () => {
             },
           ]}
         >
-          <Select
+          <CustomSearchSelect
             placeholder="اختر قاعة"
             {...classroomsSelectProps}
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
           />
         </Form.Item>
 
@@ -110,12 +102,7 @@ export const ClassroomCourseTeacherCreate = () => {
             },
           ]}
         >
-          <Select
-            options={DAYS}
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
-          />
+          <CustomSearchSelect options={DAYS} />
         </Form.Item>
 
         <Form.Item

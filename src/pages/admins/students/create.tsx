@@ -13,6 +13,7 @@ import {
   getIdFromCustomUploadFile,
   getIdsFromCustomUploadFiles,
 } from "../../../helpers";
+import CustomSearchSelect from "../../../components/ui/AntDesgin/CustomSearchSelect";
 
 export const StudentCreate = () => {
   const {
@@ -85,13 +86,10 @@ export const StudentCreate = () => {
             },
           ]}
         >
-          <Select
+          <CustomSearchSelect
             placeholder="اختر القسم"
             style={{ width: 300 }}
             {...departmentSelectProps}
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
           />
         </Form.Item>
 

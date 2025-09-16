@@ -70,6 +70,11 @@ import {
   LECTURE_LIST,
   LECTURE_SHOW,
   LECTURE_URI,
+  MEETING_CREATE,
+  MEETING_EDIT,
+  MEETING_LIST,
+  MEETING_SHOW,
+  MEETING_URI,
   OPEN_COURSE_REGISTERATION_CREATE,
   OPEN_COURSE_REGISTERATION_EDIT,
   OPEN_COURSE_REGISTERATION_LIST,
@@ -163,6 +168,12 @@ import {
 } from "./pages/students/open-course-registerations";
 import { accessControlProvider } from "./pages/access-control-provider";
 import { liveProvider } from "./live-provider";
+import {
+  MeetingList,
+  MeetingCreate,
+  MeetingShow,
+  MeetingEdit,
+} from "./pages/admins/meetings";
 
 const theme: ThemeConfig = {
   components: {
@@ -307,7 +318,17 @@ function App() {
         edit: EXAM_EDIT,
         show: EXAM_SHOW,
         meta: {
-          label: "الامتحانات",
+          label: "الاMeeمتحانات",
+        },
+      },
+      {
+        name: MEETING_URI,
+        list: MEETING_LIST,
+        create: MEETING_CREATE,
+        edit: MEETING_EDIT,
+        show: MEETING_SHOW,
+        meta: {
+          label: "التقويم",
         },
       },
       {
@@ -557,6 +578,12 @@ function App() {
                         <Route path="create" element={<TeacherCreate />} />
                         <Route path="show/:id" element={<TeacherShow />} />
                         <Route path="edit/:id" element={<TeacherEdit />} />
+                      </Route>
+                      <Route path={MEETING_URI}>
+                        <Route index element={<MeetingList />} />
+                        <Route path="create" element={<MeetingCreate />} />
+                        <Route path="show/:id" element={<MeetingShow />} />
+                        <Route path="edit/:id" element={<MeetingEdit />} />
                       </Route>
                       <Route path={LECTURE_URI}>
                         <Route index element={<LectureList />} />

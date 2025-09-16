@@ -2,6 +2,7 @@ import { Edit, useForm } from "@refinedev/antd";
 import { Form, Input, Select } from "antd";
 import { useGetDepratments } from "../../../hooks/API/select/useGetDepartments";
 import { useNotification, useSubscription } from "@refinedev/core";
+import CustomSearchSelect from "../../../components/ui/AntDesgin/CustomSearchSelect";
 
 export const TeacherEdit = () => {
   const { formProps, saveButtonProps, id } = useForm();
@@ -46,12 +47,9 @@ export const TeacherEdit = () => {
             },
           ]}
         >
-          <Select
+          <CustomSearchSelect
             placeholder="اختر قسم"
             {...departmentSelectProps}
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
           />
         </Form.Item>
       </Form>

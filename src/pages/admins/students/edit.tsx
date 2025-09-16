@@ -19,6 +19,7 @@ import {
 import { HttpError } from "@refinedev/core";
 import { useImageUpload } from "../../../hooks/useUploadImage";
 import { useImagePreview } from "../../../hooks/useImagePreview";
+import CustomSearchSelect from "../../../components/ui/AntDesgin/CustomSearchSelect";
 
 export const StudentEdit = () => {
   const {
@@ -116,13 +117,10 @@ export const StudentEdit = () => {
             },
           ]}
         >
-          <Select
+          <CustomSearchSelect
             placeholder="اختر القسم"
             style={{ width: 300 }}
             {...departmentSelectProps}
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
           />
         </Form.Item>
 

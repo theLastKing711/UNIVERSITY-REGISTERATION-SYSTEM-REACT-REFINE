@@ -15,6 +15,7 @@ import { getTimeStringFromDayJs } from "../../../helpers";
 import { BaseRecord, HttpError } from "@refinedev/core";
 import { useGetOpenCourseRegisterations } from "../../../hooks/API/select/useGetOpenCourseRegisterations";
 import { CreateExamRequestData } from "../../../types/admins/exams";
+import CustomSearchSelect from "../../../components/ui/AntDesgin/CustomSearchSelect";
 
 export const ExamCreate = () => {
   const { formProps, saveButtonProps, onFinish, form } = useForm<
@@ -55,7 +56,7 @@ export const ExamCreate = () => {
             },
           ]}
         >
-          <Select
+          <CustomSearchSelect
             placeholder="اختر مادة"
             {...openCourseRegisterationssSelectProps}
             onChange={(option) => {
@@ -63,9 +64,6 @@ export const ExamCreate = () => {
 
               setSelectedCourse(option);
             }}
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
           />
         </Form.Item>
 
@@ -79,13 +77,10 @@ export const ExamCreate = () => {
             },
           ]}
         >
-          <Select
+          <CustomSearchSelect
             disabled={!selectedCourse}
             placeholder="اختر أستاذ"
             {...teachersSelectProps}
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
           />
         </Form.Item>
 
@@ -99,12 +94,9 @@ export const ExamCreate = () => {
             },
           ]}
         >
-          <Select
+          <CustomSearchSelect
             placeholder="اختر قاعة"
             {...classroomsSelectProps}
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
           />
         </Form.Item>
 

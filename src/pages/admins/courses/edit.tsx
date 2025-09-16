@@ -6,6 +6,7 @@ import FormItemsContainer from "../../../components/ui/From/FormItemsContainer";
 import { useGetDepratments } from "../../../hooks/API/select/useGetDepartments";
 import { useGetCourses } from "../../../hooks/API/select/useGetCourses";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import CustomSearchSelect from "../../../components/ui/AntDesgin/CustomSearchSelect";
 
 export const CourseEdit = () => {
   const { formProps, saveButtonProps, query } = useForm();
@@ -20,13 +21,7 @@ export const CourseEdit = () => {
     <Edit saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
         <Form.Item label="القسم" name="department_id">
-          <Select
-            placeholder=""
-            {...departmentSelectProps}
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
-          />
+          <CustomSearchSelect {...departmentSelectProps} />
         </Form.Item>
 
         <Form.Item
@@ -96,15 +91,10 @@ export const CourseEdit = () => {
                       label="الاسم"
                       rules={[{ required: true, message: "الاسم مطلوب" }]}
                     >
-                      <Select
+                      <CustomSearchSelect
                         style={{ width: 200 }}
                         placeholder="اختر مادة"
                         {...coursesSelectProps}
-                        filterOption={(input, option) =>
-                          (option?.label ?? "")
-                            .toLowerCase()
-                            .includes(input.toLowerCase())
-                        }
                       />
                     </Form.Item>
                     <MinusCircleOutlined onClick={() => remove(field.name)} />
@@ -138,15 +128,10 @@ export const CourseEdit = () => {
                       label="الاسم"
                       rules={[{ required: true, message: "الاسم مطلوب" }]}
                     >
-                      <Select
+                      <CustomSearchSelect
                         style={{ width: 200 }}
                         placeholder="اختر مادة"
                         {...coursesSelectProps}
-                        filterOption={(input, option) =>
-                          (option?.label ?? "")
-                            .toLowerCase()
-                            .includes(input.toLowerCase())
-                        }
                       />
                     </Form.Item>
                     <MinusCircleOutlined onClick={() => remove(field.name)} />

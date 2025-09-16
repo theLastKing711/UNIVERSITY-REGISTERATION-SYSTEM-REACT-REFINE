@@ -16,6 +16,7 @@ export const RESOURSES = {
     classroomCourseTeachers: 'classroom-course-teachers',
     exams: 'exams',
     lectures: 'lectures',
+    meetings: "meetings",
     notifications: "notifications",
     images: "images",
 }
@@ -187,14 +188,28 @@ export const LECTURE_EDIT =
 
 export const LECTURE_SHOW = 
     `/${LECTURE_URI}/show/:id`;
+
+export const MEETING_URI =  ADMIN_ROLE + "/" + RESOURSES.meetings;
+
+export const MEETING_LIST = 
+    `/${MEETING_URI}`;
+
+export const MEETING_CREATE = 
+    `/${MEETING_URI}/create`;
+
+export const MEETING_EDIT = 
+    `/${MEETING_URI}/edit/:id`;
+
+export const MEETING_SHOW = 
+    `/${MEETING_URI}/show/:id`;
+
+
     
 export const STUDENT_RESOURSES = {
     openCourseRegisterations: "open-course-registerations",
 }
 
-
 export const NOTIFICATION_URI =  ADMIN_ROLE + "/" + RESOURSES.notifications;
-
 
 export const DEPARTMENT_LIST_LIST = `${ADMIN_DEPARTMENT_URI}/list`;
 

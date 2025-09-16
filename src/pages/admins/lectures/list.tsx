@@ -3,6 +3,7 @@ import { useTable, List } from "@refinedev/antd";
 import { Table, Space, Row, Col, Card, Form, Select, Button } from "antd";
 import { useGetOpenCourseRegisterations } from "../../../hooks/API/select/useGetOpenCourseRegisterations";
 import CustomTable from "../../../components/ui/AntDesgin/CustomTable";
+import CustomSearchSelect from "../../../components/ui/AntDesgin/CustomSearchSelect";
 
 export const LectureList = () => {
   const { tableProps, searchFormProps } = useTable({
@@ -29,16 +30,11 @@ export const LectureList = () => {
           <Form {...searchFormProps}>
             <Space style={{ display: "block" }}>
               <Form.Item label="المادة" name="course_id">
-                <Select
+                <CustomSearchSelect
                   allowClear
                   placeholder="اختر مادة"
                   {...openCourseRegisterationssSelectProps}
                   style={{ width: 100 }}
-                  filterOption={(input, option) =>
-                    (option?.label ?? "")
-                      .toLowerCase()
-                      .includes(input.toLowerCase())
-                  }
                 />
               </Form.Item>
             </Space>

@@ -20,6 +20,7 @@ import { PER_PAGE } from "../../../constants";
 import { useGetDepratments } from "../../../hooks/API/select/useGetDepartments";
 import { getDayJsdateFormat } from "../../../helpers";
 import CustomTable from "../../../components/ui/AntDesgin/CustomTable";
+import CustomSearchSelect from "../../../components/ui/AntDesgin/CustomSearchSelect";
 
 export const StudentList = () => {
   const { tableProps, searchFormProps } = useTable<
@@ -91,14 +92,9 @@ export const StudentList = () => {
             </Space>
             <Space>
               <Form.Item label="القسم" name="department_id">
-                <Select
+                <CustomSearchSelect
                   placeholder="اختر القسم"
                   {...departmentSelectProps}
-                  filterOption={(input, option) =>
-                    (option?.label ?? "")
-                      .toLowerCase()
-                      .includes(input.toLowerCase())
-                  }
                 />
               </Form.Item>
             </Space>
@@ -118,30 +114,22 @@ export const StudentList = () => {
       <Col lg={18} xs={24}>
         <List>
           <CustomTable {...tableProps}>
-            <Table.Column
-              dataIndex="id"
-              title="المعرف"
-              sorter={{ multiple: 1 }}
-            />
+            <Table.Column dataIndex="id" title="المعرف" sorter={true} />
             <Table.Column
               dataIndex="department_name"
               title="القسم"
-              sorter={{ multiple: 1 }}
+              sorter={true}
             />
             <Table.Column
               dataIndex="national_id"
               title="رقم الهوية"
-              sorter={{ multiple: 1 }}
+              sorter={true}
             />
-            <Table.Column
-              dataIndex="name"
-              title="الاسم"
-              sorter={{ multiple: 1 }}
-            />
+            <Table.Column dataIndex="name" title="الاسم" sorter={true} />
             <Table.Column
               dataIndex="birthdate"
               title="تاريخ الميلاد"
-              sorter={{ multiple: 1 }}
+              sorter={true}
               render={(_, record: BaseRecord) => (
                 <td>{getDayJsdateFormat(record.birthdate)}</td>
               )}
@@ -149,7 +137,7 @@ export const StudentList = () => {
             <Table.Column
               dataIndex="enrollment_date"
               title="تاريخ التسجيل"
-              sorter={{ multiple: 1 }}
+              sorter={true}
               render={(_, record: BaseRecord) => (
                 <td>{getDayJsdateFormat(record.enrollment_date)}</td>
               )}
@@ -157,7 +145,7 @@ export const StudentList = () => {
             <Table.Column
               dataIndex="phone_number"
               title="رقم الهاتف"
-              sorter={{ multiple: 1 }}
+              sorter={true}
             />
           </CustomTable>
         </List>

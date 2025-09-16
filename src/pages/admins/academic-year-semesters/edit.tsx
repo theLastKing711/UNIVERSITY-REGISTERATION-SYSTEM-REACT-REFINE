@@ -7,6 +7,7 @@ import { useGetDepratments } from "../../../hooks/API/select/useGetDepartments";
 import { Select } from "antd/lib";
 import FormSection from "../../../components/ui/From/FormSection";
 import FormItemsContainer from "../../../components/ui/From/FormItemsContainer";
+import CustomSearchSelect from "../../../components/ui/AntDesgin/CustomSearchSelect";
 
 export const AcademicYearSemesterEdit = () => {
   const { formProps, saveButtonProps, query } =
@@ -64,15 +65,10 @@ export const AcademicYearSemesterEdit = () => {
                       label="الاسم"
                       rules={[{ required: true, message: "القسم مطلوب" }]}
                     >
-                      <Select
+                      <CustomSearchSelect
                         style={{ width: 200 }}
                         placeholder="اختر قسم"
                         {...departmentSelectProps}
-                        filterOption={(input, option) =>
-                          (option?.label ?? "")
-                            .toLowerCase()
-                            .includes(input.toLowerCase())
-                        }
                       />
                     </Form.Item>
 

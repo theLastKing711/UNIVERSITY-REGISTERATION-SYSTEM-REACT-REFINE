@@ -1,6 +1,7 @@
 import { Edit, useForm, useSelect } from "@refinedev/antd";
 import MDEditor from "@uiw/react-md-editor";
 import { Form, Input, Select } from "antd";
+import CustomSearchSelect from "../../components/ui/AntDesgin/CustomSearchSelect";
 
 export const BlogPostEdit = () => {
   const { formProps, saveButtonProps, queryResult, formLoading } = useForm({});
@@ -50,12 +51,7 @@ export const BlogPostEdit = () => {
             },
           ]}
         >
-          <Select
-            {...categorySelectProps}
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
-          />
+          <CustomSearchSelect {...categorySelectProps} />
         </Form.Item>
         <Form.Item
           label={"Status"}
@@ -67,7 +63,7 @@ export const BlogPostEdit = () => {
             },
           ]}
         >
-          <Select
+          <CustomSearchSelect
             defaultValue={"draft"}
             options={[
               { value: "draft", label: "Draft" },
@@ -75,9 +71,6 @@ export const BlogPostEdit = () => {
               { value: "rejected", label: "Rejected" },
             ]}
             style={{ width: 120 }}
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
           />
         </Form.Item>
       </Form>

@@ -9,6 +9,7 @@ import {
 } from "../../../helpers";
 import { BaseRecord, HttpError } from "@refinedev/core";
 import { useGetOpenCourseRegisterations } from "../../../hooks/API/select/useGetOpenCourseRegisterations";
+import CustomSearchSelect from "../../../components/ui/AntDesgin/CustomSearchSelect";
 
 export const ClassroomCourseTeacherEdit = () => {
   const { formProps, saveButtonProps, onFinish, form } = useForm<
@@ -48,16 +49,13 @@ export const ClassroomCourseTeacherEdit = () => {
             },
           ]}
         >
-          <Select
+          <CustomSearchSelect
             placeholder="اختر مادة"
             {...openCourseRegisterationssSelectProps}
             onChange={(option) => {
               // form.resetFields() set it to inital value which is the value of get inital request
               form.setFieldValue("teacher_id", undefined);
             }}
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
           />
         </Form.Item>
 
@@ -71,13 +69,10 @@ export const ClassroomCourseTeacherEdit = () => {
             },
           ]}
         >
-          <Select
+          <CustomSearchSelect
             disabled={!form.getFieldValue("course_id")}
             placeholder="اختر أستاذ"
             {...teachersSelectProps}
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
           />
         </Form.Item>
 
@@ -91,12 +86,9 @@ export const ClassroomCourseTeacherEdit = () => {
             },
           ]}
         >
-          <Select
+          <CustomSearchSelect
             placeholder="اختر قاعة"
             {...classroomsSelectProps}
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
           />
         </Form.Item>
 
@@ -109,12 +101,7 @@ export const ClassroomCourseTeacherEdit = () => {
             },
           ]}
         >
-          <Select
-            options={DAYS}
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
-          />
+          <CustomSearchSelect options={DAYS} />
         </Form.Item>
 
         <Form.Item

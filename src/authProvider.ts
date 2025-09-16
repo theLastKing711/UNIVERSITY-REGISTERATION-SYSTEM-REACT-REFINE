@@ -24,6 +24,9 @@ export const authProvider: AuthProvider = {
 
         localStorage.setItem("is_authenticated", "true");
 
+
+        localStorage.setItem("username", data.name);
+
         localStorage.setItem("user_id", JSON.stringify(data.id));
 
 
