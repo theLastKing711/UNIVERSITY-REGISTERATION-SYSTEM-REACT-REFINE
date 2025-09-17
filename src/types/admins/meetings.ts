@@ -11,7 +11,7 @@ export type CreateAttendanceData = {
 
 export type GetMeetingsResponseData = {
     happens_at: string;
-    attendances: CreateAttendanceData[]
+    attendances: GetAttendanceDate[]
 }
 
 export type GetAttendanceDate = {

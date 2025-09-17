@@ -85,9 +85,6 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
     // },
     queryOptions: {
       getNextPageParam: (lastPage, allPages) => {
-        console.log("lastPage", lastPage.cursor);
-        console.log("allPages", allPages);
-
         return lastPage.cursor;
       },
       initialData: undefined,

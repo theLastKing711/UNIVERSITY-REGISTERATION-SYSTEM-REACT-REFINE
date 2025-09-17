@@ -95,3 +95,20 @@ export const getTimeStringFromDayJs = (time: Dayjs | string) => {
   return `${hour_string}:${minute_string}:00`;
 };
 
+
+export const areDatesEqual = (day1: Dayjs, day2: Dayjs) => {
+
+  return (
+                dayjs(day1).isSame(day2, "year") &&
+                dayjs(day1).isSame(day2, "month") &&
+                dayjs(day1).isSame(day2, "day")
+              );
+  
+}
+
+
+export const formatDateTime = (datetime: Dayjs) => {
+
+  return datetime.format("HH-mm-ss A")
+  
+}
