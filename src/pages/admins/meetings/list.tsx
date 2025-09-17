@@ -2,21 +2,49 @@ import { List } from "@refinedev/antd";
 import { useList } from "@refinedev/core";
 import { Avatar, Calendar, Space, Tooltip } from "antd";
 import { GetMeetingsResponseData } from "../../../types/admins/meetings";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import { UserOutlined } from "@ant-design/icons";
 import { areDatesEqual, formatDateTime } from "../../../helpers";
-export const MeetingList = () => {
-  //   const { tableProps } = useTable({
-  //     syncWithLocation: false,
-  //   });
+import { useState } from "react";
 
-  const { data } = useList<GetMeetingsResponseData>();
+const currentYear = dayjs().year();
+
+const currentMonth = dayjs().month() + 1;
+
+export const MeetingList = () => {
+  const [yearFilter, setYearFilter] = useState<number>(currentYear);
+
+  const [monthFilter, setMonthFilter] = useState<number>(currentMonth);
+
+  const { data } = useList<GetMeetingsResponseData>({
+    filters: [
+      {
+        field: "year",
+        operator: "eq",
+        value: yearFilter,
+      },
+      {
+        field: "month",
+        operator: "eq",
+        value: monthFilter,
+      },
+    ],
+  });
 
   console.log("data", data);
 
   return (
     <List>
       <Calendar
+        onPanelChange={(date, mode) => {
+          console.log(date.year());
+
+          console.log(date.month() + 1);
+
+          setYearFilter(date.year());
+
+          setMonthFilter(date.month() + 1);
+        }}
         cellRender={(date) => {
           const meetingDate = data?.data.find((meeting) => {
             const meetingDate = meeting.happens_at;
