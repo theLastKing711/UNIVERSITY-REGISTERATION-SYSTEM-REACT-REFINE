@@ -1,5 +1,5 @@
 import { Edit, List } from "@refinedev/antd";
-import { useForm, useList, useModal } from "@refinedev/core";
+import { useForm, useList, useModal, useNavigation } from "@refinedev/core";
 import {
   Avatar,
   Button,
@@ -64,23 +64,13 @@ export const MeetingList = () => {
       <List>
         <Calendar
           onPanelChange={(date, mode) => {
-            console.log(date.year());
-
-            console.log(date.month() + 1);
-
             setYearFilter(date.year());
 
             setMonthFilter(date.month() + 1);
           }}
           cellRender={(date) => {
-            const meetingDate = data?.data.find((meeting) => {
-              const meetingDate = meeting.happens_at;
-
-              return areDatesEqual(dayjs(meetingDate), date);
-            });
-
-            const currentDateMeetings = data?.data.flatMap((meeeing) =>
-              areDatesEqual(dayjs(meeeing.happens_at), date) ? meeeing : []
+            const currentDateMeetings = data?.data.filter((meeeing) =>
+              areDatesEqual(dayjs(meeeing.happens_at), date)
             );
 
             return (
@@ -88,7 +78,10 @@ export const MeetingList = () => {
                 {currentDateMeetings?.map((meeting) => (
                   <div
                     style={{ marginBottom: "0.5rem" }}
-                    onClick={() => setModalMeetingId(meeting.id)}
+                    onClick={() => {
+                      // edit("admins/meetings", meeting.id);
+                      setModalMeetingId(meeting.id);
+                    }}
                   >
                     <Space>
                       <Avatar.Group>
@@ -110,45 +103,11 @@ export const MeetingList = () => {
         {modalMeetingId && (
           <EditModal
             id={modalMeetingId}
-            onClose={() => setModalMeetingId(null)}
+            onClose={() => {
+              setModalMeetingId(null);
+            }}
           />
         )}
-
-        {/* <Modal
-          title="تعديل بيانت الاجتماع"
-          closable={{ "aria-label": "Custom Close Button" }}
-          open={visible}
-          // onOk={handleOk}
-          onCancel={close}
-        >
-          <Form {...formProps} layout="vertical">
-            <Form.Item
-              label="وقت الاجتماع"
-              name="happens_at"
-              rules={[
-                {
-                  required: true,
-                  message: "وقت الاجتماع مطلوب",
-                },
-              ]}
-            >
-              <DatePicker showTime />
-            </Form.Item>
-
-            <Form.Item
-              label="الحضور"
-              name="attendances"
-              rules={[
-                {
-                  required: true,
-                  message: "يرجى إضافة حضور",
-                },
-              ]}
-            >
-              <Select {...adminsSelectProps} mode="multiple" />
-            </Form.Item>
-          </Form>
-        </Modal> */}
       </List>
     </>
   );

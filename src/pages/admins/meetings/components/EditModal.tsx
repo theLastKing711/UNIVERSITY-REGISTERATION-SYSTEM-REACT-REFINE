@@ -9,6 +9,7 @@ import {
   CreateAttendanceData,
   UpdateAttendanceData,
 } from "../../../../types/admins/meetings";
+import { getDayJsValue } from "../../../../helpers";
 
 export type EditModalProps = {
   id: number;
@@ -44,7 +45,6 @@ const EditModal = ({ id, onClose }: EditModalProps) => {
           ...data,
           data: {
             ...data.data,
-            happens_at: dayjs(data.data.happens_at),
             attendances: data.data.attendances.map(
               (attendance) => attendance.id
             ),
@@ -52,6 +52,14 @@ const EditModal = ({ id, onClose }: EditModalProps) => {
         };
       },
     },
+    onMutationSuccess(data, variables, context, isAutoSave) {
+      onClose();
+    },
+    successNotification: (data, values, resourses) => ({
+      message: "تعديل الاجتماع",
+      description: "تم تعديل الاجتماع بنجاح",
+      type: "success",
+    }),
   });
 
   // console.log("form", form.getFieldValue("attendances"));
@@ -62,18 +70,13 @@ const EditModal = ({ id, onClose }: EditModalProps) => {
       attendances: values.attendances.map<UpdateAttendanceData>((item) => ({
         id: item,
       })),
-    })
-      .then(() => close())
-      .catch((err) => {
-        console.log("errs", err);
-      });
+    });
   };
 
   return (
     <Modal
       {...modalProps}
       title="تعديل بيانت الاجتماع"
-      // onOk={() => form.submit()}
       onCancel={() => onClose()}
       open={true}
     >
@@ -87,6 +90,7 @@ const EditModal = ({ id, onClose }: EditModalProps) => {
               message: "وقت الاجتماع مطلوب",
             },
           ]}
+          getValueProps={getDayJsValue}
         >
           <DatePicker showTime />
         </Form.Item>
@@ -100,6 +104,10 @@ const EditModal = ({ id, onClose }: EditModalProps) => {
               message: "يرجى إضافة حضور",
             },
           ]}
+          //   getValueProps={(values) => {
+          //     console.log("values", values);
+          //     return { value: values?.map((item) => item.id) };
+          //   }}
         >
           <Select {...adminsSelectProps} mode="multiple" />
         </Form.Item>
