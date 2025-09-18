@@ -1,42 +1,22 @@
-import { DatePicker, Form, Modal, Select } from "antd";
+import { DatePicker, Form, Select } from "antd";
 import React from "react";
 import { useGetAdminList } from "../../../../hooks/API/select/useGetAdminList";
 
 import { useModalForm } from "@refinedev/antd";
-import { useModalReturnType } from "@refinedev/core";
-import dayjs from "dayjs";
-import {
-  CreateAttendanceData,
-  UpdateAttendanceData,
-} from "../../../../types/admins/meetings";
+import { UpdateAttendanceData } from "../../../../types/admins/meetings";
 import { getDayJsValue } from "../../../../helpers";
+import CustomModal from "../../../../components/ui/AntDesgin/CustomModal";
+import CustomEditModal from "../../../../components/ui/AntDesgin/CustomEditModal";
 
 export type EditModalProps = {
   id: number;
   onClose: () => void;
-  // close: useModalReturnType["close"];
-  // visible: useModalReturnType["visible"];
 };
 
 const EditModal = ({ id, onClose }: EditModalProps) => {
-  console.log("id", id);
-
-  // const {
-  //   formProps,
-  //   saveButtonProps,
-  //   mutation: mutationResult,
-  //   query,
-  // } = useForm({
-  //   successNotification: (data, values, resourses) => ({
-  //     message: "تعديل مستخدم",
-  //     description: "تم تعديل المستخدم بنجاح",
-  //     type: "success",
-  //   }),
-  // });
-
   const { adminsSelectProps } = useGetAdminList();
 
-  const { formProps, close, onFinish, modalProps } = useModalForm({
+  const { form, formProps, onFinish, modalProps, formLoading } = useModalForm({
     action: "edit",
     id,
     queryOptions: {
@@ -62,8 +42,6 @@ const EditModal = ({ id, onClose }: EditModalProps) => {
     }),
   });
 
-  // console.log("form", form.getFieldValue("attendances"));
-
   const handleOnFinish = (values) => {
     onFinish({
       ...values,
@@ -74,11 +52,16 @@ const EditModal = ({ id, onClose }: EditModalProps) => {
   };
 
   return (
-    <Modal
+    <CustomEditModal
       {...modalProps}
+      resourseTitle="الاجتماح"
       title="تعديل بيانت الاجتماع"
       onCancel={() => onClose()}
-      open={true}
+      id={id}
+      onSubmit={() => form.submit()}
+      onClose={() => onClose()}
+      onDeleteSuccessMessage="تم حذف الاجتماع بنجاح"
+      submitLoading={formLoading}
     >
       <Form {...formProps} layout="vertical" onFinish={handleOnFinish}>
         <Form.Item
@@ -104,15 +87,11 @@ const EditModal = ({ id, onClose }: EditModalProps) => {
               message: "يرجى إضافة حضور",
             },
           ]}
-          //   getValueProps={(values) => {
-          //     console.log("values", values);
-          //     return { value: values?.map((item) => item.id) };
-          //   }}
         >
           <Select {...adminsSelectProps} mode="multiple" />
         </Form.Item>
       </Form>
-    </Modal>
+    </CustomEditModal>
   );
 };
 
