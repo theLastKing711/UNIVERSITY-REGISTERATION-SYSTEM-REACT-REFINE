@@ -210,8 +210,6 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
 
   const { editUrl, push } = useNavigation();
 
-  console.log("sex", data);
-
   return (
     <AntdLayout.Header style={headerStyles}>
       {/* <Space> */}

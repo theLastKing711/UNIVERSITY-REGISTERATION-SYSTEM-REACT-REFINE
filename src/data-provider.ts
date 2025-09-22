@@ -1,17 +1,10 @@
-import { CrudFilter, CrudSort, DataProvider, HttpError, Pagination, ValidationErrors } from "@refinedev/core";
+import {  DataProvider, HttpError } from "@refinedev/core";
 import { apiClient } from "./libs/axios/config";
 import { AxiosError } from "axios";
+import { getSortersQuery, getQueryQuestionMarkOrEmpty, parseAxiosErrorsToList, getMutationResponseHttpError, getCursorPaginationQuery, getFiltersQuery, getPaginationQuery } from "./helpers";
 
 export const dataProvider = (url: string, deartemnt_query_filter?: string): DataProvider => ({
     getList: async ({resource, filters, pagination, sorters, meta}) => {
-
-    // console.log("deartemnt_query_filter", deartemnt_query_filter)
-      
-    // console.log("sorters", sorters);
-    
-    // console.log("meta ", meta);
-
-    // console.log("filters" ,filters);
 
     const filtersQuery = getFiltersQuery(filters);
     
@@ -20,13 +13,11 @@ export const dataProvider = (url: string, deartemnt_query_filter?: string): Data
     
     const sortersQuery = getSortersQuery(sorters);  
 
-    // console.log("sorters after", getSortersQuery(sorters));
-    
     const queryQuestionMarkOrEmpty = 
       getQueryQuestionMarkOrEmpty(filtersQuery, paginationQuery, sortersQuery);
   
 
-    const department_id_query_parameter_value = 
+    const department_id_query_parameter_value =  
       (meta?.department_id || localStorage.getItem('department_id_query_parameter'));
 
     const department_id_query_parameter_query = 
@@ -244,119 +235,3 @@ export const dataProvider = (url: string, deartemnt_query_filter?: string): Data
   getApiUrl: () => url,
 });
 
-const getFiltersQuery = (filters: CrudFilter[] | undefined) => {
-    let query = '';
-    filters?.forEach((item, index) => {
-    
-    if(item.value)
-    {
-      let lastChar = item.field[item.field.length - 1];
-      if(Array.isArray(item.value))
-      {
-        item.value.forEach((listItem, index) => {
-          query += '&' + item.field + "=" + listItem;
-        });
-      }
-      else {
-        query += '&' + item.field + "=" + item.value;
-      }
-    }
-
-    })
-    return query;
-}
-const getPaginationQuery = (pagination: Pagination | undefined) => {
-  
-  let query = '';
-  if(pagination)
-  {
-    const pageNumber = pagination?.current;
-    const pageSize = pagination.pageSize;
-
-    query += `&page=${pageNumber}`;
-    query += `&perPage=${pageSize}`;
-  }
-  return query;
-}
-
-const getCursorPaginationQuery = (pagination: Pagination | undefined) => {
-  
-  let query = '';
-  if(pagination)
-  {
-    const pageNumber = pagination.current;
-    const pageSize = pagination.pageSize;
-
-    query += `&cursor=${pageNumber}`;
-    query += `&perPage=${pageSize}`;
-  }
-
-  console.log("query", query);
-  
-  return query;
-}
-
-const getSortersQuery = (sorters: CrudSort[] | undefined) => {
-
-  if(!sorters || sorters?.length === 0)
-  {
-    return "";
-  }
-
-  // console.log("sorters", sorters);
-  
-  const query = sorters?.reduce(((prev,curr, index) => {
-    if(curr.order === "asc")
-    {
-      return prev + "&sort=" + curr.field + "&dir=asc";
-    }
-    if(curr.order)
-    {
-      return prev + "&sort=" + curr.field + "&dir=desc";
-    }
-  }), "")
-
-  return query;
-}
-
-
-const getQueryQuestionMarkOrEmpty = (...values: string[]) =>
-{
-  if(values.length === 0)
-    {
-        return "";
-    }
-  return values.some(query => query.length > 0) ? "?" : "";
-}
-
-const  parseAxiosErrorsToList = (err: unknown) => {
-  const axiosError = err as AxiosError;
-
-  // console.log("error", (axiosError.response?.data as any).errors);
-
-  const x:ValidationErrors = {}
-
-  const errorsObject = ((axiosError.response?.data) as any).errors as Record<string, any>
-  
-  const errorsList = Object.values(errorsObject).flat() as string[];
-
-  return errorsList;
-    
-}
-
-
-const getMutationResponseHttpError = (err: unknown) => {
-
-   const httpError: HttpError = {
-        errors: {
-          // data: errorsList
-         ...err.response.data.errors,
-          // from: err.response.data.message,
-
-        },
-        message: err.response.data.message,
-        statusCode: 422,
-      };
-    return httpError;
-  
-}

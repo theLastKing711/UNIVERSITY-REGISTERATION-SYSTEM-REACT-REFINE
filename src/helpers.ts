@@ -1,5 +1,6 @@
+import { AxiosError } from 'axios';
 import dayjs, { Dayjs } from "dayjs";
-import { useDelete } from "@refinedev/core";
+import { CrudFilter, HttpError, Pagination, useDelete, ValidationErrors } from "@refinedev/core";
 import { CustomUploadFile } from "./types/shared";
 
 
@@ -110,5 +111,123 @@ export const areDatesEqual = (day1: Dayjs, day2: Dayjs) => {
 export const formatDateTime = (datetime: Dayjs) => {
 
   return datetime.format("HH-mm-ss A")
+  
+}
+
+
+export const getFiltersQuery = (filters: CrudFilter[] | undefined) => {
+    let query = '';
+    filters?.forEach((item, index) => {
+    
+    if(item.value)
+    {
+      let lastChar = item.field[item.field.length - 1];
+      if(Array.isArray(item.value))
+      {
+        item.value.forEach((listItem, index) => {
+          query += '&' + item.field + "=" + listItem;
+        });
+      }
+      else {
+        query += '&' + item.field + "=" + item.value;
+      }
+    }
+
+    })
+    return query;
+}
+export const getPaginationQuery = (pagination: Pagination | undefined) => {
+  
+  let query = '';
+  if(pagination)
+  {
+    const pageNumber = pagination?.current;
+    const pageSize = pagination.pageSize;
+
+    query += `&page=${pageNumber}`;
+    query += `&perPage=${pageSize}`;
+  }
+  return query;
+}
+
+export const getCursorPaginationQuery = (pagination: Pagination | undefined) => {
+  
+  let query = '';
+  if(pagination)
+  {
+    const pageNumber = pagination.current;
+    const pageSize = pagination.pageSize;
+
+    query += `&cursor=${pageNumber}`;
+    query += `&perPage=${pageSize}`;
+  }
+
+  console.log("query", query);
+  
+  return query;
+}
+
+export const getSortersQuery = (sorters: CrudSort[] | undefined) => {
+
+  if(!sorters || sorters?.length === 0)
+  {
+    return "";
+  }
+
+  // console.log("sorters", sorters);
+  
+  const query = sorters?.reduce(((prev,curr, index) => {
+    if(curr.order === "asc")
+    {
+      return prev + "&sort=" + curr.field + "&dir=asc";
+    }
+    if(curr.order)
+    {
+      return prev + "&sort=" + curr.field + "&dir=desc";
+    }
+  }), "")
+
+  return query;
+}
+
+
+export const getQueryQuestionMarkOrEmpty = (...values: string[]) =>
+{
+  if(values.length === 0)
+    {
+        return "";
+    }
+  return values.some(query => query.length > 0) ? "?" : "";
+}
+
+export const  parseAxiosErrorsToList = (err: unknown) => {
+  const axiosError = err as AxiosError;
+
+  // console.log("error", (axiosError.response?.data as any).errors);
+
+  const x:ValidationErrors = {}
+
+  const errorsObject = ((axiosError.response?.data) as any).errors as Record<string, any>
+  
+  const errorsList = Object.values(errorsObject).flat() as string[];
+
+  return errorsList;
+    
+}
+
+
+export const getMutationResponseHttpError = (err: unknown) => {
+
+   const httpError: HttpError = {
+        errors: {
+          // data: errorsList
+         ...err.response.data.errors,
+          // from: err.response.data.message,
+
+        },
+        message: err.response.data.message,
+        statusCode: 422,
+      };
+    return httpError;
   
 }

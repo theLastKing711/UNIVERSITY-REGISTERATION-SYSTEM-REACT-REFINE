@@ -43,7 +43,7 @@
     "build": "tsc && refine build",
     "start": "refine start",
     "refine": "refine",
-    "resourse": " refine add resource"
+    "resource": " refine add resource"
   },
   "browserslist": {
     "production": [

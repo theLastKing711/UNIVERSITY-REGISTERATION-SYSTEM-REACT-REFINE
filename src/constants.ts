@@ -1,11 +1,18 @@
+import { TableProps } from 'antd';
+import { OpenCourseRegisterationsCreate } from './pages/admins/open-course-registerations/create';
+import { GetAuditLogResposne, OpenCourseRegisterationAuditLog, OpenCourseRegisterationAuditLogWithTitle } from "./types/admins/audit-logs";
 import { TimeInterval } from "./types/shared";
 import { SelectProps } from "antd/lib";
+import { AnyObject } from 'antd/es/_util/type';
+import React from 'react';
+import { ColumnType } from 'antd/es/table';
 
 export const BASE_URI = 'http://localhost:8000';
 
 
 export const RESOURSES = {
     admins: "admins",
+    auditLogs: "audit-logs",
     students: "students",
     departments: "departments",
     academic_year_semesters: "academic-year-semesters", 
@@ -69,6 +76,21 @@ export const ADMIN_ACADEMIC_YEAR_SEMESTER_EDIT =
 
 export const ADMIN_ACADEMIC_YEAR_SEMESTER_SHOW = 
     `/${ADMIN_ACADEMIC_YEAR_SEMESTER_URI}/show/:id`;
+
+
+export const AUDIT_LOG_URI = ADMIN_ROLE + "/" + RESOURSES.auditLogs;
+
+export const AUDIT_LOG_LIST = 
+    `/${AUDIT_LOG_URI}`;
+
+export const AUDIT_LOG_CREATE = 
+    `/${AUDIT_LOG_URI}/create`;
+
+export const AUDIT_LOG_EDIT = 
+    `/${AUDIT_LOG_URI}/edit/:id`;
+
+export const AUDIT_LOG_SHOW = 
+    `/${AUDIT_LOG_URI}/show/:id`;
 
 export const COURSE_URI =  ADMIN_ROLE + "/" + RESOURSES.courses;
 
@@ -320,3 +342,88 @@ export const TIME_INTERVALS: TimeInterval[] = [
         title: "18:00:00"
     },
 ]
+
+
+export const RESOURCE_EN_TO_AR = 
+{
+    'open-course-registerations': 'فتح المواد الدراسية'
+} as const;
+
+
+export const ACTION_EN_TO_AR = 
+{
+    'create': 'إنشاء',
+    'update': 'تعديل',
+    'delete': 'حذف'
+} as const;
+
+
+
+export const getAuditLogDetailsTableColumns = ( renderTitle: ColumnType["render"], data?: GetAuditLogResposne<unknown>,) => {
+
+    if(!data)
+    {
+        return {
+            datasource: [],
+            columns: []
+        }
+    }
+    
+    switch (data.resource) {
+    case "open-course-registerations":
+      {
+        const openCoruseData = data.details as OpenCourseRegisterationAuditLog;
+
+        // const dataSource: TableProps<OpenCourseRegisterationAuditLogWithTitle>["dataSource"] = 
+        const dataSource: TableProps["dataSource"] = 
+         [
+            {
+                title: "السعر بالدولار",
+                value: openCoruseData.price_in_usd,
+                key: 0
+            },
+            {
+                title: "معرف المادة",
+                value: openCoruseData.course_id,
+                key: 1
+            },
+         ];
+         
+        // const columns: TableProps<OpenCourseRegisterationAuditLog>["columns"] = 
+        const columns: TableProps["columns"] = 
+        [
+            {
+                title: "",
+                dataIndex: "title",
+                key: "title",
+                render: renderTitle
+            },
+            {
+                title: "",
+                dataIndex: "value",
+                key: "value",
+            },
+        ]
+
+
+//ai answer
+//         const dataSource = [
+//   { key: '1', field: 'Name', record1: 'Fred', record2: 'James' },
+//   { key: '2', field: 'Last Name', record1: 'Smith', record2: 'Williams' },
+//   { key: '3', field: 'Date of Birth', record1: '1/1/1980', record2: '6/30/1985' },
+//   { key: '4', field: 'Address', record1: '123 Main St', record2: '456 Main St.' },
+// ];
+
+// const columns = [
+//   { title: '', dataIndex: 'field', key: 'field' },
+//   { title: 'Record 1', dataIndex: 'record1', key: 'record1' },
+//   { title: 'Record 2', dataIndex: 'record2', key: 'record2' },
+// ];
+        
+        return {
+            dataSource,
+            columns
+        }
+      }
+  }
+}

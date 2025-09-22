@@ -38,6 +38,11 @@ import {
   ADMIN_SHOW,
   ADMIN_STUDENT_URI,
   ADMIN_TEACHER_URI,
+  AUDIT_LOG_CREATE,
+  AUDIT_LOG_EDIT,
+  AUDIT_LOG_LIST,
+  AUDIT_LOG_SHOW,
+  AUDIT_LOG_URI,
   BASE_URI,
   CLASSROOM_COURSE_TEACHER_CREATE,
   CLASSROOM_COURSE_TEACHER_EDIT,
@@ -174,6 +179,12 @@ import {
   MeetingShow,
   MeetingEdit,
 } from "./pages/admins/meetings";
+import {
+  AuditLogList,
+  AuditLogsCreate,
+  AuditLogsShow,
+} from "./pages/admins/audit-logs";
+import { auditLogProvider } from "./audit-log-provider";
 
 const theme: ThemeConfig = {
   components: {
@@ -242,7 +253,6 @@ function App() {
           // canDelete: true,
         },
       },
-
       {
         name: ADMIN_ACADEMIC_YEAR_SEMESTER_URI,
         list: ADMIN_ACADEMIC_YEAR_SEMESTER_LIST,
@@ -251,6 +261,17 @@ function App() {
         show: ADMIN_ACADEMIC_YEAR_SEMESTER_SHOW,
         meta: {
           label: "الفصول الدراسية",
+          canDelete: true,
+        },
+      },
+      {
+        name: AUDIT_LOG_URI,
+        list: AUDIT_LOG_LIST,
+        create: AUDIT_LOG_CREATE,
+        edit: AUDIT_LOG_EDIT,
+        show: AUDIT_LOG_SHOW,
+        meta: {
+          label: "سجل الأحداث",
           canDelete: true,
         },
       },
@@ -405,9 +426,10 @@ function App() {
                   notificationProvider={useNotificationProvider}
                   routerProvider={routerBindings}
                   authProvider={authProvider}
+                  auditLogProvider={auditLogProvider}
                   // accessControlProvider={accessControlProvider}
                   liveProvider={liveProvider(window.Echo)}
-                  resources={resources}
+                  resources={[...resources]}
                   options={{
                     syncWithLocation: false,
                     warnWhenUnsavedChanges: true,
@@ -512,6 +534,13 @@ function App() {
                           path="edit/:id"
                           element={<AcademicYearSemesterEdit />}
                         />
+                      </Route>
+
+                      <Route path={AUDIT_LOG_URI}>
+                        <Route index element={<AuditLogList />} />
+                        <Route path="create" element={<AuditLogsCreate />} />
+                        <Route path="show/:id" element={<AuditLogsShow />} />
+                        <Route path="edit/:id" element={<AuditLogsShow />} />
                       </Route>
 
                       <Route path={COURSE_URI}>
