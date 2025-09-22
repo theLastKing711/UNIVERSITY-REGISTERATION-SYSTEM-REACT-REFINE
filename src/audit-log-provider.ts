@@ -130,10 +130,7 @@ export const auditLogProvider: AuditLogProvider = {
 
   },
   create: async (params) => {
-    console.log("audit log create params", params);
     const { resource, meta, action, author,data, } = params;
-
-    console.log("audit log create data", data);
 
     const api_resource = resource.split('/')[1];
 
@@ -150,14 +147,17 @@ export const auditLogProvider: AuditLogProvider = {
   },
   update: async (params) => {
 
-    console.log("params", params);
-    
-    const { resource, meta, action, author, } = params;
+     const { resource, meta, action, author,data, } = params;
+
+    const api_resource = resource.split('/')[1];
 
      await apiClient
-        .patch(
-          `${AUDT_LOG_URI}/${meta.id}?resourse=${resource}&action=${action}`,
-          params
+        .post(
+          `${AUDT_LOG_URI}/${api_resource}?action=${action}`,
+          {
+            ...data,
+            resource: api_resource
+          }
         );
 
     return data;

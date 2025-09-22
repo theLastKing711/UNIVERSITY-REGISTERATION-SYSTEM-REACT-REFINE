@@ -1,5 +1,5 @@
 import { Create, useForm } from "@refinedev/antd";
-import { Button, Form, Input, Select, Switch } from "antd";
+import { Button, Form, Input, Switch } from "antd";
 import { useGetAcademicYearSemesters } from "../../../hooks/API/select/useGetAcademicYearSemesters";
 import { useGetCourses } from "../../../hooks/API/select/useGetCourses";
 import { useGetTeachers } from "../../../hooks/API/select/useGetTeachers";
