@@ -1,11 +1,16 @@
 import { List, useModal, useTable } from "@refinedev/antd";
 import { useDelete, useLogList } from "@refinedev/core";
-import { Button, Modal, Table } from "antd";
+import { Button, Modal, Table, Tag } from "antd";
 import { GetAdminsResponseData } from "../../../types/admins/admins";
 import CustomTable from "../../../components/ui/AntDesgin/CustomTable";
 import { PlusCircleFilled } from "@ant-design/icons";
 import ShowDetailsModal from "./Component/ShowDetailsModal";
 import { useState } from "react";
+import {
+  ACTION_COLOR,
+  ACTION_EN_TO_AR,
+  RESOURCE_EN_TO_AR,
+} from "../../../constants";
 
 export const AuditLogList = () => {
   const [auditLogModalId, setAuditLogModalId] = useState<number | null>(null);
@@ -48,9 +53,6 @@ export const AuditLogList = () => {
     //   defaultBehavior: "replace",
     //   // defaultBehavior: "replace",
     // },
-    // filters: {
-    //   initial: filters,
-    // },
   });
 
   const { show, close, modalProps } = useModal();
@@ -64,10 +66,33 @@ export const AuditLogList = () => {
         subTitle: "Subtitle",
       }}
     >
-      <Table {...tableProps} rowKey="id">
+      <Table
+        {...tableProps}
+        rowKey="id"
+        showSorterTooltip={{ target: "sorter-icon" }}
+      >
         <Table.Column dataIndex="id" title="#" key="id" />
-        <Table.Column dataIndex="resource" title="الكيان" key="resource" />
-        <Table.Column dataIndex="action" title="الحدث" key="action" />
+        <Table.Column
+          dataIndex="resource"
+          title="الكيان"
+          key="resource"
+          render={(value) => {
+            return RESOURCE_EN_TO_AR[value];
+          }}
+        />
+        <Table.Column
+          dataIndex="action"
+          title="الحدث"
+          key="action"
+          filters={[
+            { text: "إنشاء", value: "create" },
+            { text: "تعديل", value: "update" },
+            { text: "حذف", value: "delete" },
+          ]}
+          render={(value) => (
+            <Tag color={ACTION_COLOR[value]}>{ACTION_EN_TO_AR[value]}</Tag>
+          )}
+        />
         <Table.Column
           dataIndex="details"
           title="التفاصيل"

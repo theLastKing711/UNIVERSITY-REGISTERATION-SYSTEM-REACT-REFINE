@@ -4,9 +4,8 @@ import { GetAuditLogResposne } from "../../../../types/admins/audit-logs";
 import {
   AUDIT_LOG_URI,
   getAuditLogDetailsTableColumns,
-  RESOURCE_EN_TO_AR,
 } from "../../../../constants";
-import { useModal, useOne } from "@refinedev/core";
+import { useOne } from "@refinedev/core";
 import { ColumnType } from "antd/es/table";
 
 export type ShowDetailsModalPros = {
@@ -15,7 +14,7 @@ export type ShowDetailsModalPros = {
 };
 
 const ShowDetailsModal = ({ id, onClose }: ShowDetailsModalPros) => {
-  const { data } = useOne<GetAuditLogResposne<unknown>>({
+  const { data } = useOne<GetAuditLogResposne>({
     resource: AUDIT_LOG_URI,
     id,
   });
@@ -30,7 +29,7 @@ const ShowDetailsModal = ({ id, onClose }: ShowDetailsModalPros) => {
   );
 
   return (
-    <Modal open={true} onCancel={onClose}>
+    <Modal open={true} onCancel={onClose} onOk={onClose}>
       <Table
         pagination={false}
         columns={columns}

@@ -130,15 +130,37 @@ export const auditLogProvider: AuditLogProvider = {
 
   },
   create: async (params) => {
-    const { resource, meta, action, author,data, } = params;
+
+    console.log("params", params)
+    
+    const { resource, meta, action, author,data, previousData} = params;
+
 
     const api_resource = resource.split('/')[1];
 
+    if(params.action === "delete")
+    {
+      await apiClient
+        .post(
+          `${AUDT_LOG_URI}/delete`,
+          {
+            ...data,
+            id: meta.id,
+            previousData,
+            resource: api_resource
+          }
+        );
+        
+        return;
+    }
+    
      await apiClient
         .post(
           `${AUDT_LOG_URI}/${api_resource}?action=${action}`,
           {
+            id: meta.id,
             ...data,
+            previousData,
             resource: api_resource
           }
         );
@@ -147,9 +169,14 @@ export const auditLogProvider: AuditLogProvider = {
   },
   update: async (params) => {
 
+    alert("hello world");
+
+
      const { resource, meta, action, author,data, } = params;
 
     const api_resource = resource.split('/')[1];
+
+    console.log("update data", data);
 
      await apiClient
         .post(
