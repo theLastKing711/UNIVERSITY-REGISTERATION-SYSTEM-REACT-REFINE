@@ -250,6 +250,7 @@ function App() {
         show: ADMIN_SHOW,
         meta: {
           label: "الإداريين",
+          audit: [],
           // canDelete: true,
         },
       },
@@ -261,7 +262,7 @@ function App() {
         show: ADMIN_ACADEMIC_YEAR_SEMESTER_SHOW,
         meta: {
           label: "الفصول الدراسية",
-          canDelete: true,
+          audit: [],
         },
       },
       {
@@ -272,7 +273,7 @@ function App() {
         show: AUDIT_LOG_SHOW,
         meta: {
           label: "سجل الأحداث",
-          canDelete: true,
+          audit: [],
         },
       },
       {
@@ -283,6 +284,7 @@ function App() {
         show: COURSE_SHOW,
         meta: {
           label: "المواد الدراسية",
+          audit: [],
         },
       },
       {
@@ -293,6 +295,7 @@ function App() {
         show: DEPARTMENT_SHOW,
         meta: {
           label: "الأقسام",
+          audit: [],
         },
       },
       {
@@ -303,6 +306,7 @@ function App() {
         show: OPEN_COURSE_REGISTERATION_SHOW,
         meta: {
           label: "فتح مواد دراسية",
+          audit: ["create", "update", "delete"],
         },
       },
       {
@@ -320,6 +324,7 @@ function App() {
         show: CLASSROOM_SHOW,
         meta: {
           label: "الصفوف",
+          audit: [],
         },
       },
       {
@@ -330,6 +335,7 @@ function App() {
         show: CLASSROOM_COURSE_TEACHER_SHOW,
         meta: {
           label: "أوقات المحاضرات",
+          audit: [],
         },
       },
       {
@@ -340,6 +346,7 @@ function App() {
         show: EXAM_SHOW,
         meta: {
           label: "الاMeeمتحانات",
+          audit: [],
         },
       },
       {
@@ -350,6 +357,7 @@ function App() {
         show: MEETING_SHOW,
         meta: {
           label: "التقويم",
+          audit: [],
         },
       },
       {
@@ -360,6 +368,7 @@ function App() {
         show: LECTURE_SHOW,
         meta: {
           label: "تسجيل الحضور",
+          audit: [],
         },
       },
       {
@@ -370,6 +379,7 @@ function App() {
         show: STUDENT_SHOW,
         meta: {
           label: "التلاميذ",
+          audit: [],
         },
       },
       {
@@ -380,6 +390,7 @@ function App() {
         show: TEACHER_SHOW,
         meta: {
           label: "الأساتذة",
+          audit: ["create", "update", "delete"],
         },
       },
       {
@@ -387,6 +398,7 @@ function App() {
         list: STUDENT_OPEN_COURSE_REGISTERATION_THIS_SEMESTER_LIST,
         meta: {
           label: "تسجيل مواد",
+          audit: [],
         },
       },
       {
@@ -394,6 +406,7 @@ function App() {
         list: STUDENT_OPEN_COURSE_REGISTERATION_THIS_SEMESTER_MARKS_LIST,
         meta: {
           label: "علامات الفصل الحالي",
+          audit: [],
         },
       },
       {
@@ -401,6 +414,7 @@ function App() {
         list: STUDENT_OPEN_COURSE_REGISTERATION_MARKS_LIST,
         meta: {
           label: "العلامات",
+          audit: [],
         },
       },
       {
@@ -408,6 +422,7 @@ function App() {
         list: STUDENT_OPEN_COURSE_REGISTERATION_MARKS_LIST,
         meta: {
           label: "جدول الدوام",
+          audit: [],
         },
       },
     ],

@@ -38,43 +38,7 @@ export const auditLogProvider: AuditLogProvider = {
     try {
 
       const { resource, meta, action, author, metaData, } = params;
-      
-      // const filtersQuery = getFiltersQuery(filters);
-          
-      //     const paginationQuery =
-      //        meta?.isCursorPagiantion ?  getCursorPaginationQuery(pagination, metaData?.queryContext?.pageParam?.cursor) : getPaginationQuery(pagination); 
-          
-      //     const sortersQuery = getSortersQuery(sorters);  
-      
-      //     const queryQuestionMarkOrEmpty = 
-      //       getQueryQuestionMarkOrEmpty(filtersQuery, paginationQuery, sortersQuery);
-        
-      
-      //     const department_id_query_parameter_value =  
-      //       (meta?.department_id || localStorage.getItem('department_id_query_parameter'));
-      
-      //     const department_id_query_parameter_query = 
-      //     department_id_query_parameter_value
-      //       !== 'undefined' 
-      //       ?
-      //       `&department_id=${department_id_query_parameter_value}`
-      //       :
-      //       '';
-      
-      //        const academic_year_semester_id_query_parameter_value = 
-      //       (meta?.academic_year_semester_id || localStorage.getItem('academic_year_semester_id_query_parameter'));
-      
-      //     const academic_year_semester_id_query_parameter_query = 
-      //     academic_year_semester_id_query_parameter_value
-      //       !== 'undefined' 
-      //       ?
-      //       `&academic_year_semester_id=${academic_year_semester_id_query_parameter_value}`
-      //       :
-      //       '';
-      
-      //     const uri = `${AUDT_LOG_URI}/${resource}${queryQuestionMarkOrEmpty}${paginationQuery}${filtersQuery}${sortersQuery}${department_id_query_parameter_query}${academic_year_semester_id_query_parameter_query}`;
 
-          // const uri = `${AUDT_LOG_URI}/${resource}${queryQuestionMarkOrEmpty}${paginationQuery}${filtersQuery}${sortersQuery}${department_id_query_parameter_query}${academic_year_semester_id_query_parameter_query}`;
           
           const response = await apiClient.get(`${AUDT_LOG_URI}`);
           
@@ -87,15 +51,8 @@ export const auditLogProvider: AuditLogProvider = {
           }
       
           const data = response.data.data ?? response.data; 
-          // in case of pagination response
-          //  response.data.data is the array
-          // response.data data is the array  
       
           const total = response.data.total ?? data.length;
-           // in case of pagination response
-          //  response.data.total is the total in server not in sent to client.
-          // data.length in case of response an array of items  
-      
       
           console.log("datas", response);
       
@@ -146,7 +103,6 @@ export const auditLogProvider: AuditLogProvider = {
           {
             ...data,
             id: meta.id,
-            previousData,
             resource: api_resource
           }
         );
@@ -158,8 +114,8 @@ export const auditLogProvider: AuditLogProvider = {
         .post(
           `${AUDT_LOG_URI}/${api_resource}?action=${action}`,
           {
-            id: meta.id,
             ...data,
+            id: meta.id,
             previousData,
             resource: api_resource
           }
@@ -168,9 +124,6 @@ export const auditLogProvider: AuditLogProvider = {
     return data;
   },
   update: async (params) => {
-
-    alert("hello world");
-
 
      const { resource, meta, action, author,data, } = params;
 

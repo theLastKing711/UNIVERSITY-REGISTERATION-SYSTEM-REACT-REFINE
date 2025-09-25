@@ -66,11 +66,7 @@ export const AuditLogList = () => {
         subTitle: "Subtitle",
       }}
     >
-      <Table
-        {...tableProps}
-        rowKey="id"
-        showSorterTooltip={{ target: "sorter-icon" }}
-      >
+      <Table {...tableProps} rowKey="id">
         <Table.Column dataIndex="id" title="#" key="id" />
         <Table.Column
           dataIndex="resource"

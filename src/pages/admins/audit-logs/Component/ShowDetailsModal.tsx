@@ -19,9 +19,12 @@ const ShowDetailsModal = ({ id, onClose }: ShowDetailsModalPros) => {
     id,
   });
 
-  const renderTitle: ColumnType["render"] = (value, record, index) => (
-    <div style={{ fontWeight: "bold" }}>{value}</div>
-  );
+  const renderTitle: ColumnType["render"] = (value, record, index) => {
+    console.log("value", record);
+    console.log("value", value);
+
+    return <td style={{ fontWeight: "bold" }}>{value}</td>;
+  };
 
   const { columns, dataSource } = getAuditLogDetailsTableColumns(
     renderTitle,

@@ -13,6 +13,7 @@ export type GetOpenCoruseRegisterationAuditLogResposne =
 
 
 export type OpenCourseRegisterationAuditLog = {
+    id: number;
     course_id: number;
     price_in_usd:  number;
 
@@ -20,11 +21,17 @@ export type OpenCourseRegisterationAuditLog = {
 }
 
 export type OpenCourseRegisterationUpdateAuditLog = OpenCourseRegisterationAuditLog & {
+    id: number;
     updated_course_id: number;
     updated_price_in_usd: number;
     updated_teachers: OpenCourseRegisterationTeacherAuditLog[];
 }
 
+
+export type OpenCourseRegisterationDeleteAuditLog = {
+     title: string;
+    id: number;
+}
 
 type OpenCourseRegisterationTeacherAuditLog = {
     id: number;
@@ -34,6 +41,7 @@ type OpenCourseRegisterationTeacherAuditLog = {
 
 
 export type TeacherAuditLog = {
+    id: number;
     title: string;
     department_id: number;
     name:  string;
@@ -43,6 +51,11 @@ export type TeacherAuditLog = {
 export type TeacherUpdateAuditLog = TeacherAuditLog & {
     updated_name?: string;
     updated_department_id?: number;
+}
+
+export type TeacherDeleteAuditLog = {
+    title: string;
+    id: number;
 }
 
 

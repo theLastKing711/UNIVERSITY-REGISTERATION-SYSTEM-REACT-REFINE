@@ -4,8 +4,10 @@ import {
   GetAuditLogResposne,
   OpenCourseRegisterationAuditLog,
   OpenCourseRegisterationAuditLogWithTitle,
+  OpenCourseRegisterationDeleteAuditLog,
   OpenCourseRegisterationUpdateAuditLog,
   TeacherAuditLog,
+  TeacherDeleteAuditLog,
   TeacherUpdateAuditLog,
 } from "./types/admins/audit-logs";
 import { TimeInterval } from "./types/shared";
@@ -314,13 +316,13 @@ export const getAuditLogDetailsTableColumns = (
             title: "القيمة القديمة",
             dataIndex: "oldValue",
             key: "oldValue",
-            render: renderTitle,
+            // render: renderTitle,
           },
           {
             title: "القيمة الجديدة",
             dataIndex: "value",
             key: "value",
-            render: renderTitle,
+            // render: renderTitle,
           },
         ]
       : [
@@ -334,13 +336,32 @@ export const getAuditLogDetailsTableColumns = (
             title: "القيمة الجديدة",
             dataIndex: "value",
             key: "value",
-            render: renderTitle,
           },
         ];
 
   switch (data.resource) {
     case "open-course-registerations":
       {
+        if (data.action === "delete") {
+          const openCoruseData =
+            data.details as OpenCourseRegisterationDeleteAuditLog;
+
+          // const dataSource: TableProps<OpenCourseRegisterationAuditLogWithTitle>["dataSource"] =
+          const dataSource: TableProps["dataSource"] = [
+            {
+              //every property corrspond to columns dataIndex
+              title: "المعرف",
+              value: openCoruseData.id,
+              key: 0,
+            },
+          ];
+
+          return {
+            columns,
+            dataSource: dataSource,
+          };
+        }
+
         if (data.action === "update") {
           const openCoruseData =
             data.details as OpenCourseRegisterationUpdateAuditLog;
@@ -348,16 +369,22 @@ export const getAuditLogDetailsTableColumns = (
           // const dataSource: TableProps<OpenCourseRegisterationAuditLogWithTitle>["dataSource"] =
           const dataSource: TableProps["dataSource"] = [
             {
+              title: "المعرف",
+              oldValue: openCoruseData.id,
+              value: openCoruseData.id,
+              key: 0,
+            },
+            {
               title: "معرف المادة",
               oldValue: openCoruseData.course_id,
               value: openCoruseData.updated_course_id,
-              key: 0,
+              key: 1,
             },
             {
               title: "السعر بالدولار",
               oldValue: openCoruseData.updated_price_in_usd,
               value: openCoruseData.price_in_usd,
-              key: 1,
+              key: 2,
             },
             {
               title: "المدرسين",
@@ -396,14 +423,20 @@ export const getAuditLogDetailsTableColumns = (
         // const dataSource: TableProps<OpenCourseRegisterationAuditLogWithTitle>["dataSource"] =
         const dataSource: TableProps["dataSource"] = [
           {
+            title: "المعرف",
+            oldValue: openCoruseData.id,
+            value: openCoruseData.id,
+            key: 0,
+          },
+          {
             title: "معرف المادة",
             value: openCoruseData.course_id,
-            key: 0,
+            key: 1,
           },
           {
             title: "السعر بالدولار",
             value: openCoruseData.price_in_usd,
-            key: 1,
+            key: 2,
           },
           {
             title: "المدرسين",
@@ -427,6 +460,25 @@ export const getAuditLogDetailsTableColumns = (
       break;
     case "teachers":
       {
+        if (data.action === "delete") {
+          const teacher = data.details as TeacherDeleteAuditLog;
+
+          // const dataSource: TableProps<OpenCourseRegisterationAuditLogWithTitle>["dataSource"] =
+          const dataSource: TableProps["dataSource"] = [
+            {
+              //every property corrspond to columns dataIndex
+              title: "المعرف",
+              value: teacher.id,
+              key: 0,
+            },
+          ];
+
+          return {
+            columns,
+            dataSource: dataSource,
+          };
+        }
+
         if (data.action === "update") {
           const teacher = data.details as TeacherUpdateAuditLog;
 
@@ -434,16 +486,22 @@ export const getAuditLogDetailsTableColumns = (
           const dataSource: TableProps["dataSource"] = [
             {
               //every property corrspond to columns dataIndex
+              title: "المعرف",
+              oldValue: teacher.id,
+              value: "",
+              key: 0,
+            },
+            {
               title: "معرف القسم",
               oldValue: teacher.department_id,
               value: teacher.updated_department_id,
-              key: 0,
+              key: 1,
             },
             {
               title: "اسم الأستاذ",
               oldValue: teacher.name,
               value: teacher.updated_name,
-              key: 1,
+              key: 2,
             },
           ];
 
@@ -458,14 +516,20 @@ export const getAuditLogDetailsTableColumns = (
         // const dataSource: TableProps<OpenCourseRegisterationAuditLogWithTitle>["dataSource"] =
         const dataSource: TableProps["dataSource"] = [
           {
+            //every property corrspond to columns dataIndex
+            title: "المعرف",
+            value: teacher.id,
+            key: 0,
+          },
+          {
             title: "معرف القسم",
             value: teacher.department_id,
-            key: 0,
+            key: 1,
           },
           {
             title: "اسم الأستاذ",
             value: teacher.name,
-            key: 1,
+            key: 2,
           },
         ];
 
