@@ -1,30 +1,25 @@
-import { DeleteButton } from "@refinedev/antd";
 import { useTranslation } from "@refinedev/core";
 import { Button, Modal, ModalProps } from "antd";
 import React from "react";
 
-export type CustomModalProsp = {
+export type CustomCreateModalProps = {
   resourseTitle: string;
   title: ModalProps["title"];
   onCancel: ModalProps["onCancel"];
   onClose: () => void;
-  id: number;
   submitLoading: boolean;
   onSubmit: () => void;
   children: React.ReactNode;
-  onDeleteSuccessMessage: string;
 };
 
-const CustomEditModal = ({
+const CustomCreateModal = ({
   title,
   resourseTitle,
   children,
   submitLoading,
-  id,
-  onDeleteSuccessMessage,
   onSubmit,
   onClose,
-}: CustomModalProsp) => {
+}: CustomCreateModalProps) => {
   const { translate } = useTranslation();
 
   return (
@@ -35,16 +30,6 @@ const CustomEditModal = ({
         <Button key="back" onClick={() => onClose()}>
           {translate("buttons.cancel")}
         </Button>,
-        <DeleteButton
-          recordItemId={id}
-          onSuccess={() => onClose()}
-          successNotification={{
-            type: "success",
-            // message: onDeleteSuccessMessage,
-            // message: `تم حذف ${resourseTitle}
-            message: onDeleteSuccessMessage,
-          }}
-        ></DeleteButton>,
         <Button
           key="submit"
           type="primary"
@@ -60,4 +45,4 @@ const CustomEditModal = ({
   );
 };
 
-export default CustomEditModal;
+export default CustomCreateModal;

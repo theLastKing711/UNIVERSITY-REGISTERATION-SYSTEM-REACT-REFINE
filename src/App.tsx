@@ -326,7 +326,7 @@ function App() {
         edit: EXAM_EDIT,
         show: EXAM_SHOW,
         meta: {
-          label: "الاMeeمتحانات",
+          label: "الامتحانات",
           audit: [],
         },
       },
