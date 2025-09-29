@@ -1,6 +1,7 @@
 import {
   Authenticated,
   CanAccess,
+  I18nProvider,
   Refine,
   ResourceProps,
 } from "@refinedev/core";
@@ -19,7 +20,7 @@ import routerBindings, {
   DocumentTitleHandler,
   UnsavedChangesNotifier,
 } from "@refinedev/react-router";
-import { App as AntdApp, ConfigProvider } from "antd";
+import { App as AntdApp, Button, ConfigProvider } from "antd";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router";
 import { authProvider } from "./authProvider";
 import { Header } from "./components/header";
@@ -185,6 +186,8 @@ import {
   AuditLogsShow,
 } from "./pages/admins/audit-logs";
 import { auditLogProvider } from "./audit-log-provider";
+import i18n from "./i18/config";
+import { useTranslation } from "react-i18next";
 
 const theme: ThemeConfig = {
   components: {
@@ -194,42 +197,20 @@ const theme: ThemeConfig = {
   },
 };
 
-// const CustomRouterProvider = () => {
-//   const navigate = useNavigate();
-
-//   return {
-//     go: ({ to, query, hash, type }) => {
-//       const defaultQueryParam = { defaultParam: "defaultValue" }; // Your default parameter
-
-//       let newQuery = { ...defaultQueryParam, ...query };
-
-//       // Stringify the query object (you might use a library like 'qs')
-//       const queryString = Object.keys(newQuery)
-//         .map((key) => `${key}=${newQuery[key]}`)
-//         .join("&");
-
-//       const url = `${to}${queryString ? `?${queryString}` : ""}${
-//         hash ? `#${hash}` : ""
-//       }`;
-
-//       if (type === "push") {
-//         navigate(url);
-//       } else if (type === "replace") {
-//         navigate(url, { replace: true });
-//       } else if (type === "path") {
-//         return url;
-//       }
-//     },
-//     // ... other router provider methods (parse, etc.)
-//   };
-// };
-
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.mjs",
   import.meta.url
 ).toString();
 
 function App() {
+  const { t, i18n } = useTranslation();
+
+  const i18nProvider: I18nProvider = {
+    translate: (key: string, options?: any) => t(key, options),
+    changeLocale: (lang: string) => i18n.changeLanguage(lang),
+    getLocale: () => i18n.language,
+  };
+
   const resources: ResourceProps[] | undefined = useMemo(
     () => [
       // {
@@ -444,6 +425,7 @@ function App() {
                   auditLogProvider={auditLogProvider}
                   // accessControlProvider={accessControlProvider}
                   liveProvider={liveProvider(window.Echo)}
+                  i18nProvider={i18nProvider}
                   resources={[...resources]}
                   options={{
                     syncWithLocation: false,

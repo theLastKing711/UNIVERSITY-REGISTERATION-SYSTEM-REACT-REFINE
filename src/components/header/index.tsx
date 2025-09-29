@@ -16,7 +16,7 @@ import {
   theme,
   Typography,
 } from "antd";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ColorModeContext } from "../../contexts/color-mode";
 import { useGetDepratments } from "../../hooks/API/select/useGetDepartments";
 import {
@@ -38,6 +38,7 @@ import { NOTIFICATION_URI } from "../../constants";
 import { GetNotificationsResponseData } from "../../types/admins/notifications";
 import { createStyles } from "antd-style";
 import CustomSearchSelect from "../ui/AntDesgin/CustomSearchSelect";
+import { useTranslation } from "@refinedev/core";
 
 const { Text } = Typography;
 const { useToken } = theme;
@@ -210,6 +211,10 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
 
   const { editUrl, push } = useNavigation();
 
+  const { translate, getLocale, changeLocale } = useTranslation();
+
+  console.log("locale", getLocale());
+
   return (
     <AntdLayout.Header style={headerStyles}>
       {/* <Space> */}
@@ -238,6 +243,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
           gap: "1rem",
         }}
       >
+        <Button onClick={() => changeLocale("ar")}>changeLocale</Button>
         <Form.Item label="القسم" style={{ marginBottom: 0 }}>
           <CustomSearchSelect
             {...departmentSelectProps}

@@ -1,4 +1,9 @@
-import { DeleteButton, EditButton, ShowButton } from "@refinedev/antd";
+import {
+  DeleteButton,
+  DeleteButtonProps,
+  EditButton,
+  ShowButton,
+} from "@refinedev/antd";
 import { BaseRecord } from "@refinedev/core";
 import { Space, Table, TableProps } from "antd";
 import React from "react";
@@ -6,6 +11,8 @@ import React from "react";
 export type CustomTableProps<T> = TableProps<T> & {
   children: React.ReactNode;
   actions?: React.ReactNode;
+  deleteSuccessNotification?: DeleteButtonProps["successNotification"];
+  deleteErrorNotification?: DeleteButtonProps["errorNotification"];
 };
 
 const CustomTable = <T,>({
@@ -23,7 +30,13 @@ const CustomTable = <T,>({
           <Space>
             <EditButton hideText size="small" recordItemId={record.id} />
             <ShowButton hideText size="small" recordItemId={record.id} />
-            <DeleteButton hideText size="small" recordItemId={record.id} />
+            <DeleteButton
+              hideText
+              size="small"
+              recordItemId={record.id}
+              successNotification={tableProps.deleteSuccessNotification}
+              errorNotification
+            />
           </Space>
         )}
       />

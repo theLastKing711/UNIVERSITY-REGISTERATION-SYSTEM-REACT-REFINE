@@ -1,11 +1,36 @@
 import { Edit, useForm } from "@refinedev/antd";
-import { Form, Input, Select } from "antd";
+import { Form, Input } from "antd";
 import { useGetDepratments } from "../../../hooks/API/select/useGetDepartments";
-import { useNotification, useSubscription } from "@refinedev/core";
+import {
+  useNotification,
+  useSubscription,
+  useTranslation,
+} from "@refinedev/core";
 import CustomSearchSelect from "../../../components/ui/AntDesgin/CustomSearchSelect";
 
 export const TeacherEdit = () => {
-  const { formProps, saveButtonProps, id } = useForm();
+  const { translate } = useTranslation();
+
+  const { formProps, saveButtonProps, id } = useForm({
+    successNotification: (data, values, resource) => {
+      return {
+        message: translate("notifications.editSuccess", {
+          resource: translate("resources.teacher"),
+        }),
+        description: translate("notifications.success"),
+        type: "success",
+      };
+    },
+    errorNotification: (data, values, resource) => {
+      return {
+        message: translate("notifications.editError", {
+          resource: translate("resources.teacher"),
+        }),
+        description: translate("notifications.error"),
+        type: "error",
+      };
+    },
+  });
 
   const { departmentSelectProps } = useGetDepratments();
 
