@@ -209,9 +209,11 @@ export const StudentOpenCourseRegisterationsThisSemesterList = () => {
                   <Space>
                     {record.is_student_registered_in_open_coruse ? (
                       <DeleteButton
-                        confirmCancelText="هل أنت متأكد تريد سحب المادة"
-                        // confirmOkText="نعم"
-                        onClick={() => unRegisterInCourse(record.id)}
+                        confirmCancelText="لا"
+                        confirmOkText="نعم"
+                        title="هل أنت متأكد أنك تريد سحب المادة ؟"
+                        recordItemId={record.id}
+                        // onClick={() => unRegisterInCourse(record.id)}
                         size="small"
                       >
                         سحب
