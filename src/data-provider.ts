@@ -2,6 +2,7 @@ import {  DataProvider, HttpError } from "@refinedev/core";
 import { apiClient } from "./libs/axios/config";
 import { AxiosError } from "axios";
 import { getSortersQuery, getQueryQuestionMarkOrEmpty, parseAxiosErrorsToList, getMutationResponseHttpError, getCursorPaginationQuery, getFiltersQuery, getPaginationQuery } from "./helpers";
+import { CUSTOM_ROUTES } from "./constants";
 
 export const dataProvider = (url: string, deartemnt_query_filter?: string): DataProvider => ({
     getList: async ({resource, filters, pagination, sorters, meta}) => {
@@ -82,7 +83,10 @@ export const dataProvider = (url: string, deartemnt_query_filter?: string): Data
     }
   },
   getOne: async ({resource, id, meta}) => {
-    const showUrl = `${url}/${resource}/${id}`;
+
+    const idParam = id == -1 ? '' : `/${id}`
+    
+    const showUrl = `${url}/${resource}${idParam}`;
 
     try {
       const response = await apiClient.get(showUrl);
@@ -111,13 +115,15 @@ export const dataProvider = (url: string, deartemnt_query_filter?: string): Data
 
   create: async ({resource, variables}) => {
 
+    alert("hello world")
+
     console.log("variables", variables);
 
     const postUrl = `${url}/${resource}`;
 
     try {
       const response = await apiClient.post(postUrl, variables);
-  
+
       return {
           data: response.data,
           total: 10
@@ -125,8 +131,12 @@ export const dataProvider = (url: string, deartemnt_query_filter?: string): Data
       
     }
     catch(err) {
+
+      console.log("error", err)
         
       const httpError = getMutationResponseHttpError(err);
+
+      
 
       return Promise.reject(httpError);
     }
@@ -210,6 +220,23 @@ export const dataProvider = (url: string, deartemnt_query_filter?: string): Data
         getQueryQuestionMarkOrEmpty(filtersQuery, department_id_query_parameter_query, academic_year_semester_id_query_parameter_query);
 
     const uri = `${url}/${queryQuestionMarkOrEmpty}${filtersQuery}${department_id_query_parameter_query}${academic_year_semester_id_query_parameter_query}`;
+
+    if(meta?.route === CUSTOM_ROUTES.registerInOpenCourse)
+    {
+      const response = 
+        await apiClient.post(`${uri}`);
+
+        console.log("response value", response)
+
+         window.location.href = 
+          response
+            .data
+            .url;
+
+        return {
+          data: response.data
+        }
+    }
 
     const response = 
       await apiClient.get(`${uri}`, 

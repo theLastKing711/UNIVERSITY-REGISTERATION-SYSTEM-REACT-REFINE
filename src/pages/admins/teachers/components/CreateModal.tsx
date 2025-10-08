@@ -10,11 +10,11 @@ import CustomSearchSelect from "../../../../components/ui/AntDesgin/CustomSearch
 import { useGetDepratments } from "../../../../hooks/API/select/useGetDepartments";
 import CustomCreateModal from "../../../../components/ui/AntDesgin/CustomCreateModal";
 
-export type EditModalProps = {
+export type CreateModalProps = {
   onClose: () => void;
 };
 
-const CreateModal = ({ onClose }: EditModalProps) => {
+const CreateModal = ({ onClose }: CreateModalProps) => {
   const { translate } = useTranslation();
 
   const { form, formProps, modalProps, formLoading } = useModalForm({

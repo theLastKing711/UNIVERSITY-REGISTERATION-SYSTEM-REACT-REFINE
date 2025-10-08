@@ -12,6 +12,7 @@ import {
   HttpError,
   useCreate,
   useCustom,
+  useCustomMutation,
   useDelete,
   useInvalidate,
 } from "@refinedev/core";
@@ -21,6 +22,7 @@ import {
   GetStudentRegisteredOpenCoursesThisSemesterResponseData,
 } from "../../../types/students/open-course-registerations";
 import {
+  CUSTOM_ROUTES,
   STUDENT_OPEN_COURSE_REGISTERATION_REGISTERED_THIS_SEMESTER_URI,
   STUDENT_OPEN_COURSE_REGISTERATION_SCHEDULE_LIST,
   STUDENT_OPEN_COURSE_REGISTERATION_SCHEDULE_URI,
@@ -74,16 +76,16 @@ export const StudentOpenCourseRegisterationsThisSemesterList = () => {
 
   const { mutate: deleteMutate } = useDelete();
 
+  const { data: examScheduleData, mutate: registerInOpenCourseApi } =
+    useCustomMutation();
+
   const {
-    data: examScheduleData,
-    isFetching,
+    data: registerInCourseData,
+    isFetching: isGetCoursesScheduleFetching,
     refetch: GetCoursesScheduleApi,
   } = useCustom({
     url: STUDENT_OPEN_COURSE_REGISTERATION_SCHEDULE_LIST,
-    method: "get",
-    queryOptions: {
-      enabled: false,
-    },
+    method: "post",
   });
 
   const GetCoursesSchedule = () => {
@@ -91,25 +93,47 @@ export const StudentOpenCourseRegisterationsThisSemesterList = () => {
   };
 
   const registerInCourse = (id: BaseKey | undefined) => {
-    mutate(
+    registerInOpenCourseApi(
       {
-        resource: `${STUDENT_OPEN_COURSE_REGISTERATION_URI}/${id}`,
+        url: `${STUDENT_OPEN_COURSE_REGISTERATION_URI}/${id}`,
+        method: "post",
         values: {},
-      },
-      {
-        onSuccess: (data, variables, context) => {
-          invalidate({
-            resource: STUDENT_OPEN_COURSE_REGISTERATION_URI,
-            invalidates: ["list"],
-          });
-          invalidate({
-            resource:
-              STUDENT_OPEN_COURSE_REGISTERATION_REGISTERED_THIS_SEMESTER_URI,
-            invalidates: ["list"],
-          });
+        meta: {
+          route: CUSTOM_ROUTES.registerInOpenCourse,
         },
       }
+      // {
+      //   onError: (error, variables, context) => {
+      //     // An error occurred!
+      //   },
+      //   onSuccess: (data, variables, context) => {
+      //     console.log("success", data);
+      //     // Let's celebrate!
+      //   },
+      // }
     );
+
+    // mutate(
+    //   {
+    //     resource: `${STUDENT_OPEN_COURSE_REGISTERATION_URI}/${id}`,
+    //     values: {},
+    //   },
+    //   {
+    //     onSuccess: (data, variables, context) => {
+    //       console.log("data", data);
+
+    //       invalidate({
+    //         resource: STUDENT_OPEN_COURSE_REGISTERATION_URI,
+    //         invalidates: ["list"],
+    //       });
+    //       invalidate({
+    //         resource:
+    //           STUDENT_OPEN_COURSE_REGISTERATION_REGISTERED_THIS_SEMESTER_URI,
+    //         invalidates: ["list"],
+    //       });
+    //     },
+    //   }
+    // );
   };
 
   const unRegisterInCourse = (id: BaseKey) => {
@@ -232,7 +256,7 @@ export const StudentOpenCourseRegisterationsThisSemesterList = () => {
                 <CreateButton>إنشاء</CreateButton>
                 <ListButton
                   icon={<DownloadOutlined />}
-                  loading={isFetching}
+                  loading={isGetCoursesScheduleFetching}
                   onClick={GetCoursesSchedule}
                   resource={STUDENT_OPEN_COURSE_REGISTERATION_SCHEDULE_URI}
                 >

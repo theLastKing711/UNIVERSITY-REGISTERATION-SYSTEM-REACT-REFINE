@@ -189,6 +189,18 @@ export const STUDENT_ROLE = "students";
 export const STUDENT_OPEN_COURSE_REGISTERATION_URI =
   STUDENT_ROLE + "/" + STUDENT_RESOURSES.openCourseRegisterations;
 
+export const STUDENT_OPEN_COURSE_REGISTERATION_REGISTERATION_SUCCESS_URI =
+  STUDENT_ROLE +
+  "/" +
+  STUDENT_RESOURSES.openCourseRegisterations +
+  "/registeration-success";
+
+export const STUDENT_OPEN_COURSE_REGISTERATION_REGISTERATION_CANCELED_URI =
+  STUDENT_ROLE +
+  "/" +
+  STUDENT_RESOURSES.openCourseRegisterations +
+  "/registeration-canceled";
+
 export const STUDENT_OPEN_COURSE_REGISTERATION_THIS_SEMESTER_LIST = `/${STUDENT_OPEN_COURSE_REGISTERATION_URI}`;
 
 export const STUDENT_OPEN_COURSE_REGISTERATION_THIS_SEMESTER_MARKS_URI = `${STUDENT_OPEN_COURSE_REGISTERATION_URI}/marks/this-semester`;
@@ -542,3 +554,7 @@ export const getAuditLogDetailsTableColumns = (
       break;
   }
 };
+
+export const CUSTOM_ROUTES = {
+  registerInOpenCourse: "register in open course",
+} as const;

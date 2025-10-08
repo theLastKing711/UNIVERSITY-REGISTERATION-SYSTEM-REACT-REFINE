@@ -91,6 +91,8 @@ import {
   STUDENT_LIST,
   STUDENT_OPEN_COURSE_REGISTERATION_MARKS_LIST,
   STUDENT_OPEN_COURSE_REGISTERATION_MARKS_URI,
+  STUDENT_OPEN_COURSE_REGISTERATION_REGISTERATION_CANCELED_URI,
+  STUDENT_OPEN_COURSE_REGISTERATION_REGISTERATION_SUCCESS_URI,
   STUDENT_OPEN_COURSE_REGISTERATION_THIS_SEMESTER_LIST,
   STUDENT_OPEN_COURSE_REGISTERATION_THIS_SEMESTER_MARKS_LIST,
   STUDENT_OPEN_COURSE_REGISTERATION_THIS_SEMESTER_MARKS_URI,
@@ -188,6 +190,8 @@ import {
 import { auditLogProvider } from "./audit-log-provider";
 import i18n from "./i18/config";
 import { useTranslation } from "react-i18next";
+import StudentOpenCourseRegisterationsRegisterationSuccess from "./pages/students/open-course-registerations/register-in-open-course-success";
+import StudentOpenCourseRegisterationsRegisterationCanceled from "./pages/students/open-course-registerations/register-in-open-course-canceled";
 
 const theme: ThemeConfig = {
   components: {
@@ -466,6 +470,32 @@ function App() {
                         </Authenticated>
                       }
                     >
+                      <Route
+                        path={
+                          STUDENT_OPEN_COURSE_REGISTERATION_REGISTERATION_SUCCESS_URI
+                        }
+                      >
+                        <Route
+                          index
+                          element={
+                            <StudentOpenCourseRegisterationsRegisterationSuccess />
+                          }
+                        />
+                      </Route>
+
+                      <Route
+                        path={
+                          STUDENT_OPEN_COURSE_REGISTERATION_REGISTERATION_CANCELED_URI
+                        }
+                      >
+                        <Route
+                          index
+                          element={
+                            <StudentOpenCourseRegisterationsRegisterationCanceled />
+                          }
+                        />
+                      </Route>
+
                       <Route path={STUDENT_OPEN_COURSE_REGISTERATION_URI}>
                         <Route
                           index
