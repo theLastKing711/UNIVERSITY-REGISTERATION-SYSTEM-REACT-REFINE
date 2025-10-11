@@ -313,8 +313,18 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
         {username && <Text strong>أهلا {username}</Text>}
         {/* {username && <Avatar src={username} />} */}
         <Dropdown
+          menu={
+            {
+              onBlur: () => {
+                alert("hello world");
+                setIsNotificationDropdownOpen(false);
+              },
+            } as MenuProps
+          }
           placement="bottomLeft"
-          open={isNotificationDropdownOpen}
+          //defualt close when mouse move out of dropdown
+          //if open is set it doesnt close on click outside
+          // open={isNotificationDropdownOpen}
           popupRender={(menu) => (
             <div style={contentStyle}>
               -
@@ -379,6 +389,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
               </InfiniteScroll>
             </div>
           )}
+          destroyOnHidden={true}
         >
           <Badge count={data?.pages[0]?.total}>
             <Button
