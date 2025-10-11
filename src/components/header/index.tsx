@@ -4,6 +4,7 @@ import {
   Avatar,
   Badge,
   Button,
+  Col,
   Divider,
   Dropdown,
   Flex,
@@ -11,6 +12,7 @@ import {
   List,
   MenuProps,
   notification,
+  Row,
   Select,
   Space,
   theme,
@@ -176,7 +178,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
     // justifyContent: "flex-end",
     alignItems: "center",
     padding: "16px 24px",
-    height: "64px",
+    // height: "64px",
     justifyContent: "space-between",
   };
 
@@ -233,16 +235,13 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
           display: "flex",
           flexDirection: "column",
           gap: "1rem",
-          alignItems: "flex-start",
+          alignItems: "flex-start", 
         }}
       > */}
       {/* <Flex justify="space-between"> */}
-      <Space
-        style={{
-          display: "flex",
-          gap: "1rem",
-        }}
-      >
+      {/* <Row> */}
+      {/* <Col lg={12} xs={24}> */}
+      <Space size="middle" wrap={true}>
         <Button onClick={() => changeLocale("ar")}>changeLocale</Button>
         <Form.Item label="القسم" style={{ marginBottom: 0 }}>
           <CustomSearchSelect
@@ -309,6 +308,8 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
           />
         </Form.Item>
       </Space>
+      {/* </Col> */}
+      {/* <Col lg={12} xs={24}> */}
       <Space size="middle">
         {username && <Text strong>أهلا {username}</Text>}
         {/* {username && <Avatar src={username} />} */}
@@ -401,6 +402,8 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
           </Badge>
         </Dropdown>
       </Space>
+      {/* </Col> */}
+      {/* </Row> */}
     </AntdLayout.Header>
   );
 };
