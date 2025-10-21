@@ -427,7 +427,7 @@ function App() {
                   routerProvider={routerBindings}
                   authProvider={authProvider}
                   auditLogProvider={auditLogProvider}
-                  // accessControlProvider={accessControlProvider}
+                  accessControlProvider={accessControlProvider}
                   liveProvider={liveProvider(window.Echo)}
                   i18nProvider={i18nProvider}
                   resources={[...resources]}

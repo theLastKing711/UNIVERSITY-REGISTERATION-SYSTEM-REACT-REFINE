@@ -9,6 +9,7 @@ import {
   Dropdown,
   Flex,
   Form,
+  Grid,
   List,
   MenuProps,
   notification,
@@ -34,13 +35,19 @@ import {
 } from "@refinedev/core";
 import { useGetAcademicYearSemesters } from "../../hooks/API/select/useGetAcademicYearSemesters";
 import { useGetGlobalQueryFilters } from "../../hooks/useGetGlobalQueryFilters";
-import { BellFilled, ClockCircleOutlined } from "@ant-design/icons";
+import {
+  BellFilled,
+  ClockCircleOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { NOTIFICATION_URI } from "../../constants";
 import { GetNotificationsResponseData } from "../../types/admins/notifications";
 import { createStyles } from "antd-style";
 import CustomSearchSelect from "../ui/AntDesgin/CustomSearchSelect";
 import { useTranslation } from "@refinedev/core";
+import FilterModal from "./FilterModal";
+import useWindowDimensions from "../../hooks/useWindowDimensions";
 
 const { Text } = Typography;
 const { useToken } = theme;
@@ -64,6 +71,12 @@ const useStyles = createStyles(({ token, css }) => ({
 export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
   sticky = true,
 }) => {
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+
+  // const { useBreakpoint } = Grid;
+
+  const { width } = useWindowDimensions();
+
   const [username, setUsername] = useState(() => {
     const username = localStorage.getItem("username");
 
@@ -217,6 +230,8 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
 
   console.log("locale", getLocale());
 
+  const shouldShowFilter = width < 1380;
+
   return (
     <AntdLayout.Header style={headerStyles}>
       {/* <Space> */}
@@ -241,73 +256,76 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
       {/* <Flex justify="space-between"> */}
       {/* <Row> */}
       {/* <Col lg={12} xs={24}> */}
-      <Space size="middle" wrap={true}>
-        <Button onClick={() => changeLocale("ar")}>changeLocale</Button>
-        <Form.Item label="القسم" style={{ marginBottom: 0 }}>
-          <CustomSearchSelect
-            {...departmentSelectProps}
-            placeholder="اختر قسم"
-            allowClear
-            onClear={() => {
-              go({
-                // to: currentPath,
-                to: resource?.name,
-              });
-            }}
-            style={{ width: 300 }}
-            value={department_id_query_parameter}
-            onChange={(department_id) => {
-              localStorage.setItem(
-                "department_id_query_parameter",
-                department_id as unknown as string
-              );
-              go({
-                // to: currentPath,
-                to: resource?.name,
-                query: {
-                  department_id: department_id,
-                },
-                options: {
-                  keepQuery: true,
-                  keepHash: true,
-                },
-              });
-            }}
-          />
-        </Form.Item>
-        <Form.Item label="السنةوالفصل الدراسي" style={{ marginBottom: 0 }}>
-          <CustomSearchSelect
-            {...academicYearSemestersSelectProps}
-            placeholder="اختر السنة والفصل الدراسي "
-            allowClear
-            onClear={() => {
-              go({
-                // to: currentPath,
-                to: resource?.name,
-              });
-            }}
-            style={{ width: 300 }}
-            value={academic_year_semester_id_query_parameter}
-            onChange={(academic_year_semester_id) => {
-              localStorage.setItem(
-                "academic_year_semester_id_query_parameter",
-                academic_year_semester_id as unknown as string
-              );
-              go({
-                // to: currentPath,
-                to: resource?.name,
-                query: {
-                  academic_year_semester_id,
-                },
-                options: {
-                  keepQuery: true,
-                  keepHash: true,
-                },
-              });
-            }}
-          />
-        </Form.Item>
-      </Space>
+      {!shouldShowFilter && (
+        <Space size="middle" wrap={true}>
+          <Button onClick={() => changeLocale("ar")}>changeLocale</Button>
+          <Form.Item label="القسم" style={{ marginBottom: 0 }}>
+            <CustomSearchSelect
+              {...departmentSelectProps}
+              placeholder="اختر قسم"
+              allowClear
+              onClear={() => {
+                go({
+                  // to: currentPath,
+                  to: resource?.name,
+                });
+              }}
+              style={{ width: 300 }}
+              value={department_id_query_parameter}
+              onChange={(department_id) => {
+                localStorage.setItem(
+                  "department_id_query_parameter",
+                  department_id as unknown as string
+                );
+                go({
+                  // to: currentPath,
+                  to: resource?.name,
+                  query: {
+                    department_id: department_id,
+                  },
+                  options: {
+                    keepQuery: true,
+                    keepHash: true,
+                  },
+                });
+              }}
+            />
+          </Form.Item>
+          <Form.Item label="السنةوالفصل الدراسي" style={{ marginBottom: 0 }}>
+            <CustomSearchSelect
+              {...academicYearSemestersSelectProps}
+              placeholder="اختر السنة والفصل الدراسي "
+              allowClear
+              onClear={() => {
+                go({
+                  // to: currentPath,
+                  to: resource?.name,
+                });
+              }}
+              style={{ width: 300 }}
+              value={academic_year_semester_id_query_parameter}
+              onChange={(academic_year_semester_id) => {
+                localStorage.setItem(
+                  "academic_year_semester_id_query_parameter",
+                  academic_year_semester_id as unknown as string
+                );
+                go({
+                  // to: currentPath,
+                  to: resource?.name,
+                  query: {
+                    academic_year_semester_id,
+                  },
+                  options: {
+                    keepQuery: true,
+                    keepHash: true,
+                  },
+                });
+              }}
+            />
+          </Form.Item>
+        </Space>
+      )}
+
       {/* </Col> */}
       {/* <Col lg={12} xs={24}> */}
       <Space size="middle">
@@ -404,6 +422,16 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
       </Space>
       {/* </Col> */}
       {/* </Row> */}
+      {shouldShowFilter && (
+        <Button
+          icon={<SettingOutlined />}
+          onClick={() => setIsFilterModalOpen(true)}
+        />
+      )}
+
+      {shouldShowFilter && isFilterModalOpen && (
+        <FilterModal onClose={() => setIsFilterModalOpen(false)} />
+      )}
     </AntdLayout.Header>
   );
 };

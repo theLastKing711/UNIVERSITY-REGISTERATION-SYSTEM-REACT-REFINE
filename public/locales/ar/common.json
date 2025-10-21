@@ -97,7 +97,8 @@
     "import": "استورد",
     "export" :"صدر",
     "clone": "استنسخ",
-    "notAccessTitle": "ليس لديك صلاحيات للوصول له"
+    "notAccessTitle": "ليس لديك صلاحيات للوصول له",
+    "close": "إغلاق"
   },
   "warnWhenUnsavedChanges": "هل أنت متأكد أنك تريد المغادرة؟ لديك تعديلات غير محفوظة.",
   "notifications": {
