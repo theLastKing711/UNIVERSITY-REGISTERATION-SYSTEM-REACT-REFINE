@@ -1,53 +1,36 @@
 import { type RefineThemedLayoutV2HeaderProps } from "@refinedev/antd";
 import {
   Layout as AntdLayout,
-  Avatar,
   Badge,
   Button,
-  Col,
-  Divider,
   Dropdown,
   Flex,
-  Form,
-  Grid,
   List,
   MenuProps,
-  notification,
-  Row,
-  Select,
   Space,
   theme,
   Typography,
 } from "antd";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { ColorModeContext } from "../../contexts/color-mode";
-import { useGetDepratments } from "../../hooks/API/select/useGetDepartments";
 import {
   useGetIdentity,
-  useGo,
   useInfiniteList,
   useInvalidate,
   useNavigation,
   useNotification,
-  useParsed,
   useSubscription,
   useUpdate,
 } from "@refinedev/core";
-import { useGetAcademicYearSemesters } from "../../hooks/API/select/useGetAcademicYearSemesters";
-import { useGetGlobalQueryFilters } from "../../hooks/useGetGlobalQueryFilters";
-import {
-  BellFilled,
-  ClockCircleOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
+import { BellFilled, SettingOutlined } from "@ant-design/icons";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { NOTIFICATION_URI } from "../../constants";
 import { GetNotificationsResponseData } from "../../types/admins/notifications";
 import { createStyles } from "antd-style";
-import CustomSearchSelect from "../ui/AntDesgin/CustomSearchSelect";
 import { useTranslation } from "@refinedev/core";
 import FilterModal from "./FilterModal";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
+import FilterForm from "./FilterForm";
 
 const { Text } = Typography;
 const { useToken } = theme;
@@ -73,8 +56,6 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
 }) => {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 
-  // const { useBreakpoint } = Grid;
-
   const { width } = useWindowDimensions();
 
   const [username, setUsername] = useState(() => {
@@ -86,27 +67,21 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
   const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] =
     useState(false);
 
-  const {
-    data,
-    isError,
-    isLoading,
-    hasNextPage,
-    fetchNextPage,
-    isFetchingNextPage,
-  } = useInfiniteList<GetNotificationsResponseData>({
-    resource: NOTIFICATION_URI,
-    // pagination: {
-    //   pageSize: 20,
-    //   current: 1,
-    // },
-    queryOptions: {
-      getNextPageParam: (lastPage, allPages) => {
-        return lastPage.cursor;
+  const { data, hasNextPage, fetchNextPage } =
+    useInfiniteList<GetNotificationsResponseData>({
+      resource: NOTIFICATION_URI,
+      // pagination: {
+      //   pageSize: 20,
+      //   current: 1,
+      // },
+      queryOptions: {
+        getNextPageParam: (lastPage, allPages) => {
+          return lastPage.cursor;
+        },
+        initialData: undefined,
       },
-      initialData: undefined,
-    },
-    meta: { isCursorPagiantion: true },
-  });
+      meta: { isCursorPagiantion: true },
+    });
 
   const invalidate = useInvalidate();
 
@@ -188,10 +163,8 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
   const headerStyles: React.CSSProperties = {
     backgroundColor: token.colorBgElevated,
     display: "flex",
-    // justifyContent: "flex-end",
     alignItems: "center",
     padding: "16px 24px",
-    // height: "64px",
     justifyContent: "space-between",
   };
 
@@ -201,32 +174,15 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
     headerStyles.zIndex = 1;
   }
 
-  const { departmentSelectProps } = useGetDepratments();
-
-  const { academicYearSemestersSelectProps } = useGetAcademicYearSemesters();
-
-  const go = useGo();
-
-  const {
-    department_id_query_parameter,
-    academic_year_semester_id_query_parameter,
-  } = useGetGlobalQueryFilters();
-
-  const { resource } = useParsed();
-
-  const menuStyle: React.CSSProperties = {
-    boxShadow: "none",
-  };
-
   const contentStyle: React.CSSProperties = {
     backgroundColor: token.colorBgElevated,
     borderRadius: token.borderRadiusLG,
     boxShadow: token.boxShadowSecondary,
   };
 
-  const { editUrl, push } = useNavigation();
+  const { push } = useNavigation();
 
-  const { translate, getLocale, changeLocale } = useTranslation();
+  const { getLocale } = useTranslation();
 
   console.log("locale", getLocale());
 
@@ -257,73 +213,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
       {/* <Row> */}
       {/* <Col lg={12} xs={24}> */}
       {!shouldShowFilter && (
-        <Space size="middle" wrap={true}>
-          <Button onClick={() => changeLocale("ar")}>changeLocale</Button>
-          <Form.Item label="القسم" style={{ marginBottom: 0 }}>
-            <CustomSearchSelect
-              {...departmentSelectProps}
-              placeholder="اختر قسم"
-              allowClear
-              onClear={() => {
-                go({
-                  // to: currentPath,
-                  to: resource?.name,
-                });
-              }}
-              style={{ width: 300 }}
-              value={department_id_query_parameter}
-              onChange={(department_id) => {
-                localStorage.setItem(
-                  "department_id_query_parameter",
-                  department_id as unknown as string
-                );
-                go({
-                  // to: currentPath,
-                  to: resource?.name,
-                  query: {
-                    department_id: department_id,
-                  },
-                  options: {
-                    keepQuery: true,
-                    keepHash: true,
-                  },
-                });
-              }}
-            />
-          </Form.Item>
-          <Form.Item label="السنةوالفصل الدراسي" style={{ marginBottom: 0 }}>
-            <CustomSearchSelect
-              {...academicYearSemestersSelectProps}
-              placeholder="اختر السنة والفصل الدراسي "
-              allowClear
-              onClear={() => {
-                go({
-                  // to: currentPath,
-                  to: resource?.name,
-                });
-              }}
-              style={{ width: 300 }}
-              value={academic_year_semester_id_query_parameter}
-              onChange={(academic_year_semester_id) => {
-                localStorage.setItem(
-                  "academic_year_semester_id_query_parameter",
-                  academic_year_semester_id as unknown as string
-                );
-                go({
-                  // to: currentPath,
-                  to: resource?.name,
-                  query: {
-                    academic_year_semester_id,
-                  },
-                  options: {
-                    keepQuery: true,
-                    keepHash: true,
-                  },
-                });
-              }}
-            />
-          </Form.Item>
-        </Space>
+        <FilterForm containerProps={{ size: "middle", wrap: true }} />
       )}
 
       {/* </Col> */}

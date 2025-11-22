@@ -1,8 +1,5 @@
 import { List, useModal, useTable } from "@refinedev/antd";
-import { useDelete, useLogList } from "@refinedev/core";
-import { Button, Modal, Table, Tag } from "antd";
-import { GetAdminsResponseData } from "../../../types/admins/admins";
-import CustomTable from "../../../components/ui/AntDesgin/CustomTable";
+import { Button, Table, Tag } from "antd";
 import { PlusCircleFilled } from "@ant-design/icons";
 import ShowDetailsModal from "./Component/ShowDetailsModal";
 import { useState } from "react";

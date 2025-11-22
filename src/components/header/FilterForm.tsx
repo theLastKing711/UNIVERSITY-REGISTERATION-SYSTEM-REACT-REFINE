@@ -1,12 +1,17 @@
 import React from "react";
 import { useGetDepratments } from "../../hooks/API/select/useGetDepartments";
 import { useGetAcademicYearSemesters } from "../../hooks/API/select/useGetAcademicYearSemesters";
-import { Form } from "antd";
+import { Button, Form, Space } from "antd";
 import CustomSearchSelect from "../ui/AntDesgin/CustomSearchSelect";
-import { useGo, useParsed } from "@refinedev/core";
+import { useGo, useParsed, useTranslation } from "@refinedev/core";
 import { useGetGlobalQueryFilters } from "../../hooks/useGetGlobalQueryFilters";
+import { SpaceProps } from "antd/lib";
 
-const FilterForm = () => {
+export type FilterFormProps = {
+  containerProps: SpaceProps;
+};
+
+const FilterForm = ({ containerProps }: FilterFormProps) => {
   const {
     department_id_query_parameter,
     academic_year_semester_id_query_parameter,
@@ -20,8 +25,11 @@ const FilterForm = () => {
 
   const go = useGo();
 
+  const { translate, getLocale, changeLocale } = useTranslation();
+
   return (
-    <>
+    <Space {...containerProps}>
+      <Button onClick={() => changeLocale("ar")}>changeLocale</Button>
       <Form.Item label="القسم" style={{ marginBottom: 0 }}>
         <CustomSearchSelect
           {...departmentSelectProps}
@@ -86,7 +94,7 @@ const FilterForm = () => {
           }}
         />
       </Form.Item>
-    </>
+    </Space>
   );
 };
 
